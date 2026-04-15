@@ -3,6 +3,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Button & Brand Colors */
+  --primary-hover: #DE7921;  
+  --primary: #FF8F1F;        
+  --accent: #FD7D40;         
+  --secondary: #FEF2F2;      
 }
 
 @media (prefers-color-scheme: dark) {
