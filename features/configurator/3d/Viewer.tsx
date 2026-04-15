@@ -36,8 +36,8 @@ const Viewer = () => {
 
 
     return (
-        <div className='bg-gray-200 w-full md:w-2/3 shrink-0 h-["80vh"]'>
-            <Canvas camera={{ position: [0, 1, 3] }}>
+        <div className='w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] md:sticky'>
+            <Canvas camera={{ position: [0, 1, 3] }}> 
                 <OrbitControls />
                 <Environment preset="city" />
 
