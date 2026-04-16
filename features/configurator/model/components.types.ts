@@ -1,20 +1,35 @@
-﻿export type BaseComponent = {
-  id: string;
-  type: string;
+﻿export type ComponentType =
+  | "material"
+  | "size"
+  | "addon"
+  | "content";
+
+export type BaseComponent = {
+  id: number | string;
+  type: ComponentType;
   order?: number;
 };
 
-export type ColorVariant = {
-  value: string; // hex or material id
-  label?: string;
-  price?: number;
-};
+export type MaterialComponent = BaseComponent & {
+  type: "material";
 
-export type ColorComponent = BaseComponent & {
-  type: "color";
   mesh: string;
-  variants: ColorVariant[];
-  allowCustom?: boolean; // replaces colorPicker
+  meshGroup: string;
+
+  material: {
+    key: string;
+    label?: string;
+    img?: string;
+  };
+
+  colors: {
+    allowCustom: boolean;
+    variants: {
+      value: string;
+      label?: string;
+      price?: number;
+    }[] | null;
+  };
 };
 
 export type SizeComponent = BaseComponent & {
@@ -26,32 +41,26 @@ export type SizeComponent = BaseComponent & {
 };
 
 export type AddonComponent = BaseComponent & {
-  type: "addons";
+  type: "addon";
   options: {
     label: string;
     price?: number;
   }[];
-  multiple?: boolean; // checkbox vs radio
+  multiple?: boolean;
 };
-
-export type TextType =
-  | "heading1"
-  | "heading2"
-  | "text-sm"
-  | "text-md"
-  | "text-lg"
-  | "button";
 
 export type ContentComponent = BaseComponent & {
   type: "content";
   content: {
     value: string;
     textType: TextType;
-  }[];
+  };
 };
 
+export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-lg" | "button";
+
 export type Component =
-  | ColorComponent
+  | MaterialComponent
   | SizeComponent
   | AddonComponent
   | ContentComponent;

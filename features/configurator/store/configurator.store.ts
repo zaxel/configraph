@@ -1,17 +1,20 @@
 ﻿import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-import { createVariantSlice } from "./slices/variant.slice";
-import { createMaterialSlice } from "./slices/material.slice";
-import { createCameraSlice } from "./slices/camera.slice";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+
+import { createProductSlice } from "./slices/product.slice";
+import { createSelectionSlice } from "./slices/selection.slice";
+import { createViewerSlice } from "./slices/viewer.slice";
 import { createUiSlice } from "./slices/ui.slice";
 import { createLoadingSlice } from "./slices/loading.slice";
 
 export const useConfiguratorStore = create(
   devtools((...a) => ({
-    ...createVariantSlice(...a),
-    ...createMaterialSlice(...a),
-    ...createCameraSlice(...a),
+    ...createProductSlice(...a),
+    ...createSelectionSlice(...a),
+    ...createViewerSlice(...a),
     ...createUiSlice(...a),
     ...createLoadingSlice(...a),
   }))
