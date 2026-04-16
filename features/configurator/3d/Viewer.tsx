@@ -12,7 +12,7 @@ import * as THREE from 'three';
 function Trainers() {
     const { gl } = useThree();
 
-    const gltf = useLoader(GLTFLoader, "/models/nike3.glb",
+    const gltf = useLoader(GLTFLoader, "/models/nike4.glb",
         (loader) => {
             const draco = new DRACOLoader()
             draco.setDecoderPath("/draco/")
