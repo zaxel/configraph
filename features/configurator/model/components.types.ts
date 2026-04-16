@@ -4,6 +4,8 @@
   | "addon"
   | "content";
 
+
+
 export type BaseComponent = {
   id: number | string;
   type: ComponentType;

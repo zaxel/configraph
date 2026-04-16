@@ -1,10 +1,22 @@
-﻿export const selectVariant = (s) => s.selectedVariant;
-export const selectMaterials = (s) => s.materials;
+﻿/* base selectors */
 
-export const selectIsConfigured = (s) =>
-  !!s.selectedVariant && Object.keys(s.materials).length > 0;
+export const getProduct = (s) => s.product;
 
+export const selectOptions = (s) => s.selectedOptions;
 
+/* param selector */
 
+export const selectOption =
+  (componentId: string) => (s) =>
+    s.selectedOptions[componentId];
 
-// const variant = useConfiguratorStore(selectVariant);  //usage
+/* derived */
+
+export const selectHasOption =
+  (componentId: string, value: string) => (s) =>
+    s.selectedOptions[componentId] === value;
+
+/* example computed */
+
+export const selectTotalSelected = (s) =>
+  Object.keys(s.selectedOptions).length;

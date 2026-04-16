@@ -1,4 +1,6 @@
-﻿export const product = {
+﻿import { Product } from "../../model";
+
+export const product: Product = {
   id: "nike-basic",
   quantity: 1,
 
@@ -35,6 +37,22 @@
       order: 2,
       displayType: "select",
 
+
+      default: {
+        sole: {
+          componentId: 223,
+          colorIndex: 0
+        },
+        laces: {
+          componentId: 224,
+          colorIndex: null
+        },
+        wamp: {
+          componentId: 226,
+          colorIndex: 0
+        },
+      },
+
       components: [
         {
           id: 223,
@@ -44,7 +62,7 @@
           material: {
             key: "rubber",
             label: "rubber",
-            img: null,
+            img: undefined,
           },
           colors: {
             allowCustom: false,
@@ -69,7 +87,7 @@
           },
           colors: {
             allowCustom: true,
-            variants: null,
+            variants: [],
           },
 
         },
@@ -94,12 +112,12 @@
         {
           id: 226,
           type: "material",
-          mesh: "wapm",
-          meshGroup: "wapm",
+          mesh: "wamp",
+          meshGroup: "wamp",
           material: {
             key: "wamp",
             label: "fabric",
-            img: null,
+            img: undefined,
           },
           colors: {
             allowCustom: false,
@@ -107,7 +125,7 @@
               { value: "black", label: "black", price: 0 },
               { value: "blue", label: "blue", price: 0 },
               { value: "white", label: "white", price: 0 },
-              { value: "red", label: "white", price: 0 },
+              { value: "red", label: "red", price: 0 },
             ]
           },
         },
@@ -118,6 +136,10 @@
       id: "size",
       order: 3,
       displayType: "all",
+
+      default: {
+        sizeIndex: 0,
+      },
 
       components: [
         {
@@ -191,7 +213,12 @@
   ],
 };
 
-export const createProductSlice = (set) => ({
+type ProductSlice = {
+  product: Product | null;
+  setProduct: (product: Product) => void;
+};
+
+export const createProductSlice = (set): ProductSlice => ({
   product: product,
 
   setProduct: (product) =>
