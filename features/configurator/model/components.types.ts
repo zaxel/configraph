@@ -68,7 +68,7 @@ export type PriceComponent = BaseComponent & {
   pricing: PriceConfig;
 };
 
-export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-lg" | "button";
+export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-md-gray" | "button";
 
 export type Component =
   | MaterialComponent

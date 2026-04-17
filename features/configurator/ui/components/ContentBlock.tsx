@@ -1,11 +1,12 @@
 ﻿import React from 'react';
 import { ContentComponent } from '../../model';
+import { Text } from './Text';
 
 const ContentBlock = ({data} : { data: ContentComponent }) => {
     return (
-        <div>
-            content
-        </div>
+        <Text variant={data.content.textType}>
+            {data.content.value}
+        </Text>
     );
 };
 

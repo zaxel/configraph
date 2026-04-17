@@ -38,7 +38,15 @@ export const product: Product = {
             value: "Nike Jordan 3",
             textType: "heading1"
           }
-        }
+        },
+        {
+          id: 201,
+          type: "content",
+          content: {
+            value: "A comfortable, everyday T-shirt made from soft, breathable cotton, designed with a classic fit and clean lines for effortless wear.",
+            textType: "text-md-gray"
+          }
+        },
       ],
     },
     {
