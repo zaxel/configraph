@@ -23,6 +23,7 @@
 
     result[meshGroup] = {
       componentId: component.id,
+      meshGroup: meshGroup,
       color,
     };
   }

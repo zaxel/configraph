@@ -1,9 +1,6 @@
 ﻿import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
-
 import { createProductSlice } from "./slices/product.slice";
 import { createOptionsSlice } from "./slices/options.slice";
 import { createViewerSlice } from "./slices/viewer.slice";

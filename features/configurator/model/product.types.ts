@@ -39,7 +39,5 @@ export type Product = {
     url: string;
   };
 
-  pricing: PriceConfig;
-
   modules: Module[];
 };

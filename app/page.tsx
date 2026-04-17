@@ -1,4 +1,4 @@
-import Configurator from "@/features/configurator/Configurator";
+import Configurator from "@/features/configurator/ui/Configurator";
 
 export default function Home() {
   return (

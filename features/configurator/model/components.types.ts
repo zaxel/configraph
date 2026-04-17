@@ -1,8 +1,11 @@
-﻿export type ComponentType =
+﻿import { PriceConfig } from "./pricing.types";
+
+export type ComponentType =
   | "material"
   | "size"
   | "addon"
-  | "content";
+  | "content"
+  | "price";
 
 
 
@@ -37,7 +40,8 @@ export type MaterialComponent = BaseComponent & {
 export type SizeComponent = BaseComponent & {
   type: "size";
   options: {
-    label: string;
+    value: string;
+    label?: string;
     price?: number;
   }[];
 };
@@ -59,10 +63,16 @@ export type ContentComponent = BaseComponent & {
   };
 };
 
+export type PriceComponent = BaseComponent & {
+  type: "price";
+  pricing: PriceConfig;
+};
+
 export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-lg" | "button";
 
 export type Component =
   | MaterialComponent
   | SizeComponent
   | AddonComponent
-  | ContentComponent;
+  | ContentComponent
+  | PriceComponent;
