@@ -155,7 +155,6 @@ export const product: Product = {
       id: "size",
       order: 3,
       displayType: "all",
-
       default: {
         sizeIndex: 0,
       },
@@ -164,6 +163,7 @@ export const product: Product = {
         {
           id: 228,
           type: "size",
+          label: "Size:",
           options: [
             {
               value: "M",

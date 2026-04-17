@@ -1,7 +1,6 @@
 ﻿import { PriceComponent } from '../../model';
 
 const PriceBlock = ({ data }: { data: PriceComponent }) => {
-    console.log(data)
     const isOnSale = data.pricing.oldPrice;
     const oldPrice = data.pricing.oldPrice;
     const basePrice = data.pricing.basePrice;

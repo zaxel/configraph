@@ -1,24 +1,22 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-
-  /* Button & Brand Colors */
-  --primary-hover: #DE7921;  
-  --primary: #FF8F1F;        
-  --accent: #FD7D40;         
-  --secondary: #FEF2F2;      
+@theme {
+  --color-primary: #FD7D40;
+  --color-primary-hover: #DE7921;
+  --color-accent: #FF8F1F;
+  --color-secondary: #FEF2F2;
+  --color-background: #ffffff;
+  --color-foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-background: #0a0a0a;
+    --color-foreground: #ededed;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-background);
+  color: var(--color-foreground);
 }

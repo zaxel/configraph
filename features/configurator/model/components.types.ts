@@ -39,6 +39,7 @@ export type MaterialComponent = BaseComponent & {
 
 export type SizeComponent = BaseComponent & {
   type: "size";
+  label?: string;
   options: {
     value: string;
     label?: string;

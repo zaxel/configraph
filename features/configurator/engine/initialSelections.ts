@@ -21,7 +21,8 @@
     const color =
       component.colors.variants?.[def.colorIndex]?.value;
 
-    result[meshGroup] = {
+    result[component.id] = {
+      type: "material",
       componentId: component.id,
       meshGroup: meshGroup,
       color,
@@ -34,13 +35,18 @@
 
 export function buildInitialSizeSelections(product) {
   const sizeModule = product.modules.find((m) => m.id === "size");
-  if (!sizeModule) return { size: null };
+  if (!sizeModule) return { };
 
   const sizeComponent = sizeModule.components.find((c) => c.type === "size");
-  if (!sizeComponent) return { size: null };
+  if (!sizeComponent) return { };
 
   const sizeIndex = sizeModule.default?.sizeIndex ?? null;
-  if (sizeIndex === null) return { size: null };
-
-  return { size: sizeComponent.options[sizeIndex] ?? null };
+  if (sizeIndex === null) return {};
+  console.log(sizeModule)
+  return {
+    [sizeComponent.id]: {
+      ...sizeComponent.options[sizeIndex],
+      type: "size",
+    }
+  };
 }
