@@ -18,7 +18,8 @@ export const product: Product = {
           id: 102,
           type: "price",
           pricing: {
-            basePrice: 100.0,
+            basePrice: "100.00",
+            oldPrice: "115.00",
             currency: "USD",
             order: 1,
           },

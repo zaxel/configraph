@@ -14,7 +14,9 @@ const ConfiguratorUI = () => {
 
     return (
         <div className='w-full md:w-1/3 shrink-0 flex flex-col gap-6'>
-            {product.modules.map(({id, ...rest}) => {
+            {product.modules
+                .sort((a, b)=> a.order - b.order)
+                .map(({id, ...rest}) => {
                     console.log(rest)
                     return <ModuleRenderer key={id} module={rest}/>
                 })}

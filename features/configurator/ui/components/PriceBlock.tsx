@@ -1,10 +1,18 @@
-﻿import React from 'react';
-import { PriceComponent } from '../../model';
+﻿import { PriceComponent } from '../../model';
 
-const PriceBlock = ({data}: { data: PriceComponent }) => {
+const PriceBlock = ({ data }: { data: PriceComponent }) => {
+    console.log(data)
+    const isOnSale = data.pricing.oldPrice;
+    const oldPrice = data.pricing.oldPrice;
+    const basePrice = data.pricing.basePrice;
     return (
-        <div>
-            PriceComponent
+        <div className='flex justify-start items-end gap-4'>
+            {isOnSale && (
+                <h4 className='text-xl text-gray-500 line-through'>
+                    ${oldPrice}
+                </h4>
+            )}
+            <h3 className='font-medium text-2xl'>${basePrice}</h3>
         </div>
     );
 };

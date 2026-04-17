@@ -1,4 +1,4 @@
-﻿import { JSX, ReactNode, ElementType } from "react";
+﻿import { ReactNode, ElementType } from "react";
 import { TextType } from "../../model";
 
 type TextProps = {
