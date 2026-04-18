@@ -1,37 +1,60 @@
 ﻿import { StateCreator } from "zustand";
-import { buildInitialAddonSelections, buildInitialGroupAndColorSelections, buildInitialSizeSelections } from "../../engine/initialSelections";
-import { OptionsSlice, SelectedOptions } from "../../model/selections.types";
+import { buildInitialAddonSelections, buildInitialPartsSelections, buildInitialSizeSelections } from "../../engine/initialSelections";
+import { OptionsSlice } from "../../model/selections.types";
 import { BoundStore } from "../store.types";
 
+const initValue = {
+    parts: {},
+    addon: [],
+    size: ""
+  };
 
 export const createOptionsSlice: StateCreator<
   BoundStore,
   [],
   [],
   OptionsSlice
-  > = (set, get): OptionsSlice => ({
-    selectedOptions: {},
+> = (set, get): OptionsSlice => ({
+  selectedOptions: initValue,
 
-    initOptions: () => {
-      const product = get().product;
-      if(!product) return;
-      const initialSelections = {
-        ...buildInitialGroupAndColorSelections(product),
-        ...buildInitialSizeSelections(product),
-        ...buildInitialAddonSelections(product),
-      };
-      set({ selectedOptions: initialSelections as Record<string, SelectedOptions>});
-    },
+  initOptions: () => {
+    const product = get().product;
+    if (!product) return;
+    const initialSelections = {
+      parts: {},
+      size: "",
+      addon: [],
+      ...buildInitialPartsSelections(product),
+      ...buildInitialSizeSelections(product),
+      ...buildInitialAddonSelections(product),
+    };
+    set({ selectedOptions: initialSelections });
+  },
 
-    setOption: (componentId, value) =>
-      set((state) => ({
+  setOption: (module, value) =>
+    set((state) => ({
+      selectedOptions: {
+        ...state.selectedOptions,
+        [module]: value,
+      },
+    })),
+
+  toggleAddon: (value) =>
+    set((state) => {
+      const current = state.selectedOptions.addon;
+      const exists = current.includes(value);
+
+      return {
         selectedOptions: {
           ...state.selectedOptions,
-          [componentId]: value,
+          addon: exists
+            ? current.filter(v => v !== value)
+            : [...current, value],
         },
-      })),
+      };
+    }),
 
-    resetOptions: () => set({ selectedOptions: {} }),
-  });
+  resetOptions: () => set({ selectedOptions: initValue }),
+});
 
 

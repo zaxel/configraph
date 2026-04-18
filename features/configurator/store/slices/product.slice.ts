@@ -13,15 +13,14 @@ export const product: Product = {
   modules: [
     {
       id: "price",
-      displayType: "all",
       order: 1,
       components: [
         {
           id: "102",
           type: "price",
           pricing: {
-            basePrice: "100.00",
-            oldPrice: "115.00",
+            basePrice: 100.0,
+            oldPrice: 115.0,
             currency: "USD",
             order: 1,
           },
@@ -31,7 +30,6 @@ export const product: Product = {
     {
       id: "content-01",
       order: 0,
-      displayType: "all",
 
       components: [
         {
@@ -53,102 +51,103 @@ export const product: Product = {
       ],
     },
     {
-      id: "materials",
+      id: "parts",
       order: 2,
-      displayType: "select",
 
 
       default: {
-        sole: {
-          componentId: "223",
-          colorIndex: 0
-        },
-        laces: {
-          componentId: "224",
-          colorIndex: null
-        },
-        wamp: {
-          componentId: "226",
-          colorIndex: 0
-        },
+        type: "parts",
+        selections: {
+          body: {
+            groupId: "id-83866e",
+            color: "red",
+            enabled: true,
+          },
+          laces: {
+            groupId: "id-889776",
+            color: "black",
+            enabled: true,
+          },
+          sole: {
+           groupId: "id-76653",
+            color: "white",
+            enabled: false,
+          }
+        }
+
       },
 
-      components: [
+      components: [ //parts
         {
-          id: "223",
-          type: "material",
-          meshGroup: "sole",
-          mesh: "sole_middle",
-          material: {
-            key: "rubber",
-            label: "rubber",
-            img: undefined,
-          },
-          colors: {
-            allowCustom: false,
-            variants: [
-              { value: "red", label: "red", price: "0" },
-              { value: "black", label: "black", price: "0" },
-              { value: "blue", label: "blue", price: "0" },
-              { value: "white", label: "white", price: "0" },
-              { value: "gold", label: "nova wave", price: "1.00" },
-            ]
-          },
-        },
-
-        {
-          id: "224",
-          type: "material",
-          mesh: "Object_8004_2",
-          meshGroup: "laces",
-          material: {
-            key: "fabric",
-            label: "fabric",
-            img: "/textures/laces-fabric.jpg",
-          },
-          colors: {
-            allowCustom: true,
-            variants: [],
-          },
-
+          id: "body",
+          type: "part",
+          optional: false,
+          groups: [
+            {
+              id: "id-83866e",
+              meshes: ["wamp"],
+              label: "fabric",
+              colors: {
+                allowCustom: false,
+                variants: [
+                  { value: "red", label: "red", price: 0 },
+                  { value: "black", label: "black", price: 0 },
+                  { value: "blue", label: "blue", price: 0 },
+                  { value: "white", label: "white", price: 0 },
+                ]
+              },
+            }
+          ]
         },
         {
-          id: "225",
-          type: "material",
-          mesh: "Object_8004",
-          meshGroup: "laces",
-          material: {
-            key: "leather",
-            label: "leather",
-            img: "/textures/laces-leather.jpg",
-          },
-          colors: {
-            allowCustom: false,
-            variants: [
-              { value: "black", label: "black", price: "0" },
-              { value: "brown", label: "brown", price: "0" },
-            ]
-          },
+          id: "laces",
+          type: "part",
+          optional: false,
+          groups: [
+            {
+              id: "id-889776",
+              meshes: ["Object_8004_2", "Object_8004_1"],
+              label: "fabric",
+              colors: {
+                allowCustom: true,
+                variants: [],
+              },
+            },
+            {
+              id: "id-7779",
+              meshes: ["Object_8004"],
+              label: "leather",
+              colors: {
+                allowCustom: false,
+                variants: [
+                  { value: "black", label: "black", price: 0 },
+                  { value: "brown", label: "brown", price: 0 },
+                ]
+              },
+            }
+          ]
         },
         {
-          id: "226",
-          type: "material",
-          mesh: "wamp",
-          meshGroup: "wamp",
-          material: {
-            key: "wamp",
-            label: "fabric",
-            img: undefined,
-          },
-          colors: {
-            allowCustom: false,
-            variants: [
-              { value: "red", label: "red", price: "0" },
-              { value: "black", label: "black", price: "0" },
-              { value: "blue", label: "blue", price: "0" },
-              { value: "white", label: "white", price: "0" },
-            ]
-          },
+          id: "sole",
+          type: "part",
+          optional: true,
+          groups: [
+            {
+              id: "id-76653",
+              meshes: ["sole"],
+              label: "rubber",
+              colors: {
+                allowCustom: false,
+                variants: [
+                  { value: "red", label: "red", price: 0 },
+                  { value: "black", label: "black", price: 0 },
+                  { value: "blue", label: "blue", price: 0 },
+                  { value: "white", label: "white", price: 0 },
+                  { value: "gold", label: "nova wave", price: 1.0 },
+                ]
+              },
+            }
+          ]
         },
       ],
     },
@@ -156,9 +155,9 @@ export const product: Product = {
     {
       id: "size",
       order: 3,
-      displayType: "all",
       default: {
-        sizeIndex: 0,
+        type: "size",
+        value: "XL",
       },
 
       components: [
@@ -170,22 +169,22 @@ export const product: Product = {
             {
               value: "M",
               label: "M",
-              price: "0",
+              price: 0,
             },
             {
               value: "S",
               label: "S",
-              price: "0",
+              price: 0,
             },
             {
               value: "L",
               label: "L",
-              price: "0",
+              price: 0,
             },
             {
               value: "XL",
               label: "XL",
-              price: "0",
+              price: 0,
             },
           ]
         }
@@ -194,11 +193,12 @@ export const product: Product = {
     {
       id: "addon",
       order: 4,
-      displayType: "all",
 
-       default: {
-        sizeIndex: 1,
+      default: {
+        type: "addon",
+        selections: ["spare velcro", "exclusively signed by Michel Jordan",]
       },
+
 
 
       components: [
@@ -208,20 +208,24 @@ export const product: Product = {
           label: "Addons:",
           options: [
             {
+              value: "fancy and beautiful loop",
               label: "fancy and beautiful loop",
-              price: "0"
+              price: 0
             },
             {
+              value: "spare velcro",
               label: "spare velcro",
-              price: "10.00"
+              price: 10.0
             },
             {
+              value: "antibacterial and antifungal powder",
               label: "antibacterial and antifungal powder",
-              price: "11.80"
+              price: 11.8
             },
             {
+              value: "exclusively signed by Michel Jordan",
               label: "exclusively signed by Michel Jordan",
-              price: "99.99"
+              price: 99.99
             },
           ]
         },
@@ -232,7 +236,6 @@ export const product: Product = {
     {
       id: "content-02",
       order: 5,
-      displayType: "all",
 
       components: [
         {

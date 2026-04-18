@@ -1,6 +1,6 @@
 ﻿export type PriceConfig = {
-  basePrice: string;
-  oldPrice?: string;
+  basePrice: number;
+  oldPrice?: number;
   currency: string;
   order: number;
 };

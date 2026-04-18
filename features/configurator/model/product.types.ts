@@ -1,27 +1,31 @@
 ﻿import { Component } from "./components.types";
-export type DefaultMaterials = Record<string, {
-  componentId: string,
-  colorIndex: number | null,
-}>
-
-export type DefaultAddons = {
-  sizeIndex: number | null;
+export type DefaultParts = {
+  type: "parts";
+  selections: Record<string, {
+    groupId: string;
+    color: string;
+    enabled: boolean;
+  }>
 }
+export type DefaultAddons = {
+  type: "addon",
+  selections: string[];
+};
 
 export type DefaultSizes = {
-  sizeIndex: number | null;
+  type: "size",
+  value: string;
 }
 
 export type BaseModule = {
   id: string;
   order: number;
-  displayType: "one-at-time" | "select" | "x-slider" | "all";
   components: Component[];
 };
 
-export type MaterialsModule = BaseModule & {
-  id: "materials";
-  default?: DefaultMaterials;
+export type PartsModule = BaseModule & {
+  id: "parts";
+  default?: DefaultParts;
 };
 
 export type SizeModule = BaseModule & {
@@ -35,7 +39,7 @@ export type AddonModule = BaseModule & {
 };
 
 
-export type Module = MaterialsModule | SizeModule | AddonModule | BaseModule;
+export type Module = PartsModule | SizeModule | AddonModule | BaseModule;
 
 export type Product = {
   id: string;

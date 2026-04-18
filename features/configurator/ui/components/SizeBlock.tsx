@@ -2,27 +2,23 @@
 import { useConfiguratorStore } from '../../store/configurator.store';
 
 const SizeBlock = ({ data }: { data: SizeComponent }) => {
-    const selected = useConfiguratorStore(s => s.selectedOptions[data.id]);
+    const selected = useConfiguratorStore(s => s.selectedOptions["size"]);
     const setOption = useConfiguratorStore(s => s.setOption);
-    if (!selected || selected.type !== "size") return null;
+    if (!selected) return null; 
 
     return (
         <div>
             {data.label && <h3 className='font-medium text-xl mb-4'>{data.label}</h3>}
             <ul className='flex items-center gap-3'>
                 {data.options.map(size => {
-                    const isSelected = size.value === selected.value;
+                    const isSelected = size.value === selected;
                     return (
                         <li
                             key={size.value}
                             onClick={() =>
                                 !isSelected &&
-                                setOption(data.id, {
-                                    type: "size",
-                                    value: size.value,
-                                    label: size.label ?? "",
-                                    price: size.price ?? "",
-                                })}
+                                setOption("size", size.value,)
+                            }
                             className={isSelected
                                 ? "ring-1 ring-primary text-white bg-primary rounded-md py-1 px-4 text-sm"
                                 : "ring-1 ring-primary text-primary rounded-md py-1 px-4 text-sm cursor-pointer"

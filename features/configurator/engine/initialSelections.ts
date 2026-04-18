@@ -1,46 +1,29 @@
-﻿import { AddonModule, Component, MaterialComponent, MaterialsModule, Module, Product, SizeComponent, SizeModule } from "../model";
-import { MaterialSelection } from "../model/selections.types";
+﻿import { AddonModule, Component, Module, PartsModule, Product, SizeComponent, SizeModule } from "../model";
+import { PartsSelection } from "../model/selections.types";
 
 
-function isMaterialsModule(m: Module): m is MaterialsModule {
-  return m.id === "materials";
+function isPartsModule(m: Module): m is PartsModule {
+  return m.id === "parts";
 }
 
-function isMaterialComponent(c: Component): c is MaterialComponent {
-  return "colors" in c;
-}
+export function buildInitialPartsSelections(product: Product) {
+  const result: Record<string, PartsSelection> = {};
 
-export function buildInitialGroupAndColorSelections(product: Product) {
-  const result: Record<string, MaterialSelection> = {};
+  const partsModule = product.modules.find(isPartsModule); 
 
-  const materialsModule = product.modules.find(isMaterialsModule);
+  if (!partsModule) return result;
 
-  if (!materialsModule) return result;
+  const defaults = partsModule.default;
+  if(!defaults) return result;
 
-  const defaults = materialsModule.default;
+  for (const partId in defaults.selections) {
+    const def = defaults.selections[partId];
 
-  for (const meshGroup in defaults) {
-    const def = defaults[meshGroup];
-
-
-    const component = materialsModule.components.find(
-      (c) => c.id === def.componentId
-    );
-
-    if (!component || !isMaterialComponent(component)) continue;
-
-    const color =
-      def.colorIndex != null
-        ? component.colors.variants?.[def.colorIndex]?.value
-        : undefined;
-
-    result[component.id] = {
-      type: "material",
-      meshGroup: meshGroup,
-      color,
+    result.parts = {
+      ...result.parts,
+      [partId]: def
     };
   }
-
   return result;
 }
 
@@ -50,18 +33,14 @@ function isSizeModule(m: Module): m is SizeModule {
 
 export function buildInitialSizeSelections(product: Product) {
   const sizeModule = product.modules.find((m) => m.id === "size");
-  if (!sizeModule) return {};
-
+  if (!sizeModule) return {}; 
   const sizeComponent = sizeModule.components.find((c) => c.type === "size");
   if (!sizeComponent || !isSizeModule(sizeModule)) return {};
 
-  const sizeIndex = sizeModule.default?.sizeIndex ?? null;
-  if (sizeIndex === null) return {};
+  const def = sizeModule.default ?? null; 
+  if (def === null) return {};
   return {
-    [sizeComponent.id]: {
-      ...sizeComponent.options[sizeIndex],
-      type: "size",
-    }
+    size: def.value,
   };
 }
 
@@ -75,12 +54,10 @@ export function buildInitialAddonSelections(product: Product) {
   const addonComponent = addonModule.components.find((c) => c.type === "addon");
   if (!addonComponent || !isAddonModule(addonModule)) return {};
 
-  const addonIndex = addonModule.default?.sizeIndex ?? null;
-  if (addonIndex === null) return {};
+  const def = addonModule.default?.selections ?? null;
+  if (def === null) return {};
+  
   return {
-    [addonComponent.id]: {
-      ...addonComponent.options[addonIndex],
-      type: "addon",
-    }
+    addon: def
   };
 }

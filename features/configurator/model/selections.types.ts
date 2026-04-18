@@ -1,28 +1,25 @@
-﻿export type MaterialSelection = {
-    type: "material";
-    meshGroup: string;
-    color?: string;
-};
-export type SizeSelection = {
-    type: 'size',
-    value: string,
-    label: string,
-    price: string,
-};
+﻿export type PartsSelection = Record<string, {
+    groupId: string;
+    color: string;
+}>;
 
-export type AddonSelection = {
-    type: 'addon',
-    label: string,
-    price: string,
+
+type SelectedOptions = {
+    parts: PartsSelection;
+    size: string;
+    addon: string[];
 };
-
-export type SelectedOptions = MaterialSelection | SizeSelection | AddonSelection;
-
 
 export type OptionsSlice = {
-    selectedOptions: Record<string, SelectedOptions>;
-    setOption: (componentId: string, value: SelectedOptions) => void;
+    selectedOptions: SelectedOptions;
+    setOption: <K extends keyof SelectedOptions>(
+        key: K,
+        value: SelectedOptions[K]
+    ) => void;
+
+    toggleAddon: (value: string) => void;
+
     resetOptions: () => void;
     initOptions: () => void;
-}; 
+};
 

@@ -2,6 +2,7 @@
 import { componentRegistry } from "./registry";
 
 export const ModuleRenderer = ({ module }: { module: Module }) => {
+    // console.log(module)
     return (
         <div className="flex flex-col gap-4">
             {module.components.map((comp: Component) => {
