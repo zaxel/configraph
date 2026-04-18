@@ -24,7 +24,7 @@ const SizeBlock = ({ data }: { data: SizeComponent }) => {
                                     price: size.price ?? "",
                                 })}
                             className={isSelected
-                                ? "ring-1 ring-primary-500 text-white bg-primary rounded-md py-1 px-4 text-sm"
+                                ? "ring-1 ring-primary text-white bg-primary rounded-md py-1 px-4 text-sm"
                                 : "ring-1 ring-primary text-primary rounded-md py-1 px-4 text-sm cursor-pointer"
                             }
                         >

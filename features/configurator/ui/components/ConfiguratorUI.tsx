@@ -4,8 +4,6 @@ import { ModuleRenderer } from '../ModuleRenderer';
 
 
 const ConfiguratorUI = () => {
-    const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
-    const setOption = useConfiguratorStore(s => s.setOption);
     const product = useConfiguratorStore(s => s.product);
     if(!product) return null;
 
