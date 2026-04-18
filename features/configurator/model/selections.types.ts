@@ -10,7 +10,14 @@ export type SizeSelection = {
     price: string,
 };
 
-export type SelectedOptions = MaterialSelection | SizeSelection;
+export type AddonSelection = {
+    type: 'addon',
+    value: string,
+    label: string,
+    price: string,
+};
+
+export type SelectedOptions = MaterialSelection | SizeSelection | AddonSelection;
 
 
 export type OptionsSlice = {

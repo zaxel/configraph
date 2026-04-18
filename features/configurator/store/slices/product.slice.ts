@@ -12,7 +12,7 @@ export const product: Product = {
 
   modules: [
     {
-      id: "prices-01",
+      id: "price",
       displayType: "all",
       order: 1,
       components: [
@@ -192,8 +192,46 @@ export const product: Product = {
       ],
     },
     {
-      id: "content-02",
+      id: "addon",
       order: 4,
+      displayType: "all",
+
+       default: {
+        sizeIndex: 1,
+      },
+
+
+      components: [
+        {
+          id: "318",
+          type: "addon",
+          label: "Addons:",
+          options: [
+            {
+              label: "fancy and beautiful loop",
+              price: "0"
+            },
+            {
+              label: "spare velcro",
+              price: "10.00"
+            },
+            {
+              label: "antibacterial and antifungal powder",
+              price: "11.80"
+            },
+            {
+              label: "exclusively signed by Michel Jordan",
+              price: "99.99"
+            },
+          ]
+        },
+
+
+      ],
+    },
+    {
+      id: "content-02",
+      order: 5,
       displayType: "all",
 
       components: [
@@ -234,7 +272,7 @@ export const product: Product = {
   ],
 };
 
-type ProductSlice = {
+export type ProductSlice = {
   product: Product | null;
   setProduct: (product: Product) => void;
 };

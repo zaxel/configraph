@@ -1,5 +1,5 @@
 ﻿import { StateCreator } from "zustand";
-import { buildInitialGroupAndColorSelections, buildInitialSizeSelections } from "../../engine/initialSelections";
+import { buildInitialAddonSelections, buildInitialGroupAndColorSelections, buildInitialSizeSelections } from "../../engine/initialSelections";
 import { OptionsSlice, SelectedOptions } from "../../model/selections.types";
 import { BoundStore } from "../store.types";
 
@@ -18,6 +18,7 @@ export const createOptionsSlice: StateCreator<
       const initialSelections = {
         ...buildInitialGroupAndColorSelections(product),
         ...buildInitialSizeSelections(product),
+        ...buildInitialAddonSelections(product),
       };
       set({ selectedOptions: initialSelections as Record<string, SelectedOptions>});
     },

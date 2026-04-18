@@ -1,10 +1,12 @@
 ﻿import { Component } from "./components.types";
-import { PriceConfig } from "./pricing.types";
-
 export type DefaultMaterials = Record<string, {
   componentId: string,
   colorIndex: number | null,
 }>
+
+export type DefaultAddons = {
+  sizeIndex: number | null;
+}
 
 export type DefaultSizes = {
   sizeIndex: number | null;
@@ -27,8 +29,13 @@ export type SizeModule = BaseModule & {
   default?: DefaultSizes;
 };
 
+export type AddonModule = BaseModule & {
+  id: "addon";
+  default?: DefaultAddons;
+};
 
-export type Module = MaterialsModule | SizeModule | BaseModule;
+
+export type Module = MaterialsModule | SizeModule | AddonModule | BaseModule;
 
 export type Product = {
   id: string;

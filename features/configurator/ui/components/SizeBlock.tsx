@@ -4,7 +4,7 @@ import { useConfiguratorStore } from '../../store/configurator.store';
 const SizeBlock = ({ data }: { data: SizeComponent }) => {
     const selected = useConfiguratorStore(s => s.selectedOptions[data.id]);
     const setOption = useConfiguratorStore(s => s.setOption);
-    if (!selected) return null;
+    if (!selected || selected.type !== "size") return null;
 
     return (
         <div>
@@ -15,7 +15,14 @@ const SizeBlock = ({ data }: { data: SizeComponent }) => {
                     return (
                         <li
                             key={size.value}
-                            onClick={() => !isSelected && setOption(data.id, size)}
+                            onClick={() =>
+                                !isSelected &&
+                                setOption(data.id, {
+                                    type: "size",
+                                    value: size.value,
+                                    label: size.label ?? "",
+                                    price: size.price ?? "",
+                                })}
                             className={isSelected
                                 ? "ring-1 ring-primary-500 text-white bg-primary rounded-md py-1 px-4 text-sm"
                                 : "ring-1 ring-primary text-primary rounded-md py-1 px-4 text-sm cursor-pointer"

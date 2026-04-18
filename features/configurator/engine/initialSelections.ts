@@ -1,4 +1,4 @@
-﻿import { Component, MaterialComponent, MaterialsModule, Module, Product, SizeComponent, SizeModule } from "../model";
+﻿import { AddonModule, Component, MaterialComponent, MaterialsModule, Module, Product, SizeComponent, SizeModule } from "../model";
 import { MaterialSelection } from "../model/selections.types";
 
 
@@ -61,6 +61,26 @@ export function buildInitialSizeSelections(product: Product) {
     [sizeComponent.id]: {
       ...sizeComponent.options[sizeIndex],
       type: "size",
+    }
+  };
+}
+
+function isAddonModule(m: Module): m is AddonModule {
+  return m.id === "addon";
+}
+export function buildInitialAddonSelections(product: Product) {
+  const addonModule = product.modules.find((m) => m.id === "addon");
+  if (!addonModule) return {};
+
+  const addonComponent = addonModule.components.find((c) => c.type === "addon");
+  if (!addonComponent || !isAddonModule(addonModule)) return {};
+
+  const addonIndex = addonModule.default?.sizeIndex ?? null;
+  if (addonIndex === null) return {};
+  return {
+    [addonComponent.id]: {
+      ...addonComponent.options[addonIndex],
+      type: "addon",
     }
   };
 }

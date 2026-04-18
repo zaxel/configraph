@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { Inter } from "next/font/google";
+import { Inter, Figtree } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Configraph",
@@ -23,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", "font-sans", figtree.variable)}
     >
       <body className="font-sans min-h-full flex flex-col text-foreground">
         <Header/>
