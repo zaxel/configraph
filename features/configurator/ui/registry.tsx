@@ -5,7 +5,7 @@ import MaterialBlock from "./components/MaterialBlock";
 import PriceBlock from "./components/PriceBlock";
 import SizeBlock from "./components/SizeBlock";
 
-type Renderer<T extends Component> = (props: { data: T }) => React.JSX.Element;
+type Renderer<T extends Component> = (props: { data: T }) => React.ReactNode;
 
 type ComponentMap = {
   content: ContentComponent;

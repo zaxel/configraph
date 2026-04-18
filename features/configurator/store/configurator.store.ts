@@ -6,8 +6,9 @@ import { createOptionsSlice } from "./slices/options.slice";
 import { createViewerSlice } from "./slices/viewer.slice";
 import { createUiSlice } from "./slices/ui.slice";
 import { createLoadingSlice } from "./slices/loading.slice";
+import { BoundStore } from "./store.types";
 
-export const useConfiguratorStore = create(
+export const useConfiguratorStore = create<BoundStore>()(
   devtools((...a) => ({
     ...createProductSlice(...a),
     ...createOptionsSlice(...a),

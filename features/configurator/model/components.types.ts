@@ -10,7 +10,7 @@ export type ComponentType =
 
 
 export type BaseComponent = {
-  id: number | string;
+  id: string;
   type: ComponentType;
   order?: number;
 };
@@ -32,7 +32,7 @@ export type MaterialComponent = BaseComponent & {
     variants: {
       value: string;
       label?: string;
-      price?: number;
+      price?: string;
     }[] | null;
   };
 };
@@ -43,7 +43,7 @@ export type SizeComponent = BaseComponent & {
   options: {
     value: string;
     label?: string;
-    price?: number;
+    price?: string;
   }[];
 };
 
@@ -51,7 +51,7 @@ export type AddonComponent = BaseComponent & {
   type: "addon";
   options: {
     label: string;
-    price?: number;
+    price?: string;
   }[];
   multiple?: boolean;
 };

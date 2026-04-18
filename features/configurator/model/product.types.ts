@@ -2,7 +2,7 @@
 import { PriceConfig } from "./pricing.types";
 
 export type DefaultMaterials = Record<string, {
-  componentId: number,
+  componentId: string,
   colorIndex: number | null,
 }>
 

@@ -1,9 +1,19 @@
-﻿export function buildInitialGroupAndColorSelections(product) {
-  const result = {};
+﻿import { Component, MaterialComponent, MaterialsModule, Module, Product, SizeComponent, SizeModule } from "../model";
+import { MaterialSelection } from "../model/selections.types";
 
-  const materialsModule = product.modules.find(
-    (m) => m.id === "materials"
-  );
+
+function isMaterialsModule(m: Module): m is MaterialsModule {
+  return m.id === "materials";
+}
+
+function isMaterialComponent(c: Component): c is MaterialComponent {
+  return "colors" in c;
+}
+
+export function buildInitialGroupAndColorSelections(product: Product) {
+  const result: Record<string, MaterialSelection> = {};
+
+  const materialsModule = product.modules.find(isMaterialsModule);
 
   if (!materialsModule) return result;
 
@@ -12,18 +22,20 @@
   for (const meshGroup in defaults) {
     const def = defaults[meshGroup];
 
+
     const component = materialsModule.components.find(
       (c) => c.id === def.componentId
     );
 
-    if (!component) continue;
+    if (!component || !isMaterialComponent(component)) continue;
 
     const color =
-      component.colors.variants?.[def.colorIndex]?.value;
+      def.colorIndex != null
+        ? component.colors.variants?.[def.colorIndex]?.value
+        : undefined;
 
     result[component.id] = {
       type: "material",
-      componentId: component.id,
       meshGroup: meshGroup,
       color,
     };
@@ -32,17 +44,19 @@
   return result;
 }
 
+function isSizeModule(m: Module): m is SizeModule {
+  return m.id === "size";
+}
 
-export function buildInitialSizeSelections(product) {
+export function buildInitialSizeSelections(product: Product) {
   const sizeModule = product.modules.find((m) => m.id === "size");
-  if (!sizeModule) return { };
+  if (!sizeModule) return {};
 
   const sizeComponent = sizeModule.components.find((c) => c.type === "size");
-  if (!sizeComponent) return { };
+  if (!sizeComponent || !isSizeModule(sizeModule)) return {};
 
   const sizeIndex = sizeModule.default?.sizeIndex ?? null;
   if (sizeIndex === null) return {};
-  console.log(sizeModule)
   return {
     [sizeComponent.id]: {
       ...sizeComponent.options[sizeIndex],
