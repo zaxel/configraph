@@ -1,10 +1,12 @@
-﻿export type PartsSelection = Record<string, {
+﻿export type PartsSelection = {
+  selectedPart: string;
+  items: Record<string, {
     groupId: string;
     color: string;
-}>;
+  }>;
+};
 
-
-type SelectedOptions = {
+export type SelectedOptions = {
     parts: PartsSelection;
     size: string;
     addon: string[];
@@ -21,5 +23,8 @@ export type OptionsSlice = {
 
     resetOptions: () => void;
     initOptions: () => void;
+    setPart: (partId: string) => void;
+    setGroup: (part: string, group: string) => void;
+    setColor: (part: string, color: string) => void;
 };
 

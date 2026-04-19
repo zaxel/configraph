@@ -1,6 +1,7 @@
 ﻿import { Component } from "./components.types";
 export type DefaultParts = {
   type: "parts";
+  selectedPart: string;
   selections: Record<string, {
     groupId: string;
     color: string;

@@ -1,7 +1,7 @@
-﻿import { AddonComponent, Component, ContentComponent, PartComponent, PriceComponent, SizeComponent } from "../model";
+﻿import { AddonComponent, Component, ContentComponent, PartsComponent, PriceComponent, SizeComponent } from "../model";
 import AddonBlock from "./components/AddonBlock";
 import ContentBlock from "./components/ContentBlock";
-import PartBlock from "./components/PartBlock";
+import PartsBlock from "./components/PartsBlock";
 import PriceBlock from "./components/PriceBlock";
 import SizeBlock from "./components/SizeBlock";
 
@@ -10,7 +10,7 @@ type Renderer<T extends Component> = (props: { data: T }) => React.ReactNode;
 type ComponentMap = {
   content: ContentComponent;
   price: PriceComponent;
-  part: PartComponent;
+  parts: PartsComponent;
   size: SizeComponent;
   addon: AddonComponent;
 };
@@ -22,7 +22,7 @@ type Registry = {
 export const componentRegistry: Registry = {
   content: ContentBlock,
   price: PriceBlock,
-  part: PartBlock,
+  parts: PartsBlock, 
   size: SizeBlock,
   addon: AddonBlock,
 }; 

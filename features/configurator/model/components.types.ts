@@ -1,7 +1,7 @@
 ﻿import { PriceConfig } from "./pricing.types";
 
 export type ComponentType =
-  | "part"
+  | "parts"
   | "size"
   | "addon"
   | "content"
@@ -11,6 +11,7 @@ export type ComponentType =
 
 export type BaseComponent = {
   id: string;
+  label?: string;
   type: ComponentType;
   order?: number;
 };
@@ -29,17 +30,22 @@ export type meshGroup = {
   }
 }
 
-export type PartComponent = BaseComponent & {
+export type OptionsComponent =  {
   id: string;
-  type: "part";
+  label?: string;
   optional: boolean;
   groups: meshGroup[];
+  
+};
+export type PartsComponent = BaseComponent & {
+  id: string;
+  type: "parts";
+  options: OptionsComponent[];
   
 };
 
 export type SizeComponent = BaseComponent & {
   type: "size";
-  label?: string;
   options: {
     value: string;
     label?: string;
@@ -49,7 +55,6 @@ export type SizeComponent = BaseComponent & {
 
 export type AddonComponent = BaseComponent & {
   type: "addon";
-  label?: string;
   options: {
     value: string;
     label: string;
@@ -74,7 +79,7 @@ export type PriceComponent = BaseComponent & {
 export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-md-gray" | "button";
 
 export type Component =
-  | PartComponent
+  | PartsComponent
   | SizeComponent
   | AddonComponent
   | ContentComponent

@@ -1,13 +1,17 @@
 ﻿import { StateCreator } from "zustand";
 import { buildInitialAddonSelections, buildInitialPartsSelections, buildInitialSizeSelections } from "../../engine/initialSelections";
-import { OptionsSlice } from "../../model/selections.types";
+import { OptionsSlice, SelectedOptions } from "../../model/selections.types";
 import { BoundStore } from "../store.types";
+import { PartsComponent } from "../../model";
 
-const initValue = {
-    parts: {},
-    addon: [],
-    size: ""
-  };
+const initValue: SelectedOptions = {
+  parts: {
+    selectedPart: "",
+    items: {}
+  },
+  addon: [],
+  size: ""
+};
 
 export const createOptionsSlice: StateCreator<
   BoundStore,
@@ -21,9 +25,7 @@ export const createOptionsSlice: StateCreator<
     const product = get().product;
     if (!product) return;
     const initialSelections = {
-      parts: {},
-      size: "",
-      addon: [],
+      ...initValue,
       ...buildInitialPartsSelections(product),
       ...buildInitialSizeSelections(product),
       ...buildInitialAddonSelections(product),
@@ -36,6 +38,78 @@ export const createOptionsSlice: StateCreator<
       selectedOptions: {
         ...state.selectedOptions,
         [module]: value,
+      },
+    })),
+
+  setPart: (partId) =>
+    set((state) => {
+      const product = state.product;
+      if (!product) return state;
+
+      const partsModule = product.modules.find(m => m.type === "parts");
+      if (!partsModule) return state;
+
+      const partsComponent = partsModule.components.find(
+        (c): c is PartsComponent => c.type === "parts"
+      );
+      if (!partsComponent) return state;
+
+      const part = partsComponent.options.find(p => p.id === partId);
+      if (!part) return state;
+
+      const firstGroup = part.groups[0];
+      const firstColor = firstGroup?.colors?.variants?.[0];
+
+      const existing = state.selectedOptions.parts.items[partId];
+
+      return {
+        selectedOptions: {
+          ...state.selectedOptions,
+          parts: {
+            ...state.selectedOptions.parts,
+            selectedPart: partId,
+            items: {
+              ...state.selectedOptions.parts.items,
+              [partId]: existing ?? {
+                groupId: firstGroup?.id ?? "",
+                color: firstColor?.value ?? "",
+              }
+            }
+          }
+        }
+      };
+    }),
+
+  setGroup: (part, group) =>
+    set((state) => ({
+      selectedOptions: {
+        ...state.selectedOptions,
+        parts: {
+          ...state.selectedOptions.parts,
+          items: {
+            ...state.selectedOptions.parts.items,
+            [part]: {
+              ...state.selectedOptions.parts.items[part],
+              groupId: group
+            }
+          },
+        }
+      },
+    })),
+  setColor: (part, color) =>
+    set((state) => ({
+      selectedOptions: {
+        ...state.selectedOptions,
+        parts: {
+          ...state.selectedOptions.parts,
+          items: {
+            ...state.selectedOptions.parts.items,
+            [part]: {
+              ...state.selectedOptions.parts.items[part],
+              color
+            }
+          },
+        }
       },
     })),
 

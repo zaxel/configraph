@@ -52,6 +52,7 @@ export const product: Product = {
     },
     {
       id: "parts",
+      type: "parts",
       order: 2,
 
 
@@ -69,86 +70,93 @@ export const product: Product = {
             enabled: true,
           },
           sole: {
-           groupId: "id-76653",
+            groupId: "id-76653",
             color: "white",
             enabled: false,
-          }
-        }
+          },
+        },
+        selectedPart: "body"
 
       },
 
       components: [ //parts
         {
-          id: "body",
-          type: "part",
-          optional: false,
-          groups: [
+          id: "parts",
+          type: "parts",
+          label: "Parts:",
+          options: [
             {
-              id: "id-83866e",
-              meshes: ["wamp"],
-              label: "fabric",
-              colors: {
-                allowCustom: false,
-                variants: [
-                  { value: "red", label: "red", price: 0 },
-                  { value: "black", label: "black", price: 0 },
-                  { value: "blue", label: "blue", price: 0 },
-                  { value: "white", label: "white", price: 0 },
-                ]
-              },
-            }
-          ]
-        },
-        {
-          id: "laces",
-          type: "part",
-          optional: false,
-          groups: [
-            {
-              id: "id-889776",
-              meshes: ["Object_8004_2", "Object_8004_1"],
-              label: "fabric",
-              colors: {
-                allowCustom: true,
-                variants: [],
-              },
+              id: "body",
+              optional: false,
+              groups: [
+                {
+                  id: "id-83866e",
+                  meshes: ["wamp"],
+                  label: "fabric",
+                  colors: {
+                    allowCustom: false,
+                    variants: [
+                      { value: "red", label: "red", price: 0 },
+                      { value: "black", label: "black", price: 0 },
+                      { value: "blue", label: "blue", price: 0 },
+                      { value: "white", label: "white", price: 0 },
+                    ]
+                  },
+                }
+              ]
             },
             {
-              id: "id-7779",
-              meshes: ["Object_8004"],
-              label: "leather",
-              colors: {
-                allowCustom: false,
-                variants: [
-                  { value: "black", label: "black", price: 0 },
-                  { value: "brown", label: "brown", price: 0 },
-                ]
-              },
-            }
-          ]
-        },
-        {
-          id: "sole",
-          type: "part",
-          optional: true,
-          groups: [
+              id: "laces",
+              type: "part",
+              optional: false,
+              groups: [
+                {
+                  id: "id-889776",
+                  meshes: ["Object_8004_2", "Object_8004_1"],
+                  label: "fabric",
+                  colors: {
+                    allowCustom: true,
+                    variants: [],
+                  },
+                },
+                {
+                  id: "id-7779",
+                  meshes: ["Object_8004"],
+                  label: "leather",
+                  colors: {
+                    allowCustom: false,
+                    variants: [
+                      { value: "black", label: "black", price: 0 },
+                      { value: "brown", label: "brown", price: 0 },
+                    ]
+                  },
+                }
+              ]
+            },
             {
-              id: "id-76653",
-              meshes: ["sole"],
-              label: "rubber",
-              colors: {
-                allowCustom: false,
-                variants: [
-                  { value: "red", label: "red", price: 0 },
-                  { value: "black", label: "black", price: 0 },
-                  { value: "blue", label: "blue", price: 0 },
-                  { value: "white", label: "white", price: 0 },
-                  { value: "gold", label: "nova wave", price: 1.0 },
-                ]
-              },
-            }
+              id: "sole",
+              type: "part",
+              optional: true,
+              groups: [
+                {
+                  id: "id-76653",
+                  meshes: ["sole"],
+                  label: "rubber",
+                  colors: {
+                    allowCustom: false,
+                    variants: [
+                      { value: "red", label: "red", price: 0 },
+                      { value: "black", label: "black", price: 0 },
+                      { value: "blue", label: "blue", price: 0 },
+                      { value: "white", label: "white", price: 0 },
+                      { value: "gold", label: "nova wave", price: 1.0 },
+                    ]
+                  },
+                }
+              ]
+            },
           ]
-        },
+        }
       ],
     },
 
