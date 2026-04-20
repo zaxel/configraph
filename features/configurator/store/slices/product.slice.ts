@@ -140,7 +140,7 @@ export const product: Product = {
               groups: [
                 {
                   id: "id-76653",
-                  meshes: ["sole"],
+                  meshes: ["sole_middle"],
                   label: "rubber",
                   colors: {
                     allowCustom: false,

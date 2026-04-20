@@ -21,11 +21,13 @@ export type DefaultSizes = {
 export type BaseModule = {
   id: string;
   order: number;
+  type?: string;
   components: Component[];
 };
 
 export type PartsModule = BaseModule & {
   id: "parts";
+  type: "parts";
   default?: DefaultParts;
 };
 
