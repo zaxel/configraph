@@ -28,6 +28,38 @@ export const product: Product = {
       ],
     },
     {
+      id: "canvas",
+      order: 2,
+      components: [
+        {
+          id: "1452",
+          type: "canvas",
+          mode: "decal", // or "uv"
+          stickers: ['liberty.png', 'elvis.jpg'],
+        }
+      ]
+    },
+    // {
+    //   id: "canvas",
+    //   order: 2,
+    //   components: [
+    //     {
+    //       id: "1452",
+    //       type: "canvas",
+    //       mode: "decal", // or "uv"
+    //       stickers: ['liberty.png', 'elvis.jpg'],
+
+    //       // UV-specific config (optional)
+    //       zones?: ['body', 'sole'],
+    //       uvTemplates?: {
+    //         body: '11234_body_uv.png',
+    //         sole: '11211_sole_uv.png',
+    //       }
+    //     }
+    //   ]
+    // },
+
+    {
       id: "content-01",
       order: 0,
 
@@ -53,7 +85,7 @@ export const product: Product = {
     {
       id: "parts",
       type: "parts",
-      order: 2,
+      order: 3,
 
 
       default: {
@@ -162,7 +194,7 @@ export const product: Product = {
 
     {
       id: "size",
-      order: 3,
+      order: 4,
       default: {
         type: "size",
         value: "XL",
@@ -200,7 +232,7 @@ export const product: Product = {
     },
     {
       id: "addon",
-      order: 4,
+      order: 5,
 
       default: {
         type: "addon",
@@ -243,7 +275,7 @@ export const product: Product = {
     },
     {
       id: "content-02",
-      order: 5,
+      order: 6,
 
       components: [
         {

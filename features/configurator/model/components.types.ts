@@ -5,6 +5,8 @@ export type ComponentType =
   | "size"
   | "addon"
   | "content"
+  | "price"
+  | "canvas"
   | "price";
 
 
@@ -30,19 +32,19 @@ export type meshGroup = {
   }
 }
 
-export type OptionsComponent =  {
+export type OptionsComponent = {
   id: string;
   type?: string,
   label?: string;
   optional: boolean;
   groups: meshGroup[];
-  
+
 };
 export type PartsComponent = BaseComponent & {
   id: string;
   type: "parts";
   options: OptionsComponent[];
-  
+
 };
 
 export type SizeComponent = BaseComponent & {
@@ -72,6 +74,20 @@ export type ContentComponent = BaseComponent & {
   };
 };
 
+
+
+export type CanvasComponent = BaseComponent & {
+  type: "canvas";
+  mode: "decal" | "uv";
+  stickers: string[];
+  zones?: string[];
+  uvTemplates?: Record<string, string>;
+  
+};
+
+
+
+
 export type PriceComponent = BaseComponent & {
   type: "price";
   pricing: PriceConfig;
@@ -84,4 +100,5 @@ export type Component =
   | SizeComponent
   | AddonComponent
   | ContentComponent
+  | CanvasComponent
   | PriceComponent;

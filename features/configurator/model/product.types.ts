@@ -18,6 +18,17 @@ export type DefaultSizes = {
   value: string;
 }
 
+
+export type DefaultCanvas = {
+  type: "canvas",
+}
+
+
+
+
+
+
+
 export type BaseModule = {
   id: string;
   order: number;
@@ -41,8 +52,13 @@ export type AddonModule = BaseModule & {
   default?: DefaultAddons;
 };
 
+export type CanvasModule = BaseModule & {
+  id: "canvas";
+  default?: DefaultCanvas;
+};
 
-export type Module = PartsModule | SizeModule | AddonModule | BaseModule;
+
+export type Module = PartsModule | SizeModule | AddonModule | CanvasModule | BaseModule;
 
 export type Product = {
   id: string;
