@@ -1,5 +1,7 @@
-﻿import { PartsComponent } from '../../model';
+﻿import { HexColorPicker } from 'react-colorful';
+import { PartsComponent } from '../../model';
 import { useConfiguratorStore } from '../../store/configurator.store';
+import * as THREE from "three"
 
 export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const selectedPartOption = useConfiguratorStore(s => s.selectedOptions.parts.selectedPart);
@@ -52,6 +54,9 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const selectedGroup = selectedPart.groups.find(group => group.id === partSelection.groupId);
   if (!selectedGroup || !selectedGroup.colors || !selectedGroup.colors.variants) return null;
 
+
+  const isCustomAllowed = selectedGroup.colors.allowCustom;
+
   const colors = selectedGroup.colors.variants.map(color => {
     const isSelected = color.value === partSelection.color;
 
@@ -74,8 +79,10 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
       )}
       {parts && parts.length > 0 && <ul className='flex gap-4'>{parts}</ul>}
       {groups && groups.length > 0 && <ul className='flex gap-4'>{groups}</ul>}
-      {colors && colors.length > 0 && <ul className='flex items-center gap-3'>{colors}</ul>}
-
+      {!isCustomAllowed && colors && colors.length > 0 && <ul className='flex items-center gap-3'>{colors}</ul>}
+      {isCustomAllowed && <div className="h-24">
+          <HexColorPicker className="max-h-full" color={partSelection.color} onChange={(color: string | number | THREE.Color)=>setColor(selectedPartOption, color)} />
+        </div>}
     </div>
   );
 };
