@@ -14,7 +14,7 @@ export const createUserSlice: StateCreator<
   userCanvas: {},
 
   // 🔹 LOAD
-  loadUserCanvas: async (productId) => {
+  loadUserCanvas: async (productId) => { 
     try {
       const data = await canvasRepository.load(productId);
 

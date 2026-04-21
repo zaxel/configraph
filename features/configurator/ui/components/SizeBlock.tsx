@@ -1,10 +1,11 @@
-﻿import { SizeComponent } from '../../model';
+﻿import Button from '@/components/common/Button';
+import { SizeComponent } from '../../model';
 import { useConfiguratorStore } from '../../store/configurator.store';
 
 const SizeBlock = ({ data }: { data: SizeComponent }) => {
     const selected = useConfiguratorStore(s => s.selectedOptions["size"]);
     const setOption = useConfiguratorStore(s => s.setOption);
-    if (!selected) return null; 
+    if (!selected) return null;
 
     return (
         <div>
@@ -13,18 +14,13 @@ const SizeBlock = ({ data }: { data: SizeComponent }) => {
                 {data.options.map(size => {
                     const isSelected = size.value === selected;
                     return (
-                        <li
-                            key={size.value}
-                            onClick={() =>
+                        <li key={size.value}>
+                            <Button variant={isSelected ? "active" : "primary"} onClick={() =>
                                 !isSelected &&
                                 setOption("size", size.value,)
-                            }
-                            className={isSelected
-                                ? "ring-1 ring-primary text-white bg-primary rounded-md py-1 px-4 text-sm"
-                                : "ring-1 ring-primary text-primary rounded-md py-1 px-4 text-sm cursor-pointer"
-                            }
-                        >
-                            {size.value}
+                            }>
+                                {size.value}
+                            </Button>
                         </li>
                     );
                 })}

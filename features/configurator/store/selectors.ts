@@ -26,7 +26,7 @@ export const selectTotalSelected = (s) =>
 
 export const selectAvailableStickers = (state: BoundStore) => {
   const productId = state.product?.id;
-  if (!productId) return [];
+  if (!productId) return []; 
 
   const canvasModule = state.product!.modules.find(m => m.id === "canvas");
   if (!canvasModule) return [];

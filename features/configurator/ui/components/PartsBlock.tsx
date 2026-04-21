@@ -2,6 +2,7 @@
 import { PartsComponent } from '../../model';
 import { useConfiguratorStore } from '../../store/configurator.store';
 import * as THREE from "three"
+import Button from '@/components/common/Button';
 
 export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const selectedPartOption = useConfiguratorStore(s => s.selectedOptions.parts.selectedPart);
@@ -12,18 +13,10 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
 
   const parts = data.options.map(part => {
     const isSelected = part.id === selectedPartOption;
-    return <li
-      key={part.id}
-      onClick={() =>
-        !isSelected &&
-        setPart(part.id)
-      }
-      className={isSelected
-        ? "ring-1 ring-primary text-white bg-primary rounded-md py-1 px-4 text-sm"
-        : "ring-1 ring-primary text-primary rounded-md py-1 px-4 text-sm cursor-pointer"
-      }
-    >
-      {part.id}
+    return <li key={part.id}>
+      <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setPart(part.id)}>
+        {part.id}
+      </Button>
     </li>
   })
 
@@ -36,18 +29,10 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
 
     const isSelected = group.id === partSelection.groupId;
 
-    return <li
-      key={group.id}
-      onClick={() =>
-        !isSelected &&
-        setGroup(selectedPartOption, group.id)
-      }
-      className={isSelected
-        ? "ring-1 ring-primary text-white bg-primary rounded-md py-1 px-4 text-sm"
-        : "ring-1 ring-primary text-primary rounded-md py-1 px-4 text-sm cursor-pointer"
-      }
-    >
-      {group.label}
+    return <li key={group.id}>
+      <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setGroup(selectedPartOption, group.id)}>
+        {group.label}
+      </Button>
     </li>
   })
 
@@ -60,7 +45,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const colors = selectedGroup.colors.variants.map(color => {
     const isSelected = color.value === partSelection.color;
 
-    return (<li
+    return <li
       onClick={() =>
         !isSelected &&
         setColor(selectedPartOption, color.value)
@@ -69,7 +54,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
       className={`w-8 h-8 rounded-full ring-1 ring-gray-300 cursor-pointer relative`}
       style={{ backgroundColor: color.value }}>
       {isSelected && <div className='absolute w-10 h-10 rounded-full ring-2 ring-gray-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'></div>}
-    </li>)
+    </li>
   })
 
   return (
@@ -81,8 +66,8 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
       {groups && groups.length > 0 && <ul className='flex gap-4'>{groups}</ul>}
       {!isCustomAllowed && colors && colors.length > 0 && <ul className='flex items-center gap-3'>{colors}</ul>}
       {isCustomAllowed && <div className="h-24">
-          <HexColorPicker className="max-h-full" color={partSelection.color} onChange={(color: string | number | THREE.Color)=>setColor(selectedPartOption, color)} />
-        </div>}
+        <HexColorPicker className="max-h-full" color={partSelection.color} onChange={(color: string | number | THREE.Color) => setColor(selectedPartOption, color)} />
+      </div>}
     </div>
   );
 };

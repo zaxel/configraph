@@ -10,11 +10,11 @@ const Configurator = () => {
     const initOptions = useConfiguratorStore(s => s.initOptions);
     const product = useConfiguratorStore(s => s.product);
     const loadUserCanvas = useConfiguratorStore(s => s.loadUserCanvas);
-    const stickers = useConfiguratorStore(useShallow(selectAvailableStickers));
-    const userCanvas = useConfiguratorStore(s => s.userCanvas);
+    // const stickers = useConfiguratorStore(useShallow(selectAvailableStickers));
+    // const userCanvas = useConfiguratorStore(s => s.userCanvas);
 
-    console.log(userCanvas);
-    console.log(stickers);
+    // console.log(userCanvas);
+    // console.log(stickers);
 
     useEffect(() => {
         if (product) {
