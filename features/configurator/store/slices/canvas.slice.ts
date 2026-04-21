@@ -1,5 +1,6 @@
 ﻿import { StateCreator } from 'zustand';
-import { BoundStore, CanvasSlice } from '../store.types';
+import { BoundStore } from '../store.types';
+import { CanvasSlice} from './canvas.types';
 
 
 export const createCanvasSlice: StateCreator<
@@ -21,24 +22,11 @@ export const createCanvasSlice: StateCreator<
 
   active: false,
   toggleActive: () =>
-    set((state) => ({ active: !state.active }), false, "toggleActive"),
+    set((state: CanvasSlice) => ({ active: !state.active }), false, "toggleActive"),
 
-  availableStickers: [],
-  addSticker: (file: File) => {
-    const url = URL.createObjectURL(file);
-
-    set((state) => ({
-      availableStickers: [...state.availableStickers, url]
-    }))
-  },
-  removeSticker: (delUrl: string) => {
-    set((state) => ({
-      availableStickers: [...state.availableStickers].filter(url => url !== delUrl)
-    }))
-  },
 
   design: null,
-  setDesign: (design) =>
+  setDesign: (design: any) =>
     set(() => ({ design }), false, "canvas/setDesign"),
 
 
@@ -50,8 +38,12 @@ export const createCanvasSlice: StateCreator<
   setDecalTransform: (transform) =>
     set(() => ({ decalTransform: transform }), false, "canvas/setDecalTransform"),
 
-  activeZone: "",
-  setActiveZone: (zone) =>
+  activeZone: null,
+  setActiveZone: (zone: string) =>
     set(() => ({ activeZone: zone }), false, "canvas/setActiveZone"),
+  
+  editorTab: "text",
+  setEditorTab: (tab) =>
+    set(() => ({ editorTab: tab }), false, "canvas/setEditorTab"),
 
 });

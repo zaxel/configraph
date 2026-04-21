@@ -68,7 +68,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
       key={color.value}
       className={`w-8 h-8 rounded-full ring-1 ring-gray-300 cursor-pointer relative`}
       style={{ backgroundColor: color.value }}>
-      {isSelected && <div className='absolute w-10 h-10 rounded-full ring-2 ring-gray-200 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'></div>}
+      {isSelected && <div className='absolute w-10 h-10 rounded-full ring-2 ring-gray-400 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'></div>}
     </li>)
   })
 

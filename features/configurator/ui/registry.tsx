@@ -1,4 +1,5 @@
-﻿import { AddonComponent, Component, ContentComponent, PartsComponent, PriceComponent, SizeComponent } from "../model";
+﻿import CanvasBlock from "../canvas/ui/CanvasBlock";
+import { AddonComponent, CanvasComponent, Component, ContentComponent, PartsComponent, PriceComponent, SizeComponent } from "../model";
 import AddonBlock from "./components/AddonBlock";
 import ContentBlock from "./components/ContentBlock";
 import PartsBlock from "./components/PartsBlock";
@@ -13,6 +14,7 @@ type ComponentMap = {
   parts: PartsComponent;
   size: SizeComponent;
   addon: AddonComponent;
+  canvas: CanvasComponent;
 };
 
 type Registry = {
@@ -25,4 +27,5 @@ export const componentRegistry: Registry = {
   parts: PartsBlock, 
   size: SizeBlock,
   addon: AddonBlock,
+  canvas: CanvasBlock,
 }; 

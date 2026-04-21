@@ -6,7 +6,8 @@ import { createOptionsSlice } from "./slices/options.slice";
 import { createViewerSlice } from "./slices/viewer.slice";
 import { createUiSlice } from "./slices/ui.slice";
 import { createLoadingSlice } from "./slices/loading.slice";
-import { canvasSlice } from "./slices/canvas.slice";
+import { createCanvasSlice } from "./slices/canvas.slice";
+import { createUserSlice } from "./slices/user.slice";
 import { BoundStore } from "./store.types";
 
 export const useConfiguratorStore = create<BoundStore>()(
@@ -16,7 +17,8 @@ export const useConfiguratorStore = create<BoundStore>()(
     ...createViewerSlice(...a),
     ...createUiSlice(...a),
     ...createLoadingSlice(...a),
-    ...canvasSlice(...a),
+    ...createCanvasSlice(...a),
+    ...createUserSlice(...a),
   }))
 );
 

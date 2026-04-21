@@ -35,7 +35,7 @@ export const product: Product = {
           id: "1452",
           type: "canvas",
           mode: "decal", // or "uv"
-          stickers: ['liberty.png', 'elvis.jpg'],
+          stickers: ['liberty.png', 'elvis.jpg', 'pluto.png'],
         }
       ]
     },
