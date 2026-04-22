@@ -6,10 +6,10 @@ const FabricCanvas = dynamic(() => import("./FabricCanvas"), {
   ssr: false,
 })
 
-const CanvasBlock = () => {
+const CanvasBlock = () => { 
   return (
     <div className='flex flex-col gap-6'>
-      <FabricCanvas />
+      <FabricCanvas target="wamp"/>  
       <CanvasToolbar />
       
     </div>

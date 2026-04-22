@@ -9,6 +9,7 @@ import { createLoadingSlice } from "./slices/loading.slice";
 import { createCanvasSlice } from "./slices/canvas.slice";
 import { createUserSlice } from "./slices/user.slice";
 import { BoundStore } from "./store.types";
+import { createDecalsSlice } from "./slices/decals.slice";
 
 export const useConfiguratorStore = create<BoundStore>()(
   devtools((...a) => ({
@@ -19,6 +20,7 @@ export const useConfiguratorStore = create<BoundStore>()(
     ...createLoadingSlice(...a),
     ...createCanvasSlice(...a),
     ...createUserSlice(...a),
+    ...createDecalsSlice(...a),
   }))
 );
 
