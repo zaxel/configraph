@@ -5,6 +5,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "outline" | "active";
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
+  ref?: React.Ref<HTMLButtonElement>;
 };
 
 const Button = ({
@@ -13,10 +14,12 @@ const Button = ({
   icon,
   iconPosition = "left",
   className,
+  ref,
   ...props
 }: ButtonProps) => {
   return (
     <button
+      ref={ref}
       className={cn(
         "inline-flex items-center gap-2 ring-1 rounded-md px-4 py-1 text-sm transition-colors cursor-pointer",
         variant === "primary" && "text-primary ring-primary",

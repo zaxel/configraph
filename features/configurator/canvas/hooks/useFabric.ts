@@ -4,13 +4,14 @@ import { useConfiguratorStore } from "../../store/configurator.store"
 import { useText } from "./useText"
 import { useSticker } from "./useSticker"
 
-export const useFabric = (ref: RefObject<HTMLCanvasElement>) => {
+export const useFabric = (ref: RefObject<HTMLCanvasElement>, url: string) => {
   const canvasRef = useRef<Canvas | null>(null)
 
   const editorTab = useConfiguratorStore(s => s.editorTab);
+  const activeSticker = useConfiguratorStore(s => s.activeSticker);
 
   const text = useText();
-  const sticker = useSticker("/stickers/pluto.png");
+  const sticker = useSticker(activeSticker?.src ?? "");
 
   // 🔹 1. INIT canvas (once)
   useEffect(() => {

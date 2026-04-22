@@ -2,21 +2,28 @@
 import { FabricImage } from "fabric"
 
 export const useSticker = (url: string) => {
-  const [image, setImage] = useState<FabricImage | null>(null)
+    const [image, setImage] = useState<FabricImage | null>(null)
 
-  useEffect(() => {
-    let mounted = true
+    useEffect(() => {
+        let mounted = true
 
-    FabricImage.fromURL(url).then((img) => {
-      if (mounted) setImage(img);
-      img.scale(0.1);
-       
-    })
+        FabricImage.fromURL(url).then((img) => {
+            const MAX_SIZE = 200;
 
-    return () => {
-      mounted = false
-    }
-  }, [url])
+            const scale = Math.min(
+                MAX_SIZE / img.width!,
+                MAX_SIZE / img.height!
+            );
 
-  return image;
+            img.scale(scale);
+            if (mounted) setImage(img);
+
+        })
+
+        return () => {
+            mounted = false
+        }
+    }, [url])
+
+    return image;
 }

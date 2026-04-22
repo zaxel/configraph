@@ -1,10 +1,6 @@
-﻿import { CanvasItem } from "../store/slices/user.types"
+﻿import { CanvasItem, UserCanvasData } from "../store/slices/user.types"
 
-export type UserCanvasData = {
-  design?: any
-  savedStickers: string[]
-  history: CanvasItem[]
-}
+
 
 export const canvasRepository = {
   async load(productId: string): Promise<UserCanvasData | null> {

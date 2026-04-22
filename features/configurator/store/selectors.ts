@@ -26,7 +26,7 @@ export const selectTotalSelected = (s) =>
 
 export const selectAvailableStickers = (state: BoundStore) => {
   const productId = state.product?.id;
-  if (!productId) return []; 
+  if (!productId) return [];
 
   const canvasModule = state.product!.modules.find(m => m.id === "canvas");
   if (!canvasModule) return [];
@@ -39,7 +39,12 @@ export const selectAvailableStickers = (state: BoundStore) => {
   const userStickers = state.userCanvas[productId]?.savedStickers ?? [];
 
   return [
-    ...defaultStickers.map(s => `/stickers/${s}`),
+    ...defaultStickers.map((s, i) => {
+      return {
+        id: `default-${s}-${i}`,
+        src: `/stickers/${s}`
+      }
+    }),
     ...userStickers
   ];
 };

@@ -1,7 +1,7 @@
 ﻿import { StateCreator } from "zustand";
 import { canvasRepository } from "../../data/canvas.repository";
 import { BoundStore } from "../store.types";
-import { CanvasItem, UserSlice } from "./user.types";
+import { CanvasItem, Sticker, UserSlice } from "./user.types";
 
 
 
@@ -14,7 +14,7 @@ export const createUserSlice: StateCreator<
   userCanvas: {},
 
   // 🔹 LOAD
-  loadUserCanvas: async (productId) => { 
+  loadUserCanvas: async (productId) => {
     try {
       const data = await canvasRepository.load(productId);
 
@@ -65,19 +65,24 @@ export const createUserSlice: StateCreator<
 
       if (current.length >= 5) return state;
 
+      const newSticker: Sticker = {
+        id: crypto.randomUUID(),
+        src: url,               
+      };
+
       return {
         userCanvas: {
           ...state.userCanvas,
           [productId]: {
             ...state.userCanvas[productId],
-            savedStickers: [...current, url],
+            savedStickers: [...current, newSticker],
           },
         },
       };
     }, false, "user/addSticker");
   },
 
-  removeSticker: (productId, url) => {
+  removeSticker: (productId, id) => {
     set((state) => {
       const current = state.userCanvas[productId]?.savedStickers ?? [];
 
@@ -86,7 +91,7 @@ export const createUserSlice: StateCreator<
           ...state.userCanvas,
           [productId]: {
             ...state.userCanvas[productId],
-            savedStickers: current.filter((s) => s !== url),
+            savedStickers: current.filter((s) => s.id !== id),
           },
         },
       };

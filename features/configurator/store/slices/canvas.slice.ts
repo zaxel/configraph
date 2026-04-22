@@ -45,5 +45,12 @@ export const createCanvasSlice: StateCreator<
   editorTab: "text",
   setEditorTab: (tab) =>
     set(() => ({ editorTab: tab }), false, "canvas/setEditorTab"),
+  
+  activeSticker: null,
+  setActiveSticker: (data) =>
+    set(() => ({ activeSticker: data }), false, "canvas/setActiveSticker"),
+  
+  removeActiveSticker: () =>
+    set(() => ({ activeSticker: null }), false, "canvas/removeActiveSticker"),
 
 });

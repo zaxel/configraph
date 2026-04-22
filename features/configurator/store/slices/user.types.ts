@@ -20,10 +20,21 @@ export type CanvasItem = {
 
 export type UserCanvasState = {
     [productId: string]: {
-        savedStickers: string[];
+        savedStickers: Sticker[];
         history: CanvasItem[];
     };
 };
+
+export type Sticker = {
+  id: string;
+  src: string;
+}
+
+export type UserCanvasData = {
+  design?: any
+  savedStickers: Sticker[]
+  history: CanvasItem[]
+}
 
 export type UserSlice = {
     userCanvas: UserCanvasState;
