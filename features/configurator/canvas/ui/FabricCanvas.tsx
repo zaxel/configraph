@@ -2,40 +2,27 @@
 import { useFabric } from "../hooks/useFabric";
 import { useConfiguratorStore } from "../../store/configurator.store";
 
-const FabricCanvas = ({ target }: { target: string }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+const FabricCanvas = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const setPreviewDecal = useConfiguratorStore(s => s.setPreviewDecal); 
-  const addDecal = useConfiguratorStore(s => s.addDecal);
+    const setPreviewDecal = useConfiguratorStore((s) => s.setPreviewDecal);
 
-  useFabric(canvasRef);
+    // ✅ Fabric ONLY runs on client now
+    useFabric(canvasRef as React.RefObject<HTMLCanvasElement>);
 
-  // preview pipe
-  useEffect(() => {
-    if (!canvasRef.current) return;
+    // ✅ preview pipe lives here
+    useEffect(() => {
+        if (!canvasRef.current) return;
 
-    setPreviewDecal({
-      target,
-      texture: canvasRef.current
-    });
-    return () => setPreviewDecal(null);
-  }, [target, setPreviewDecal]);
+        setPreviewDecal({
+            target: "dummy",
+            texture: canvasRef.current,
+        });
 
-  const commit = () => {
-    if (!canvasRef.current) return;
+        return () => setPreviewDecal(null);
+    }, []);
 
-    addDecal({
-      id: crypto.randomUUID(),
-      target,
-      texture: canvasRef.current.toDataURL()
-    });
-  };
-
-  (window as any).commitDecal = commit;
-
-//   return <canvas ref={canvasRef} style={{ display: "none" }} />;
-  
-return <canvas className='bg-gray-200/20' ref={canvasRef} />
+    return <canvas className="bg-gray-200/20" ref={canvasRef} />;
 };
 
 export default FabricCanvas;

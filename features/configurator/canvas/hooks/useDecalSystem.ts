@@ -3,38 +3,40 @@ import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 import { MeshRegistry } from "../../ui/registry.types";
 import { DecalGeometry } from "three/examples/jsm/Addons.js";
+import { useConfiguratorStore } from "../../store/configurator.store";
 
-type DecalConfig = {
-  id: string;
-  target: string;
-  texture: string;
-};
-
-type PreviewDecal = {
-  target: string;
-  texture: HTMLCanvasElement | null;
-};
-
-export const useDecalSystem = ({
-  registry,
-  decals,
-  preview,
-}: {
-  registry: MeshRegistry;
-  decals: DecalConfig[];
-  preview: PreviewDecal | null;
-}) => {
+export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   const { scene, camera } = useThree();
+
+  const decals = useConfiguratorStore((s) => s.decals);
+  const preview = useConfiguratorStore((s) => s.previewDecal);
+  const addDecal = useConfiguratorStore((s) => s.addDecal);
+  const commitRequested = useConfiguratorStore((s) => s.commitRequested);
 
   const previewRef = useRef<THREE.Mesh | null>(null);
   const decalRefs = useRef<Map<string, THREE.Mesh>>(new Map());
 
+  // stable single raycaster
+  const raycasterRef = useRef(new THREE.Raycaster());
+  // screen center — never changes
+  const screenCenter = useRef(new THREE.Vector2(0, 0));
+  const offset = 0.002;
+
+
+  const lastHit = useRef<{
+    point: THREE.Vector3;
+    normal: THREE.Vector3;
+    orientation: THREE.Euler;
+    target: string;
+  } | null>(null);
+
+  // throttle counter
+  const frameSkip = useRef(0);
+
   // =========================================================
-  // COMMITTED DECALS (STATIC, SAFE)
+  // COMMITTED DECALS
   // =========================================================
   useEffect(() => {
-    if (!registry) return;
-
     decals.forEach((decal) => {
       if (decalRefs.current.has(decal.id)) return;
 
@@ -42,7 +44,6 @@ export const useDecalSystem = ({
       if (!mesh) return;
 
       const texture = new THREE.TextureLoader().load(decal.texture);
-
       const material = new THREE.MeshBasicMaterial({
         map: texture,
         transparent: true,
@@ -51,18 +52,9 @@ export const useDecalSystem = ({
         polygonOffsetFactor: -4,
       });
 
-      // // NOTE: still simple placeholder geometry for now
-      // const geometry = new THREE.PlaneGeometry(1, 1);
-
-      // const decalMesh = new THREE.Mesh(geometry, material);
-
-      // // attach roughly to mesh center
-      // decalMesh.position.copy(mesh.position);
-      // decalMesh.quaternion.copy(camera.quaternion);
-
-      const position = mesh.position.clone();
-      const orientation = new THREE.Euler().setFromQuaternion(camera.quaternion);
-      const size = new THREE.Vector3(1, 1, 1); // tweak to taste
+      const position = new THREE.Vector3(...decal.position);
+      const orientation = new THREE.Euler(...decal.orientation);
+      const size = new THREE.Vector3(...decal.size);
 
       const geometry = new DecalGeometry(mesh, position, orientation, size);
       const decalMesh = new THREE.Mesh(geometry, material);
@@ -70,58 +62,82 @@ export const useDecalSystem = ({
       scene.add(decalMesh);
       decalRefs.current.set(decal.id, decalMesh);
     });
-  }, [decals, registry, scene, camera]);
+
+    const currentIds = new Set(decals.map((d) => d.id));
+    decalRefs.current.forEach((mesh, id) => {
+      if (!currentIds.has(id)) {
+        scene.remove(mesh);
+        mesh.geometry.dispose();
+        (mesh.material as THREE.Material).dispose();
+        decalRefs.current.delete(id);
+      }
+    });
+  }, [decals, registry, scene]);
 
   // =========================================================
-  // PREVIEW STATE TRACKING (OPTIMIZATION)
+  // PREVIEW CLEANUP
   // =========================================================
-  const lastCamPos = useRef(new THREE.Vector3());
-  const lastCamQuat = useRef(new THREE.Quaternion());
-  const lastTarget = useRef<string | null>(null);
+  useEffect(() => {
+    if (!preview && previewRef.current) {
+      scene.remove(previewRef.current);
+      previewRef.current.geometry.dispose();
+      (previewRef.current.material as THREE.Material).dispose();
+      previewRef.current = null;
+      lastHit.current = null;
+    }
+  }, [preview, scene]);
 
-  const lastUpdate = useRef(0);
-
   // =========================================================
-  // LIVE PREVIEW (FAST PLANE PROJECTION)
+  // PREVIEW + RAYCAST
   // =========================================================
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (!preview?.texture) return;
 
-    const mesh = registry.byName.get(preview.target);
-    if (!mesh) return;
+    // throttle raycast to every 5 frames
+    frameSkip.current++;
+    if (frameSkip.current < 5) return;
+    frameSkip.current = 0;
 
-    const cam = camera as THREE.PerspectiveCamera;
+    // raycast from screen center
+    raycasterRef.current.setFromCamera(screenCenter.current, camera);
+    const meshes = Array.from(registry.byName.values());
+    const hits = raycasterRef.current.intersectObjects(meshes, true);
 
-    // -----------------------------------------------------
-    // throttle (20fps max)
-    // -----------------------------------------------------
-    lastUpdate.current += delta;
-    if (lastUpdate.current < 0.05) return;
-    lastUpdate.current = 0;
+    if (hits.length === 0) {
+      lastHit.current = null;
+      if (previewRef.current) previewRef.current.visible = false;
+      return;
+    }
 
-    // -----------------------------------------------------
-    // change detection
-    // -----------------------------------------------------
-    const cameraMoved =
-      !camera.position.equals(lastCamPos.current) ||
-      !camera.quaternion.equals(lastCamQuat.current);
+    const hit = hits[0];
 
-    const targetChanged = lastTarget.current !== preview.target;
+    // climb to registered mesh
+    let targetObj: THREE.Object3D | null = hit.object;
+    while (targetObj && !registry.byName.has(targetObj.name)) {
+      targetObj = targetObj.parent;
+    }
+    if (!targetObj) return;
 
-    if (!cameraMoved && !targetChanged && previewRef.current) return;
+    const normal = hit.face?.normal
+      ?.clone()
+      .transformDirection(targetObj.matrixWorld);
+    if (!normal) return;
 
-    lastCamPos.current.copy(camera.position);
-    lastCamQuat.current.copy(camera.quaternion);
-    lastTarget.current = preview.target;
+    const orientation = new THREE.Euler().setFromQuaternion(
+      new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal)
+    );
 
-    // -----------------------------------------------------
-    // ensure preview mesh exists
-    // -----------------------------------------------------
+    lastHit.current = {
+      point: hit.point.clone(),
+      normal,
+      orientation,
+      target: targetObj.name,
+    };
+
+    // --- create preview mesh if needed ---
     if (!previewRef.current) {
       const geometry = new THREE.PlaneGeometry(1, 1);
-
       const texture = new THREE.CanvasTexture(preview.texture);
-
       const material = new THREE.MeshBasicMaterial({
         map: texture,
         transparent: true,
@@ -129,57 +145,45 @@ export const useDecalSystem = ({
         polygonOffset: true,
         polygonOffsetFactor: -4,
       });
-
       previewRef.current = new THREE.Mesh(geometry, material);
       scene.add(previewRef.current);
     }
 
-    // -----------------------------------------------------
-    // CAMERA-BASED PROJECTION (FAST APPROXIMATION)
-    // -----------------------------------------------------
+    previewRef.current.visible = true;
 
-    const meshPos = mesh.position.clone();
+    // place preview ON the surface at hit point, oriented to normal
+    previewRef.current.position.copy(hit.point);
+    previewRef.current.quaternion.setFromEuler(orientation);
 
-    // distance camera → mesh
-    const distance = camera.position.distanceTo(meshPos);
+    // scale in world units (match your decal size)
+    previewRef.current.scale.set(1, 0.5, 1);
 
-    // camera forward direction
-    const camDir = camera.getWorldDirection(new THREE.Vector3());
 
-    // -----------------------------------------------------
-    // OFFSET (push decal slightly off surface toward camera)
-    // -----------------------------------------------------
+    previewRef.current.position
+      .copy(hit.point)
+      .add(normal.clone().multiplyScalar(offset));
 
-    const fixedDepth = 1; // units in front of camera
-
-    const projectedPos = camera.position
-      .clone()
-      .add(camDir.clone().multiplyScalar(fixedDepth));
-
-    previewRef.current.position.copy(projectedPos);
-
-    // -----------------------------------------------------
-    // CAMERA-BASED SCALE (screen-space approximation)
-    // -----------------------------------------------------
-    const vFov = THREE.MathUtils.degToRad(cam.fov);
-    const height = 2 * Math.tan(vFov / 2) * fixedDepth;
-    const width = height * cam.aspect;
-
-    // apply scale
-    const decalSize = 0.2; // 20% of screen height
-    previewRef.current.scale.set(width * decalSize, height * decalSize, 1);
-
-    // -----------------------------------------------------
-    // FACE CAMERA
-    // -----------------------------------------------------
-    previewRef.current.quaternion.copy(camera.quaternion);
-
-    // -----------------------------------------------------
-    // UPDATE TEXTURE (if needed)
-    // -----------------------------------------------------
     const mat = previewRef.current.material as THREE.MeshBasicMaterial;
     if (mat.map) mat.map.needsUpdate = true;
-
-
   });
+
+  // =========================================================
+  // COMMIT
+  // =========================================================
+  useEffect(() => {
+    if (!preview?.texture || !lastHit.current) return;
+
+    const { point, orientation, target } = lastHit.current;
+
+    const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
+
+    addDecal({
+      id: crypto.randomUUID(),
+      target,
+      texture: preview.texture.toDataURL(),
+      position: [pos.x, pos.y, pos.z],
+      orientation: [orientation.x, orientation.y, orientation.z],
+      size: [1, 0.5, 1],
+    });
+  }, [commitRequested, addDecal, preview?.texture]);
 };

@@ -23,6 +23,7 @@ const StickersPanel = () => {
     const uploadBtn = useRef(null);
     const uploadInput = useRef<HTMLInputElement>(null);
 
+    const requestCommit = useConfiguratorStore(s => s.requestCommit);
 
     console.log(userCanvas);
     console.log(stickers);
@@ -68,7 +69,7 @@ const StickersPanel = () => {
     }
 
 
-    return (
+    return ( 
         <div>
             <ul className='flex gap-2 flex-wrap'>
                 {stickers.map(sticker => {
@@ -82,7 +83,7 @@ const StickersPanel = () => {
                     <Button ref={uploadBtn} onClick={() => uploadInput.current?.click()} variant={"outline"} className='w-full' icon={<Image className='inline mr-2' width={14} height={14} src={'/icons/upload.svg'} alt="upload sticker" />}>
                         Upload
                     </Button>
-                    <Button variant={"outline"} className='w-full' icon={<Image className='inline mr-2' width={14} height={14} src={'/icons/save.svg'} alt="save sticker" />}>
+                    <Button onClick={() => requestCommit()} variant={"outline"} className='w-full' icon={<Image className='inline mr-2' width={14} height={14} src={'/icons/save.svg'} alt="save sticker" />}>
                         Apply
                     </Button>
                 </li>

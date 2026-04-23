@@ -5,7 +5,7 @@ import { useText } from "./useText"
 import { useSticker } from "./useSticker"
 
 export const useFabric = (ref: RefObject<HTMLCanvasElement>) => {
-  const canvasRef = useRef<Canvas | null>(null)
+  const canvasRef = useRef<Canvas>(null)
   
   const editorTab = useConfiguratorStore(s => s.editorTab);
   const activeSticker = useConfiguratorStore(s => s.activeSticker);

@@ -10,12 +10,10 @@ const Model = () => {
 
     const product = useConfiguratorStore(s => s.product)
     const selectedOptions = useConfiguratorStore(s => s.selectedOptions)
-    const decals = useConfiguratorStore(s => s.decals)
-    const preview = useConfiguratorStore(s => s.previewDecal)
 
-    const registry = useMeshRegistry(gltf);
+    const registry = useMeshRegistry(gltf) ?? {byName: new Map()};
 
-    useDecalSystem({registry, decals, preview});
+    useDecalSystem({registry});
  
     useMaterialSystem({
         registry,
