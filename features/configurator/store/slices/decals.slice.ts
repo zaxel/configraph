@@ -42,7 +42,6 @@ export const createDecalsSlice: StateCreator<
   commitRequested: 0,
 
   requestCommit: () => {
-    console.log('request in slice')
     set((s) => ({
       commitRequested: s.commitRequested + 1
     }), false, "decals/requestCommit")

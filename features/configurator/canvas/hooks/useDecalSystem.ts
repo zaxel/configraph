@@ -12,6 +12,7 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   const preview = useConfiguratorStore((s) => s.previewDecal);
   const addDecal = useConfiguratorStore((s) => s.addDecal);
   const commitRequested = useConfiguratorStore((s) => s.commitRequested);
+  const activeSticker = useConfiguratorStore((s) => s.activeSticker);
 
   const previewRef = useRef<THREE.Mesh | null>(null);
   const decalRefs = useRef<Map<string, THREE.Mesh>>(new Map());
@@ -171,7 +172,7 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   // COMMIT
   // =========================================================
   useEffect(() => {
-    if (!preview?.texture || !lastHit.current) return;
+    if (!preview?.texture || !lastHit.current || !activeSticker) return;
 
     const { point, orientation, target } = lastHit.current;
 
@@ -179,11 +180,13 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
 
     addDecal({
       id: crypto.randomUUID(),
+      source: activeSticker, 
+      type: "sticker",
       target,
       texture: preview.texture.toDataURL(),
       position: [pos.x, pos.y, pos.z],
       orientation: [orientation.x, orientation.y, orientation.z],
       size: [1, 0.5, 1],
     });
-  }, [commitRequested, addDecal, preview?.texture]);
+  }, [commitRequested, addDecal, preview?.texture, activeSticker]);
 };

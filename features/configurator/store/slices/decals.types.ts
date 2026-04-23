@@ -1,10 +1,13 @@
 ﻿// decals.types.ts
 import * as THREE from "three";
+import { Sticker } from "./user.types";
 
 export type DecalConfig = {
   id: string;
+  source: Sticker;
   target: string;
   texture: string; // base64
+  type: "sticker" | "text";
 
   position: [number, number, number];
   orientation: [number, number, number];

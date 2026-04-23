@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Button from '@/components/common/Button';
 import { Sticker } from '../../store/slices/user.types';
 import useCombinedStickers from '../hooks/useCombinedStickers';
+import Card from './Card';
 
 const StickersPanel = () => {
 
@@ -73,10 +74,7 @@ const StickersPanel = () => {
         <div>
             <ul className='flex gap-2 flex-wrap'>
                 {stickers.map(sticker => {
-                    return <li className='cursor-pointer relative w-14 h-14 overflow-hidden' key={sticker.id}>
-                        <Image onClick={() => setActiveSticker(sticker)} className='object-cover' src={sticker.src} fill sizes="56px" alt={'sticker'} />
-                        <Image onClick={() => deleteImage(sticker)} className='cursor-pointer absolute opacity-65 hover:opacity-100 right-0 top-0 z-10' width={24} height={24} src={'/icons/circle-x.svg'} alt="remove" />
-                    </li>
+                    return <Card key={sticker.id} onClick={() => setActiveSticker(sticker)} onDeleteClick={() => deleteImage(sticker)} src={sticker.src} alt={'sticker'}/>
                 })}
                 <li key={"sticker-btns"} className='flex flex-col gap-2 items-start ml-auto'>
                     <input ref={uploadInput} onChange={(e) => handleImgUpload(e)} type="file" accept="image/*" style={{ display: "none" }} />
