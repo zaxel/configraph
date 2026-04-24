@@ -4,7 +4,7 @@ export type DefaultParts = {
   selectedPart: string;
   selections: Record<string, {
     groupId: string;
-    color: string;
+    color?: string;
     enabled: boolean;
   }>
 }

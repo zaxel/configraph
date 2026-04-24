@@ -178,31 +178,7 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   // =========================================================
   // COMMIT
   // =========================================================
-  // useEffect(() => {
-  //   if (!preview?.texture || !lastHit.current) return;
-
-  //   const { point, orientation, target } = lastHit.current;
-
-  //   const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
-
-  //   let source: DecalSource;
-  //   if (activeSticker) {
-  //     source = { type: "sticker", stickerId: activeSticker.id };
-  //   } else {
-  //     source = { type: "text", textId: "temp-text-id" };
-  //   }
-
-  //   addDecal({
-  //     id: crypto.randomUUID(),
-  //     source,
-  //     target,
-  //     texture: preview.texture.toDataURL(),
-  //     position: [pos.x, pos.y, pos.z],
-  //     orientation: [orientation.x, orientation.y, orientation.z],
-  //     size: [1, 0.5, 1],
-  //   });
-  // }, [commitRequested, addDecal, preview?.texture, activeSticker]);
-
+  
   useEffect(() => {
   if (commitRequested === 0) return;
   
