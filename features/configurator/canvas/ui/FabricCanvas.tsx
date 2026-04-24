@@ -5,6 +5,7 @@ import { useConfiguratorStore } from "../../store/configurator.store";
 const FabricCanvas = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
+
     const setPreviewDecal = useConfiguratorStore((s) => s.setPreviewDecal);
 
     // ✅ Fabric ONLY runs on client now
@@ -12,17 +13,22 @@ const FabricCanvas = () => {
 
     // ✅ preview pipe lives here
     useEffect(() => {
-        if (!canvasRef.current) return;
+        const el = canvasRef.current;
+        if (!el) return;
 
         setPreviewDecal({
             target: "dummy",
-            texture: canvasRef.current,
+            texture: el,
         });
 
-        return () => setPreviewDecal(null);
-    }, []);
+        return () => {
+            setPreviewDecal(null);
+        };
+    }, [setPreviewDecal]);
+
 
     return <canvas className="bg-gray-200/20" ref={canvasRef} />;
+
 };
 
 export default FabricCanvas;

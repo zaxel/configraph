@@ -4,6 +4,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 import { MeshRegistry } from "../../ui/registry.types";
 import { DecalGeometry } from "three/examples/jsm/Addons.js";
 import { useConfiguratorStore } from "../../store/configurator.store";
+import { DecalSource } from "../../store/slices/decals.types";
 
 export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   const { scene, camera } = useThree();
@@ -38,6 +39,7 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   // COMMITTED DECALS
   // =========================================================
   useEffect(() => {
+    console.log(activeSticker)
     decals.forEach((decal) => {
       if (decalRefs.current.has(decal.id)) return;
 
@@ -168,25 +170,62 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
     if (mat.map) mat.map.needsUpdate = true;
   });
 
+  const previewRef2 = useRef(preview); 
+  const activeStickerRef = useRef(activeSticker);
+
+  useEffect(() => { previewRef2.current = preview; }, [preview]);
+  useEffect(() => { activeStickerRef.current = activeSticker; }, [activeSticker]);
   // =========================================================
   // COMMIT
   // =========================================================
+  // useEffect(() => {
+  //   if (!preview?.texture || !lastHit.current) return;
+
+  //   const { point, orientation, target } = lastHit.current;
+
+  //   const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
+
+  //   let source: DecalSource;
+  //   if (activeSticker) {
+  //     source = { type: "sticker", stickerId: activeSticker.id };
+  //   } else {
+  //     source = { type: "text", textId: "temp-text-id" };
+  //   }
+
+  //   addDecal({
+  //     id: crypto.randomUUID(),
+  //     source,
+  //     target,
+  //     texture: preview.texture.toDataURL(),
+  //     position: [pos.x, pos.y, pos.z],
+  //     orientation: [orientation.x, orientation.y, orientation.z],
+  //     size: [1, 0.5, 1],
+  //   });
+  // }, [commitRequested, addDecal, preview?.texture, activeSticker]);
+
   useEffect(() => {
-    if (!preview?.texture || !lastHit.current || !activeSticker) return;
+  if (commitRequested === 0) return;
+  
+  const preview = previewRef2.current;
+  const activeSticker = activeStickerRef.current;
 
-    const { point, orientation, target } = lastHit.current;
+  if (!preview?.texture || !lastHit.current) return;
 
-    const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
+  const { point, orientation, target } = lastHit.current;
+  const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
 
-    addDecal({
-      id: crypto.randomUUID(),
-      source: activeSticker, 
-      type: "sticker",
-      target,
-      texture: preview.texture.toDataURL(),
-      position: [pos.x, pos.y, pos.z],
-      orientation: [orientation.x, orientation.y, orientation.z],
-      size: [1, 0.5, 1],
-    });
-  }, [commitRequested, addDecal, preview?.texture, activeSticker]);
+  const source: DecalSource = activeSticker
+    ? { type: "sticker", stickerId: activeSticker.id }
+    : { type: "text", textId: "temp-text-id" };
+
+  addDecal({
+    id: crypto.randomUUID(),
+    source,
+    target,
+    texture: preview.texture.toDataURL(),
+    position: [pos.x, pos.y, pos.z],
+    orientation: [orientation.x, orientation.y, orientation.z],
+    size: [1, 0.5, 1],
+  });
+}, [commitRequested, addDecal]);
 };

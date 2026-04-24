@@ -1,7 +1,19 @@
 ﻿import { StateCreator } from 'zustand';
 import { BoundStore } from '../store.types';
-import { CanvasSlice} from './canvas.types';
+import { CanvasSlice } from './canvas.types';
 
+const textEditorInitValue = {
+  content: "Edit me",
+  fontFamily: "Arial",
+  fontSize: 32,
+  color: "#000000",
+
+  fontWeight: "normal" as const,
+  fontStyle: "normal" as const,
+  underline: false,
+
+  textAlign: "left" as const,
+}
 
 export const createCanvasSlice: StateCreator<
   BoundStore,
@@ -41,16 +53,31 @@ export const createCanvasSlice: StateCreator<
   activeZone: null,
   setActiveZone: (zone: string) =>
     set(() => ({ activeZone: zone }), false, "canvas/setActiveZone"),
-  
+
   editorTab: "text",
   setEditorTab: (tab) =>
     set(() => ({ editorTab: tab }), false, "canvas/setEditorTab"),
-  
+
   activeSticker: null,
   setActiveSticker: (data) =>
     set(() => ({ activeSticker: data }), false, "canvas/setActiveSticker"),
-  
+
   removeActiveSticker: () =>
     set(() => ({ activeSticker: null }), false, "canvas/removeActiveSticker"),
+
+  textEditor: textEditorInitValue,
+
+  setTextEditor: (data) =>
+    set((s) => ({
+      textEditor: {
+        ...s.textEditor!,
+        ...data,
+      },
+    }), false, "canvas/setTextEditor"),
+
+  resetTextEditor: () =>
+    set(() => ({
+      textEditor: textEditorInitValue,
+    }), false, "canvas/resetTextEditor"),
 
 });

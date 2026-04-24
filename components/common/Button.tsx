@@ -21,7 +21,7 @@ const Button = ({
     <button
       ref={ref}
       className={cn(
-        "inline-flex items-center gap-2 ring-1 rounded-md px-4 py-1 text-sm transition-colors cursor-pointer",
+        "inline-flex items-center gap-2 ring-1 rounded-md px-4 py-0 h-8 text-sm transition-colors cursor-pointer",
         variant === "primary" && "text-primary ring-primary",
         variant === "outline" && "text-foreground ring-foreground",
         variant === "active" && "bg-primary text-white ring-primary",

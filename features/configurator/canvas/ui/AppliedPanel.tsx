@@ -10,7 +10,7 @@ const AppliedPanel = () => {
 
   const onItemClickHandler = (decal: DecalConfig) => {
     if(!decal) return null;
-    setEditorTab(decal.type);
+    setEditorTab(decal.source.type);
   }
 
   return (

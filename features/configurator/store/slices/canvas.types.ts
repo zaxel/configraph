@@ -5,6 +5,22 @@ export type DealTransform = {
     rotation: [number, number, number],
     scale: number,
 }
+
+export type TextAlign = "left" | "center" | "right";
+
+export type TextEditorState = {
+  content: string;
+  fontFamily: string;
+  fontSize: number;
+  color: string;
+
+  fontWeight: "normal" | "bold";
+  fontStyle: "normal" | "italic";
+  underline: boolean;
+
+  textAlign: TextAlign;
+};
+
 export type canvasModeType = "decal" | "uv" | null;
 export type CanvasSlice = {
     mode: canvasModeType,
@@ -31,4 +47,9 @@ export type CanvasSlice = {
     setActiveSticker: (data: Sticker) => void,
     
     removeActiveSticker: () => void,
+
+    textEditor: TextEditorState,
+
+    setTextEditor: (data: Partial<TextEditorState>) => void,
+    resetTextEditor: () => void,
 }
