@@ -6,7 +6,6 @@ import Button from '@/components/common/Button';
 import { Checkbox } from '@/components/ui/checkbox';
 
 export const PartsBlock = ({ data }: { data: PartsComponent }) => {
-  console.log(data)
   const selectedPartOption = useConfiguratorStore(s => s.selectedOptions.parts.selectedPart);
   const selectedItemsOption = useConfiguratorStore(s => s.selectedOptions.parts.items);
   const setPart = useConfiguratorStore(s => s.setPart);
@@ -23,12 +22,13 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
     </li>
   })
 
-  const selectedPart = data.options.find(el => el.id === selectedPartOption);
+  const selectedPart =
+    data.options.find(el => el.id === selectedPartOption) ??
+    data.options[0];
+
   if (!selectedPart) return null;
   const partSelection = selectedItemsOption[selectedPart.id];
   if (!partSelection) return null;
-
-  console.log(selectedItemsOption)
 
   const groups = selectedPart.groups.map(group => {
 
@@ -44,10 +44,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const selectedGroup = selectedPart.groups.find(group => group.id === partSelection.groupId);
   if (!selectedGroup || !selectedGroup.colors || !selectedGroup.colors.variants) return null;
 
-
   const isCustomAllowed = selectedGroup.colors.allowCustom;
-
-  console.log(selectedGroup)
 
   const colors = selectedGroup.colors.variants.map(color => {
     const isSelected = color.value === partSelection.color;
@@ -69,13 +66,13 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
       {data.label && (
         <h3 className="font-medium text-xl mb-4">{data.label}</h3>
       )}
-      {parts && parts.length > 0 && <ul className='flex gap-4'>{parts}</ul>}
-      {groups && groups.length > 0 && <ul className='flex gap-4'>{groups}</ul>}
+      {parts && parts.length > 0 && <ul className='flex gap-4 flex-wrap'>{parts}</ul>}
+      {groups && groups.length > 0 && <ul className='flex gap-4 flex-wrap'>{groups}</ul>}
       {selectedPart.optional && <label className="flex gap-4 cursor-pointer">
         <Checkbox
           className="h-5 w-5 cursor-pointer"
           checked={partSelection.enabled}
-          onCheckedChange={() => setEnabled(selectedPartOption, !partSelection.enabled)}
+          onCheckedChange={(checked) => setEnabled(selectedPartOption, Boolean(checked))}
         />
         <span>toggle part</span>
       </label>

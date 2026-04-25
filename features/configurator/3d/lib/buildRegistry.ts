@@ -6,6 +6,7 @@ export function buildRegistry(scene: THREE.Object3D, product: Product): MeshRegi
 
   const byName = new Map<string, THREE.Mesh>();
   const byGroup = new Map<string, THREE.Mesh[]>();
+  const byPart = new Map<string, THREE.Mesh[]>();
 
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh) {
@@ -29,5 +30,18 @@ export function buildRegistry(scene: THREE.Object3D, product: Product): MeshRegi
     });
   });
 
-  return { byName, byGroup };
+  partsComponent?.options.forEach((part) => {
+    if (!byPart.has(part.id))
+      byPart.set(part.id, new Array(0));
+
+    part.groups.forEach((group) => {
+      const curMeshes = group.meshes
+        .map((name) => byName.get(name))
+        .filter((m): m is THREE.Mesh => !!m);
+      byPart.set(part.id, [...byPart.get(part.id) ?? [], ...curMeshes])
+    });
+
+  });
+
+  return { byName, byGroup, byPart };
 }

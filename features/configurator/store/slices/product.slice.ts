@@ -376,12 +376,12 @@ export const product_uv: Product = {
       default: {
         type: "parts",
         selections: {
-          "body-left": {
+          "body left": {
             groupId: "id-83866e",
             // color: "red",
             enabled: true,
           },
-          "body-right": {
+          "body right": {
             groupId: "id-83867e",
             // color: "red",
             enabled: true,
@@ -408,7 +408,7 @@ export const product_uv: Product = {
           label: "Parts:",
           options: [
             {
-              id: "body-left",
+              id: "body left",
               optional: false,
               groups: [
                 {
@@ -428,7 +428,7 @@ export const product_uv: Product = {
               ]
             },
             {
-              id: "body-right",
+              id: "body right",
               optional: false,
               groups: [
                 {
@@ -454,7 +454,7 @@ export const product_uv: Product = {
               groups: [
                 {
                   id: "id-889776",
-                  meshes: ["Object_8001", "Object_8001_1", "Object_8001_2"],
+                  meshes: ["Object_49", "Object_49_1", "Object_49_2"],
                   label: "fabric",
                   colors: {
                     allowCustom: true,
@@ -463,13 +463,16 @@ export const product_uv: Product = {
                 },
                 {
                   id: "id-7779",
-                  meshes: ["Object_3001", "Object_3001_1", "Object_3001_2"],
+                  meshes: ["Object_50", "Object_50_1", "Object_50_2"],
                   label: "leather",
                   colors: {
                     allowCustom: false,
                     variants: [
                       { value: "black", label: "black", price: 0 },
                       { value: "brown", label: "brown", price: 0 },
+                      { value: "green", label: "green", price: 0 },
+                      { value: "yellow", label: "yellow", price: 0 },
+                      { value: "gray", label: "gray", price: 0 },
                     ]
                   },
                 }

@@ -39,7 +39,6 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   // COMMITTED DECALS
   // =========================================================
   useEffect(() => {
-    console.log(activeSticker)
     decals.forEach((decal) => {
       if (decalRefs.current.has(decal.id)) return;
 

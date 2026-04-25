@@ -5,14 +5,20 @@ export function applyPartsVisibility(
   registry: MeshRegistry,
   selections: DefaultParts["selections"]
 ) {
-  // Hide all groups mentioned in config first
-  registry.byGroup.forEach((meshes) => {
+  // 1. Hide ONLY meshes that belong to configurable parts
+  registry.byPart.forEach((meshes) => {
     meshes.forEach((m) => (m.visible = false));
   });
 
-  // Show only enabled ones
-  for (const { groupId, enabled } of Object.values(selections)) {
-    if (!enabled) continue;
-    registry.byGroup.get(groupId)?.forEach((m) => (m.visible = true));
+  // 2. Show ONLY selected group meshes
+  for (const partId in selections) {
+    const selection = selections[partId];
+    if (!selection?.enabled) continue;
+
+    const meshes = registry.byGroup.get(selection.groupId);
+    meshes?.forEach((m) => (m.visible = true));
   }
+
 }
+
+

@@ -74,7 +74,7 @@ export const createOptionsSlice: StateCreator<
               ...state.selectedOptions.parts.items,
               [partId]: existing ?? {
                 groupId: firstGroup?.id ?? "",
-                color: firstColor?.value ?? "",
+                color: firstColor?.value ?? "#fff",
                 enabled: firstIsEnabled,
               }
             }
@@ -83,22 +83,35 @@ export const createOptionsSlice: StateCreator<
       };
     }),
 
-  setGroup: (part, group) =>
-    set((state) => ({
-      selectedOptions: {
-        ...state.selectedOptions,
-        parts: {
-          ...state.selectedOptions.parts,
-          items: {
-            ...state.selectedOptions.parts.items,
-            [part]: {
-              ...state.selectedOptions.parts.items[part],
-              groupId: group
-            }
-          },
-        }
-      },
-    })),
+  setGroup: (part, groupId) =>
+    set((state) => {
+      const product = state.product;
+      if (!product) return state;
+
+      const partsModule = product.modules.find((m): m is PartsModule => m.id === "parts");
+      const partsComponent = partsModule?.components.find((c): c is PartsComponent => c.type === "parts");
+      const partOption = partsComponent?.options.find(p => p.id === part);
+      const group = partOption?.groups.find(g => g.id === groupId);
+
+      const firstColor = group?.colors?.variants?.[0]?.value ?? "#FFF";
+
+      return {
+        selectedOptions: {
+          ...state.selectedOptions,
+          parts: {
+            ...state.selectedOptions.parts,
+            items: {
+              ...state.selectedOptions.parts.items,
+              [part]: {
+                ...state.selectedOptions.parts.items[part],
+                groupId,
+                color: firstColor,
+              }
+            },
+          }
+        },
+      };
+    }),
   setColor: (part, color) =>
     set((state) => ({
       selectedOptions: {
@@ -124,7 +137,7 @@ export const createOptionsSlice: StateCreator<
           items: {
             ...state.selectedOptions.parts.items,
             [part]: {
-              ...state.selectedOptions.parts.items[part], 
+              ...state.selectedOptions.parts.items[part],
               enabled: status,
             }
           },

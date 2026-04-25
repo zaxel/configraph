@@ -12,17 +12,15 @@ const Model = () => {
     const product = useConfiguratorStore(s => s.product);
     const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
 
-    const registry = useMeshRegistry(gltf) ?? {byName: new Map(), byGroup: new Map()};
-    // console.log(registry)
-    useDecalSystem({registry});
-    useVisibility({registry});
+    const registry = useMeshRegistry(gltf) ?? { byName: new Map(), byGroup: new Map(), byPart: new Map() };
+    useDecalSystem({ registry });
+    useVisibility({ registry });
 
     useMaterialSystem({
         registry,
         product,
         selectedOptions
     })
-
     return <primitive object={gltf.scene} />
 };
 
