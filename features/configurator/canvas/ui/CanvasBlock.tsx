@@ -9,14 +9,10 @@ const FabricCanvas = dynamic(() => import("./FabricCanvas"), {
   ssr: false,
 })
 
-
 const CanvasBlock = ({ data }: { data: CanvasComponent }) => {
-
-
   const editorTab = useConfiguratorStore(s => s.editorTab);
   const canvasIsActive = useConfiguratorStore(s => s.active);
   const toggleActiveCanvas = useConfiguratorStore(s => s.toggleActive);
-
 
   if (!canvasIsActive)
     return (

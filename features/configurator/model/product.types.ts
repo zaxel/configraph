@@ -1,10 +1,11 @@
-﻿import { Component } from "./components.types";
+﻿import * as THREE from "three";
+import { Component } from "./components.types";
 export type DefaultParts = {
   type: "parts";
   selectedPart: string;
   selections: Record<string, {
     groupId: string;
-    color?: string;
+    color?: string | number | THREE.Color;
     enabled: boolean;
   }>
 }
@@ -18,16 +19,9 @@ export type DefaultSizes = {
   value: string;
 }
 
-
 export type DefaultCanvas = {
   type: "canvas",
 }
-
-
-
-
-
-
 
 export type BaseModule = {
   id: string;

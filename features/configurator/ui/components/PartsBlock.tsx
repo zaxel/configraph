@@ -3,13 +3,16 @@ import { PartsComponent } from '../../model';
 import { useConfiguratorStore } from '../../store/configurator.store';
 import * as THREE from "three"
 import Button from '@/components/common/Button';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export const PartsBlock = ({ data }: { data: PartsComponent }) => {
+  console.log(data)
   const selectedPartOption = useConfiguratorStore(s => s.selectedOptions.parts.selectedPart);
   const selectedItemsOption = useConfiguratorStore(s => s.selectedOptions.parts.items);
   const setPart = useConfiguratorStore(s => s.setPart);
   const setGroup = useConfiguratorStore(s => s.setGroup);
   const setColor = useConfiguratorStore(s => s.setColor);
+  const setEnabled = useConfiguratorStore(s => s.setEnabled);
 
   const parts = data.options.map(part => {
     const isSelected = part.id === selectedPartOption;
@@ -24,6 +27,8 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   if (!selectedPart) return null;
   const partSelection = selectedItemsOption[selectedPart.id];
   if (!partSelection) return null;
+
+  console.log(selectedItemsOption)
 
   const groups = selectedPart.groups.map(group => {
 
@@ -41,6 +46,8 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
 
 
   const isCustomAllowed = selectedGroup.colors.allowCustom;
+
+  console.log(selectedGroup)
 
   const colors = selectedGroup.colors.variants.map(color => {
     const isSelected = color.value === partSelection.color;
@@ -64,9 +71,18 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
       )}
       {parts && parts.length > 0 && <ul className='flex gap-4'>{parts}</ul>}
       {groups && groups.length > 0 && <ul className='flex gap-4'>{groups}</ul>}
-      {!isCustomAllowed && colors && colors.length > 0 && <ul className='flex items-center gap-3'>{colors}</ul>}
-      {isCustomAllowed && <div className="h-24">
-        <HexColorPicker className="max-h-full" color={partSelection.color} onChange={(color: string | number | THREE.Color) => setColor(selectedPartOption, color)} />
+      {selectedPart.optional && <label className="flex gap-4 cursor-pointer">
+        <Checkbox
+          className="h-5 w-5 cursor-pointer"
+          checked={partSelection.enabled}
+          onCheckedChange={() => setEnabled(selectedPartOption, !partSelection.enabled)}
+        />
+        <span>toggle part</span>
+      </label>
+      }
+      {partSelection.enabled && !isCustomAllowed && colors && colors.length > 0 && <ul className='flex items-center gap-3'>{colors}</ul>}
+      {partSelection.enabled && isCustomAllowed && <div className="h-24">
+        <HexColorPicker className="max-h-full" color={partSelection.color as string} onChange={(color: string | number | THREE.Color) => setColor(selectedPartOption, color)} />
       </div>}
     </div>
   );

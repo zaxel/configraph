@@ -381,6 +381,11 @@ export const product_uv: Product = {
             // color: "red",
             enabled: true,
           },
+          "body-right": {
+            groupId: "id-83867e",
+            // color: "red",
+            enabled: true,
+          },
           laces: {
             groupId: "id-889776",
             color: "black",

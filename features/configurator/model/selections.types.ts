@@ -1,8 +1,11 @@
-﻿export type PartsSelection = {
+﻿import * as THREE from "three"
+
+export type PartsSelection = {
   selectedPart: string;
   items: Record<string, {
     groupId: string;
-    color: string;
+    color?: string | number | THREE.Color;
+    enabled: boolean;
   }>;
 };
 
@@ -25,6 +28,7 @@ export type OptionsSlice = {
     initOptions: () => void;
     setPart: (partId: string) => void;
     setGroup: (part: string, group: string) => void;
-    setColor: (part: string, color: string) => void;
+    setColor: (part: string, color: string | number | THREE.Color) => void;
+    setEnabled: (part: string, status: boolean) => void;
 };
 

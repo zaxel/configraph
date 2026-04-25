@@ -2,7 +2,7 @@
 import { buildInitialAddonSelections, buildInitialPartsSelections, buildInitialSizeSelections } from "../../engine/initialSelections";
 import { OptionsSlice, SelectedOptions } from "../../model/selections.types";
 import { BoundStore } from "../store.types";
-import { PartsComponent } from "../../model";
+import { PartsComponent, PartsModule } from "../../model";
 
 const initValue: SelectedOptions = {
   parts: {
@@ -46,7 +46,9 @@ export const createOptionsSlice: StateCreator<
       const product = state.product;
       if (!product) return state;
 
-      const partsModule = product.modules.find(m => m.type === "parts");
+      const partsModule = product.modules.find(
+        (m): m is PartsModule => m.id === "parts"
+      );
       if (!partsModule) return state;
 
       const partsComponent = partsModule.components.find(
@@ -59,7 +61,7 @@ export const createOptionsSlice: StateCreator<
 
       const firstGroup = part.groups[0];
       const firstColor = firstGroup?.colors?.variants?.[0];
-
+      const firstIsEnabled = partsModule.default?.selections[partId].enabled;
       const existing = state.selectedOptions.parts.items[partId];
 
       return {
@@ -73,6 +75,7 @@ export const createOptionsSlice: StateCreator<
               [partId]: existing ?? {
                 groupId: firstGroup?.id ?? "",
                 color: firstColor?.value ?? "",
+                enabled: firstIsEnabled,
               }
             }
           }
@@ -107,6 +110,22 @@ export const createOptionsSlice: StateCreator<
             [part]: {
               ...state.selectedOptions.parts.items[part],
               color
+            }
+          },
+        }
+      },
+    })),
+  setEnabled: (part, status) =>
+    set((state) => ({
+      selectedOptions: {
+        ...state.selectedOptions,
+        parts: {
+          ...state.selectedOptions.parts,
+          items: {
+            ...state.selectedOptions.parts.items,
+            [part]: {
+              ...state.selectedOptions.parts.items[part], 
+              enabled: status,
             }
           },
         }
