@@ -7,8 +7,8 @@ export type ComponentType =
   | "content"
   | "price"
   | "canvas"
+  | "submit"
   | "price";
-
 
 
 export type BaseComponent = {
@@ -85,12 +85,14 @@ export type CanvasComponent = BaseComponent & {
   
 };
 
-
-
-
 export type PriceComponent = BaseComponent & {
   type: "price";
   pricing: PriceConfig;
+};
+
+export type SubmitComponent = BaseComponent & {
+  id: string;
+  text: string;
 };
 
 export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-md-gray" | "button";
@@ -101,4 +103,5 @@ export type Component =
   | AddonComponent
   | ContentComponent
   | CanvasComponent
+  | SubmitComponent
   | PriceComponent;

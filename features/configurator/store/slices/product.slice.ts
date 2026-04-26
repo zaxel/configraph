@@ -297,7 +297,7 @@ export const product_decal: Product = {
     },
   ],
 };
-export const product_uv: Product = {
+export const product: Product = {
   id: "nike-basic-uv",
   quantity: 1,
 
@@ -378,12 +378,12 @@ export const product_uv: Product = {
         selections: {
           "body left": {
             groupId: "id-83866e",
-            // color: "red",
+            color: "red",
             enabled: true,
           },
           "body right": {
             groupId: "id-83867e",
-            // color: "red",
+            color: "gray",
             enabled: true,
           },
           laces: {
@@ -397,7 +397,7 @@ export const product_uv: Product = {
             enabled: false,
           },
         },
-        selectedPart: "body-left"
+        selectedPart: "body left"
 
       },
 
@@ -625,6 +625,18 @@ export const product_uv: Product = {
         },
       ],
     },
+    {
+      id: "submit",
+      order: 7,
+      components: [
+        {
+          id: "111",
+          type: "submit",
+          label: "Add To Cart:", 
+          text: "Add To cart",
+        }
+      ],
+    },
   ],
 };
 
@@ -639,7 +651,7 @@ export const createProductSlice: StateCreator<
   [],
   ProductSlice
 > = (set) => ({
-  product: product_uv, // Initial value
+  product: product, // Initial value
 
   setProduct: (product) =>
     set({ product }, false, "setProduct"), // Third arg is for Devtools action name
