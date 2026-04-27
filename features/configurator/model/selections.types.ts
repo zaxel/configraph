@@ -1,7 +1,7 @@
 ﻿import * as THREE from "three"
 
 export type PartsSelection = {
-  selectedPart: string;
+  selectedPart?: string;
   items: Record<string, {
     groupId: string;
     color?: string | number | THREE.Color;

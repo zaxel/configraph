@@ -383,12 +383,12 @@ export const product: Product = {
           },
           "body right": {
             groupId: "id-83867e",
-            color: "gray",
+            color: "white",
             enabled: true,
           },
           laces: {
             groupId: "id-889776",
-            color: "black",
+            color: "red",
             enabled: true,
           },
           sole: {
@@ -418,10 +418,10 @@ export const product: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 5 },
+                      { value: "red", label: "red", price: 0 },
                       { value: "black", label: "black", price: 10 },
                       { value: "blue", label: "blue", price: 15 },
-                      { value: "white", label: "white", price: 0 },
+                      { value: "white", label: "white", price: 20 },
                     ]
                   },
                 },
@@ -473,6 +473,7 @@ export const product: Product = {
                       { value: "green", label: "green", price: 15 },
                       { value: "yellow", label: "yellow", price: 20 },
                       { value: "gray", label: "gray", price: 0 },
+                      { value: "red", label: "red", price: 0 },
                     ]
                   },
                 }
@@ -493,7 +494,7 @@ export const product: Product = {
                       { value: "red", label: "red", price: 5 },
                       { value: "black", label: "black", price: 10 },
                       { value: "blue", label: "blue", price: 15 },
-                      { value: "white", label: "white", price: 20 },
+                      { value: "white", label: "white", price: 0 },
                       { value: "gold", label: "nova wave", price: 1.0 },
                     ]
                   },
@@ -537,7 +538,7 @@ export const product: Product = {
             {
               value: "XL",
               label: "XL",
-              price: 20,
+              price: 0,
             },
           ]
         }

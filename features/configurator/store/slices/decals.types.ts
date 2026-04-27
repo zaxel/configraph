@@ -12,6 +12,7 @@ export type DecalConfig = {
   position: [number, number, number];
   orientation: [number, number, number];
   size: [number, number, number];
+
 };
 
 export type PreviewDecal = {

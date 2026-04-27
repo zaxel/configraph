@@ -6,10 +6,7 @@ import { buildResult } from '../../domain/result/buildResult';
 
 const SubmitBlock = ({ data }: { data: SubmitComponent }) => {
     const product = useConfiguratorStore((s) => s.product);
-    const parts = useConfiguratorStore((s) => s.selectedOptions.parts);
     const decals = useConfiguratorStore((s) => s.decals);
-    const size = useConfiguratorStore((s) => s.selectedOptions.size);
-    const addon = useConfiguratorStore((s) => s.selectedOptions.addon);
     const quantity = useConfiguratorStore((s) => s.quantity);
     const selectedOptions = useConfiguratorStore((s) => s.selectedOptions);
 
@@ -18,20 +15,18 @@ const SubmitBlock = ({ data }: { data: SubmitComponent }) => {
         if (!product) return null;
 
         return buildResult(product, {
-            parts,
             decals,
-            size,
-            addon,
             quantity,
             selectedOptions
         });
-    }, [product, parts, decals, size, addon, quantity, selectedOptions]);
+    }, [product, decals, quantity, selectedOptions]);
 
     return (
         <div>
             {data.label && <h3 className='font-medium text-xl mb-4'>{data.label}</h3>}
             <Button
                 onClick={() => {
+                    console.log(result);
                     if (!result) return;
                     window.parent.postMessage(
                         {

@@ -1,13 +1,10 @@
 ﻿import { ProductResult } from "./result.types";
 import { calculatePrice } from "../pricing/calculatePrice";
-import { PartsSelection, Product, SelectedOptions } from "../../model";
+import { Product, SelectedOptions } from "../../model";
 import { DecalConfig } from "../../store/slices/decals.types";
 
 export type PartialState = {
-    parts: Omit<PartsSelection, "selectedPart">,
     decals: DecalConfig[],
-    size: string,
-    addon: string[],
     quantity: number,
     selectedOptions: SelectedOptions
 }
@@ -17,14 +14,15 @@ export function buildResult(
     state: PartialState
 ): ProductResult {
     const price = calculatePrice(product, state);
+
     return {
         productId: product.id,
         quantity: state.quantity,
         price,
         configuration: {
-            parts: state.parts.items,
-            size: state.size,
-            addons: state.addon || [],
+            parts: state.selectedOptions.parts.items,
+            size: state.selectedOptions.size,
+            addons: state.selectedOptions.addon || [],
             decals: state.decals,
         },
         meta: {

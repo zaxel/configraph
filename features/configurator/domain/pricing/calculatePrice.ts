@@ -48,6 +48,7 @@ export function calculatePrice(product: Product, state: PartialState) {
     extras += decals.length * 5;
 
     const total = Math.round((base + extras) * 100) / 100;
+    extras = Math.round((extras) * 100) / 100;
 
     return {
         base,
