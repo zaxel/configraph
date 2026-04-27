@@ -330,7 +330,7 @@ export const product: Product = {
           label: "Add a sticker:",
           id: "1452",
           type: "canvas",
-          mode: "uv", // or "decal"
+          mode: "decal", // or "uv"
           stickers: [
             'liberty.png', 'elvis.jpg', 'pluto.png',
 
@@ -418,9 +418,9 @@ export const product: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 0 },
-                      { value: "black", label: "black", price: 0 },
-                      { value: "blue", label: "blue", price: 0 },
+                      { value: "red", label: "red", price: 5 },
+                      { value: "black", label: "black", price: 10 },
+                      { value: "blue", label: "blue", price: 15 },
                       { value: "white", label: "white", price: 0 },
                     ]
                   },
@@ -438,9 +438,9 @@ export const product: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 0 },
-                      { value: "black", label: "black", price: 0 },
-                      { value: "blue", label: "blue", price: 0 },
+                      { value: "red", label: "red", price: 5 },
+                      { value: "black", label: "black", price: 10 },
+                      { value: "blue", label: "blue", price: 15 },
                       { value: "white", label: "white", price: 0 },
                     ]
                   },
@@ -468,10 +468,10 @@ export const product: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "black", label: "black", price: 0 },
-                      { value: "brown", label: "brown", price: 0 },
-                      { value: "green", label: "green", price: 0 },
-                      { value: "yellow", label: "yellow", price: 0 },
+                      { value: "black", label: "black", price: 5 },
+                      { value: "brown", label: "brown", price: 10 },
+                      { value: "green", label: "green", price: 15 },
+                      { value: "yellow", label: "yellow", price: 20 },
                       { value: "gray", label: "gray", price: 0 },
                     ]
                   },
@@ -490,10 +490,10 @@ export const product: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 0 },
-                      { value: "black", label: "black", price: 0 },
-                      { value: "blue", label: "blue", price: 0 },
-                      { value: "white", label: "white", price: 0 },
+                      { value: "red", label: "red", price: 5 },
+                      { value: "black", label: "black", price: 10 },
+                      { value: "blue", label: "blue", price: 15 },
+                      { value: "white", label: "white", price: 20 },
                       { value: "gold", label: "nova wave", price: 1.0 },
                     ]
                   },
@@ -522,22 +522,22 @@ export const product: Product = {
             {
               value: "M",
               label: "M",
-              price: 0,
+              price: 5,
             },
             {
               value: "S",
               label: "S",
-              price: 0,
+              price: 10,
             },
             {
               value: "L",
               label: "L",
-              price: 0,
+              price: 15,
             },
             {
               value: "XL",
               label: "XL",
-              price: 0,
+              price: 20,
             },
           ]
         }
@@ -642,6 +642,7 @@ export const product: Product = {
 
 export type ProductSlice = {
   product: Product | null;
+  quantity: number;
   setProduct: (product: Product) => void;
 };
 
@@ -651,6 +652,8 @@ export const createProductSlice: StateCreator<
   [],
   ProductSlice
 > = (set) => ({
+  quantity: 1,
+  
   product: product, // Initial value
 
   setProduct: (product) =>
