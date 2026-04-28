@@ -1,6 +1,6 @@
 ﻿"use client"
 import BuilderPanel from "../builder/ui/BuilderPanel";
-import ViewerBridge from "../builder/ui/ViewerBridge";
+import ViewerBridge from "./ViewerBridge";
 import ConfiguratorRuntime from "../configurator/runtime/ConfiguratorRuntime";
 import ConfiguratorPanel from "../configurator/ui/components/ConfiguratorPanel";
 import { useProductStudioStore } from "./product-studio.store";

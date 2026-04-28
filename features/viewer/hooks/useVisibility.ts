@@ -1,13 +1,19 @@
 ﻿import { useEffect } from "react";
 import { applyPartsVisibility } from "../lib/applyPartsVisibility";
-import { MeshRegistry } from "@/features/configurator/ui/registry.types";
-import { useConfiguratorStore } from "@/features/configurator/store/configurator.store";
+import { MeshRegistry } from "@/features/viewer/types/registry.types";
+import { DefaultParts } from "@/features/configurator/model";
 
-export function useVisibility({registry}: {registry: MeshRegistry | null}) {
-  const selections = useConfiguratorStore(s => s.selectedOptions.parts.items);
+type VisibilityProps = {
+  registry: MeshRegistry | null, 
+  enabled: boolean,
+  selections: DefaultParts["selections"]
+
+}
+
+export function useVisibility({registry, selections, enabled}: VisibilityProps) {
 
   useEffect(() => {
-    if (!registry) return;
+    if (!registry || !enabled || !selections) return;
     applyPartsVisibility(registry, selections);
-  }, [registry, selections]);
+  }, [registry, selections, enabled]);
 }

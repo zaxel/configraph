@@ -2,7 +2,7 @@
 import * as THREE from "three"
 import { ensureUniqueMaterial } from "../materials/ensureUniqueMaterial"
 import { ensureMaterialState } from "../materials/ensureMaterialState"
-import { MaterialSystemProps } from "@/features/configurator/ui/viewer.types";
+import { MaterialSystemProps } from "@/features/viewer/types/viewer.types";
 import { resolvePartMeshes } from "@/features/configurator/engine/resolvers/resolveParts";
 import { ResolvedPart } from "@/features/configurator/engine/types/resolved.types";
 
@@ -18,14 +18,15 @@ export const useMaterialSystem = ({
     registry,
     product,
     selectedOptions,
+    enabled
 }: MaterialSystemProps) => {
     const resolved = useMemo(() => {
-        if (!product) return []
+        if (!product || !selectedOptions) return []
         return resolvePartMeshes(product, selectedOptions)
     }, [product, selectedOptions])
 
     useEffect(() => {
-        if (!registry || !product) return
+        if (!registry || !product || !enabled) return;
 
 
         resolved.forEach(({ meshes, color }: ResolvedPart) => {
@@ -46,5 +47,5 @@ export const useMaterialSystem = ({
             });
         })
 
-    }, [registry, product, resolved])
+    }, [registry, product, resolved, enabled])
 }

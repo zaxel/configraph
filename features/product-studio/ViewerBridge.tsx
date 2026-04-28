@@ -11,14 +11,15 @@ const ViewerBridge = () => {
 
   if (mode === "builder") {
     // return <Viewer modelUrl={builderModel} />;
-    return <Viewer modelUrl={"builderModel_fancy_url"} />;
+    return <Viewer modelUrl={"/models/nike5.glb"} mode={mode}/>;
   }
 
   return (
     <Viewer
-      modelUrl={product?.model.url}
-      product={product}
+      modelUrl={product?.model.url ?? ""}
+      product={product ?? undefined}
       selectedOptions={selectedOptions}
+      mode={mode}
     />
   );
 };

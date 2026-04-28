@@ -8,5 +8,5 @@ export interface MaterialState {
 
 export interface CustomUserData {
   currentColor?: string | number | THREE.Color
-  materialState?: MaterialState
+  materialState?: MaterialState 
 }

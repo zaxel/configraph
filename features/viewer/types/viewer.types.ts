@@ -1,6 +1,6 @@
 ﻿import { MeshRegistry } from "./registry.types";
-import { Product } from "../model";
-import { SelectedOptions } from "../model/selections.types";
+import { Product } from "../../configurator/model";
+import { SelectedOptions } from "../../configurator/model/selections.types";
 
  export type ViewerSlice = {
   cameraMode: "orbit" | "other-mode"; // Be specific if you can!
@@ -10,7 +10,8 @@ import { SelectedOptions } from "../model/selections.types";
 }; 
 
 export type MaterialSystemProps = {
-    registry: MeshRegistry | null;
-    product: Product | null;
-    selectedOptions: SelectedOptions;
+    registry?: MeshRegistry;
+    product?: Product;
+    selectedOptions?: SelectedOptions; 
+    enabled: boolean;
 }

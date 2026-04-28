@@ -1,5 +1,5 @@
-﻿import { DefaultParts } from "../../model/product.types";
-import { MeshRegistry } from "../../ui/registry.types";
+﻿import { DefaultParts } from "@/features/configurator/model";
+import { MeshRegistry } from "@/features/viewer/types/registry.types";
 
 export function applyPartsVisibility(
   registry: MeshRegistry,
@@ -19,6 +19,6 @@ export function applyPartsVisibility(
     meshes?.forEach((m) => (m.visible = true));
   }
 
-}
+} 
 
 

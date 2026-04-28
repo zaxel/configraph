@@ -1,8 +1,12 @@
 ﻿import { create } from "zustand";
 
-type Mode = "builder" | "preview" | "embded";
+export type Mode = "builder" | "preview" | "embed";
+export type ProductStudio = {
+    mode: Mode;
+    setMode: (mode: Mode) => void;
+}
 
-export const useProductStudioStore = create((set) => ({
-  mode: "preview" as Mode,
-  setMode: (mode: Mode) => set({ mode }),
+export const useProductStudioStore = create<ProductStudio>()((set) => ({
+    mode: "preview", 
+    setMode: (mode) => set({ mode }), 
 }));

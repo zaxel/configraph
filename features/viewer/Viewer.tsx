@@ -2,8 +2,18 @@
 import { Canvas} from "@react-three/fiber";
 import * as THREE from 'three';
 import Scene from "./scene/Scene";
+import { Product, SelectedOptions } from "../configurator/model";
+import { Mode } from "../product-studio/product-studio.store";
 
-const Viewer = ({modelUrl, product, selectedOptions}) => {
+export type ViewerProps = {
+    modelUrl: string;
+    mode: Mode;
+
+    product?: Product;
+    selectedOptions?: SelectedOptions;
+}
+
+const Viewer = ({modelUrl, product, selectedOptions, mode}: ViewerProps) => {
     return (
         <div className='w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] md:sticky'>
             <Canvas
@@ -12,7 +22,7 @@ const Viewer = ({modelUrl, product, selectedOptions}) => {
                     outputColorSpace: THREE.SRGBColorSpace,
                 }}
             >
-               <Scene modelUrl={modelUrl} product={product} selectedOptions={selectedOptions}/>
+               <Scene modelUrl={modelUrl} product={product} selectedOptions={selectedOptions} mode={mode}/>
             </Canvas>
         </div>
     );

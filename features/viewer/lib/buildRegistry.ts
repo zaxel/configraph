@@ -1,6 +1,6 @@
-﻿import * as THREE from "three"
-import { MeshRegistry } from "../../ui/registry.types"
-import { PartsComponent, Product } from "../../model";
+﻿import { PartsComponent, Product } from "@/features/configurator/model";
+import { MeshRegistry } from "@/features/viewer/types/registry.types";
+import * as THREE from "three"
 
 export function buildRegistry(scene: THREE.Object3D, product: Product): MeshRegistry {
 

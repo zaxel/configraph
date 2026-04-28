@@ -1,5 +1,5 @@
-﻿import * as THREE from "three"
-import { CustomUserData, MappableMaterial } from "../../ui/material.types"
+﻿import { CustomUserData, MappableMaterial } from "@/features/viewer/materials/material.types"
+import * as THREE from "three"
 
 const hasMap = (mat: THREE.Material): mat is MappableMaterial => {
   return "map" in mat

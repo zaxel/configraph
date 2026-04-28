@@ -1,7 +1,7 @@
 ﻿import { LoadingSlice } from "@/types/loading.types";
 import { Product } from "../model";
 import { OptionsSlice } from "../model/selections.types";
-import { ViewerSlice } from "../ui/viewer.types";
+import { ViewerSlice } from "../../viewer/types/viewer.types";
 import { CanvasSlice } from "./slices/canvas.types";
 import { UserSlice } from "./slices/user.types";
 import { DecalsSlice } from "./slices/decals.types";

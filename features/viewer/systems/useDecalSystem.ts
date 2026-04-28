@@ -1,12 +1,12 @@
 ﻿import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
-import { MeshRegistry } from "../../ui/registry.types";
+import { MeshRegistry } from "../types/registry.types";
 import { DecalGeometry } from "three/examples/jsm/Addons.js";
-import { useConfiguratorStore } from "../../store/configurator.store";
-import { DecalSource } from "../../store/slices/decals.types";
+import { useConfiguratorStore } from "../../configurator/store/configurator.store";
+import { DecalSource } from "../../configurator/store/slices/decals.types";
 
-export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
+export const useDecalSystem = ({ registry, enabled }: { registry: MeshRegistry, enabled: boolean }) => {
   const { scene, camera } = useThree();
 
   const decals = useConfiguratorStore((s) => s.decals);
@@ -39,6 +39,17 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   // COMMITTED DECALS
   // =========================================================
   useEffect(() => {
+    if (!enabled) {
+      // 🧹 cleanup ALL decals when disabling
+      decalRefs.current.forEach((mesh) => {
+        scene.remove(mesh);
+        mesh.geometry.dispose();
+        (mesh.material as THREE.Material).dispose();
+      });
+      decalRefs.current.clear();
+      return;
+    }
+
     decals.forEach((decal) => {
       if (decalRefs.current.has(decal.id)) return;
 
@@ -74,25 +85,28 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
         decalRefs.current.delete(id);
       }
     });
-  }, [decals, registry, scene]);
+  }, [decals, registry, scene, enabled]);
 
   // =========================================================
   // PREVIEW CLEANUP
   // =========================================================
   useEffect(() => {
-    if (!preview && previewRef.current) {
-      scene.remove(previewRef.current);
-      previewRef.current.geometry.dispose();
-      (previewRef.current.material as THREE.Material).dispose();
-      previewRef.current = null;
+    if (!enabled || !preview) {
+      if (previewRef.current) {
+        scene.remove(previewRef.current);
+        previewRef.current.geometry.dispose();
+        (previewRef.current.material as THREE.Material).dispose();
+        previewRef.current = null;
+      }
       lastHit.current = null;
     }
-  }, [preview, scene]);
+  }, [enabled, preview, scene]);
 
   // =========================================================
   // PREVIEW + RAYCAST
   // =========================================================
   useFrame(() => {
+    if (!enabled) return;
     if (!preview?.texture) return;
 
     // throttle raycast to every 5 frames
@@ -169,7 +183,7 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
     if (mat.map) mat.map.needsUpdate = true;
   });
 
-  const previewRef2 = useRef(preview); 
+  const previewRef2 = useRef(preview);
   const activeStickerRef = useRef(activeSticker);
 
   useEffect(() => { previewRef2.current = preview; }, [preview]);
@@ -177,30 +191,31 @@ export const useDecalSystem = ({ registry }: { registry: MeshRegistry }) => {
   // =========================================================
   // COMMIT
   // =========================================================
-  
+
   useEffect(() => {
-  if (commitRequested === 0) return;
-  
-  const preview = previewRef2.current;
-  const activeSticker = activeStickerRef.current;
+    if (!enabled) return;
+    if (commitRequested === 0) return;
 
-  if (!preview?.texture || !lastHit.current) return;
+    const preview = previewRef2.current;
+    const activeSticker = activeStickerRef.current;
 
-  const { point, orientation, target } = lastHit.current;
-  const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
+    if (!preview?.texture || !lastHit.current) return;
 
-  const source: DecalSource = activeSticker
-    ? { type: "sticker", stickerId: activeSticker.id }
-    : { type: "text", textId: "temp-text-id" };
+    const { point, orientation, target } = lastHit.current;
+    const pos = point.clone().add(lastHit.current.normal.clone().multiplyScalar(offset));
 
-  addDecal({
-    id: crypto.randomUUID(),
-    source,
-    target,
-    texture: preview.texture.toDataURL(),
-    position: [pos.x, pos.y, pos.z],
-    orientation: [orientation.x, orientation.y, orientation.z],
-    size: [1, 0.5, 1],
-  });
-}, [commitRequested, addDecal]);
+    const source: DecalSource = activeSticker
+      ? { type: "sticker", stickerId: activeSticker.id }
+      : { type: "text", textId: "temp-text-id" };
+
+    addDecal({
+      id: crypto.randomUUID(),
+      source,
+      target,
+      texture: preview.texture.toDataURL(),
+      position: [pos.x, pos.y, pos.z],
+      orientation: [orientation.x, orientation.y, orientation.z],
+      size: [1, 0.5, 1],
+    });
+  }, [commitRequested, addDecal, enabled]);
 };
