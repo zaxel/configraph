@@ -2,7 +2,7 @@
 import { cn } from "@/lib/cn";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "active";
+  variant?: "primary" | "outline" | "active" | "active-outline";
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   ref?: React.Ref<HTMLButtonElement>;
@@ -22,8 +22,9 @@ const Button = ({
       ref={ref}
       className={cn(
         "inline-flex items-center gap-2 ring-1 rounded-md px-4 py-0 h-8 text-sm transition-colors cursor-pointer",
-        variant === "primary" && "text-primary ring-primary",
         variant === "outline" && "text-foreground ring-foreground",
+        variant === "active-outline" && "bg-foreground text-white ring-foreground",
+        variant === "primary" && "text-primary ring-primary",
         variant === "active" && "bg-primary text-white ring-primary",
         className
       )}

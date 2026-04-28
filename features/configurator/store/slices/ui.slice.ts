@@ -1,6 +1,5 @@
 ﻿import { StateCreator } from 'zustand';
-import { BoundStore } from '../../model/bound.types';
-import { UiSlice } from '../../model/uislice.types';
+import { BoundStore, UiSlice } from '../store.types';
 
 
 
