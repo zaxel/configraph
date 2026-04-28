@@ -2,9 +2,9 @@
 import * as THREE from "three"
 import { ensureUniqueMaterial } from "../materials/ensureUniqueMaterial"
 import { ensureMaterialState } from "../materials/ensureMaterialState"
-import { resolvePartMeshes } from "../../engine/resolvers/resolveParts"
-import { MaterialSystemProps } from "../../ui/viewer.types"
-import { ResolvedPart } from "../../engine/types/resolved.types"
+import { MaterialSystemProps } from "@/features/configurator/ui/viewer.types";
+import { resolvePartMeshes } from "@/features/configurator/engine/resolvers/resolveParts";
+import { ResolvedPart } from "@/features/configurator/engine/types/resolved.types";
 
 interface CustomUserData {
     currentColor?: string | number | THREE.Color;

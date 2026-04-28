@@ -1,16 +1,16 @@
 ﻿import React from 'react';
 import { useGLTF } from './hooks/useModel';
 import useMeshRegistry from './hooks/useMeshRegistry';
-import { useConfiguratorStore } from '../store/configurator.store';
 import { useMaterialSystem } from './hooks/useMaterialSystem ';
-import { useDecalSystem } from '../canvas/hooks/useDecalSystem';
 import { useVisibility } from './hooks/useVisibility';
+import { useDecalSystem } from '../configurator/canvas/hooks/useDecalSystem';
 
-const Model = () => {
-    const { gltf } = useGLTF("/models/nike5.glb");
+const Model = ({modelUrl, product, selectedOptions}) => {
+    // const { gltf } = useGLTF("/models/nike5.glb");
+    const { gltf } = useGLTF(modelUrl);
 
-    const product = useConfiguratorStore(s => s.product);
-    const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
+    // const product = useConfiguratorStore(s => s.product);
+    // const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
 
     const registry = useMeshRegistry(gltf) ?? { byName: new Map(), byGroup: new Map(), byPart: new Map() };
     useDecalSystem({ registry });

@@ -1,7 +1,7 @@
 ﻿import { useMemo } from "react"
 import { buildRegistry } from "../lib/buildRegistry"
 import { GLTF } from "three-stdlib";
-import { useConfiguratorStore } from "../../store/configurator.store";
+import { useConfiguratorStore } from "@/features/configurator/store/configurator.store";
 
 export default function useMeshRegistry(gltf: GLTF) {
     const product = useConfiguratorStore(s => s.product);
