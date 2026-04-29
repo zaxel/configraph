@@ -1,8 +1,55 @@
-﻿import fs from "fs";
+﻿import { MAX_FILE_SIZE, MAX_UNOPTIMIZED_SIZE } from "@/features/builder/store/slices/model.slice";
+import fs from "fs";
 import path from "path";
 
-async function optimizeGLB(rawPath: string, optimizedPath: string) {
-    await fs.promises.copyFile(rawPath, optimizedPath);
+import { NodeIO } from '@gltf-transform/core';
+import { textureCompress, draco, prune, dedup } from '@gltf-transform/functions';
+import { KHRDracoMeshCompression } from '@gltf-transform/extensions';
+import draco3d from 'draco3d';
+import type { DecoderModule, EncoderModule } from 'draco3d';
+import sharp from 'sharp';
+
+let encoderPromise: Promise<EncoderModule> | null = null;
+let decoderPromise: Promise<DecoderModule> | null = null;
+
+async function getDraco() {
+    if (!encoderPromise) encoderPromise = draco3d.createEncoderModule();
+    if (!decoderPromise) decoderPromise = draco3d.createDecoderModule();
+
+    return {
+        encoder: await encoderPromise,
+        decoder: await decoderPromise,
+    };
+}
+
+async function createIO() {
+    const { encoder, decoder } = await getDraco();
+
+    return new NodeIO()
+        .registerExtensions([KHRDracoMeshCompression])
+        .registerDependencies({
+            'draco3d.encoder': encoder,
+            'draco3d.decoder': decoder,
+        });
+}
+
+export async function optimizeGLB(inputPath: string, outputPath: string) {
+    const io = await createIO();
+    const document = await io.read(inputPath);
+
+    await document.transform(
+        textureCompress({
+            encoder: sharp,
+            targetFormat: 'webp',
+            resize: [1024, 1024],
+            quality: 80,
+        }),
+        dedup(),
+        prune(),
+        draco(),
+    );
+
+    await io.write(outputPath, document);
 }
 
 export async function POST(req: Request) {
@@ -13,7 +60,7 @@ export async function POST(req: Request) {
         return new Response("No file", { status: 400 });
     }
 
-    if (file.size > 20 * 1024 * 1024) {
+    if (file.size > MAX_FILE_SIZE) {
         return new Response("File too large", { status: 400 });
     }
 
@@ -31,13 +78,17 @@ export async function POST(req: Request) {
 
     await fs.promises.writeFile(rawPath, buffer);
 
-    if (file.size > 2 * 1024 * 1024) {
-        await optimizeGLB(rawPath, optimizedPath);
-    } else {
-        await fs.promises.copyFile(rawPath, optimizedPath);
-    }
+    try {
+        if (file.size > MAX_UNOPTIMIZED_SIZE) {
+            await optimizeGLB(rawPath, optimizedPath);
+        } else {
+            await fs.promises.copyFile(rawPath, optimizedPath);
+        }
 
-    return Response.json({
-        url: `/models/optimized/${fileName}`,
-    });
+        return Response.json({
+            url: `/models/optimized/${fileName}`,
+        });
+    } finally {
+        await fs.promises.unlink(rawPath).catch(() => { });
+    }
 }

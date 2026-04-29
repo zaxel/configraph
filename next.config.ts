@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  serverExternalPackages: [
+    'draco3d',
+    'sharp',
+    '@gltf-transform/core',
+    '@gltf-transform/functions',
+    '@gltf-transform/extensions',
+  ],
 };
 
 export default nextConfig;

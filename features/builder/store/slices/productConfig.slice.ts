@@ -2,14 +2,13 @@
 import { BoundBuilderStore } from "../builder.types";
 import { ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
-import { immer } from "zustand/middleware/immer";
 
 export const initProductSample: Product = {
     id: "new project",
     quantity: 1,
 
     model: {
-        url: "/models/optimized/1777461347794.glb",
+        url: "",
     },
 
     modules: [],
@@ -31,7 +30,7 @@ export const createProductConfigSlice: StateCreator<
     setModelUrl: (url) =>
         set((state) => {
             if (state.product) {
-                state.product.model.url = url; // No spreading needed!
+                state.product.model.url = url; 
             }
         }, false, "setModelUrl"),
 });

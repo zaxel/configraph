@@ -9,7 +9,7 @@ export type ViewerProps = {
     modelUrl: string;
     mode: Mode;
 
-    product?: Product;
+    product?: Product | null | undefined;
     selectedOptions?: SelectedOptions;
 }
 

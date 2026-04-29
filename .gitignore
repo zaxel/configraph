@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# modules
+public/models/*
+
 # production
 /build
 

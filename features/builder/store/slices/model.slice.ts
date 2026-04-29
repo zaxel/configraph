@@ -2,6 +2,8 @@
 import { ModelSlice } from "./model.type";
 import { BoundBuilderStore } from "../builder.types";
 
+export const MAX_FILE_SIZE = 200 * 1024 * 1024;
+export const MAX_UNOPTIMIZED_SIZE = 2 * 1024 * 1024;
 
 
 export const createModelSlice: StateCreator<
@@ -30,15 +32,12 @@ export const createModelSlice: StateCreator<
         }
 
         try {
-            // 1. basic validation (frontend UX only)
-            const MAX_FILE_SIZE = 20 * 1024 * 1024;
-
-            // 2. Check size
+            // 1. Check size
             if (file.size > MAX_FILE_SIZE) {
                 alert(`File is too large! Please upload an image smaller than ${MAX_FILE_SIZE / 1024 / 1024}MB.`);
                 set({
                     status: "error",
-                    error: "File too large (max 15MB)",
+                    error: `File too large (max ${MAX_FILE_SIZE}MB)`,
                 });
                 return;
             }
@@ -48,13 +47,13 @@ export const createModelSlice: StateCreator<
             const formData = new FormData();
             formData.append("file", file);
 
-            // const res = await POST("/api/upload-model");
+            
             const res = await fetch("/api/upload-model", {
                 method: "POST",
                 body: formData,
             });
-
-            // optional: distinguish processing stage
+            
+            // 2. distinguish processing stage
             set({ status: "processing" });
 
             if (!res.ok) {
@@ -70,11 +69,12 @@ export const createModelSlice: StateCreator<
                 status: "ready",
                 error: null,
             });
-        } catch (err: any) {
+        } catch (err: unknown) {
             set({
                 status: "error",
                 error: err.message || "Something went wrong",
             });
+
         }
     },
 

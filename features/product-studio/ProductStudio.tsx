@@ -9,6 +9,7 @@ import { useBuilderStore } from "../builder/store/builder.store";
 import BuilderDisabled from "../builder/ui/components/BuilderDisabled";
 import { initProductSample } from "../builder/store/slices/productConfig.slice";
 import { useEffect } from "react";
+import { product } from "../configurator/store/slices/product.slice";
 
 const ProductStudio = () => {
     const mode = useProductStudioStore(s => s.mode);
@@ -17,6 +18,7 @@ const ProductStudio = () => {
 
     useEffect(()=>{
         initProduct(initProductSample);
+        // initProduct(product);
     }, [])
 
     return (
