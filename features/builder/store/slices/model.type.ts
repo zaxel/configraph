@@ -6,10 +6,10 @@
   | "error";
 
 export interface ModelSlice {
-  modelUrl: string | null;
   status: UploadStatus;
   error: string | null;
 
   uploadModel: (file: File) => Promise<void>;
   resetModel: () => void;
+  initModel: (url: string) => void;
 }

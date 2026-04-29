@@ -19,6 +19,13 @@ const ConfiguratorRuntime = ({ active }: { active: boolean }) => {
   // }, [product?.id, loadUserCanvas, active]);
 
   const initializedRef = useRef<string | null>(null);
+  const canvasLoadedRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    initializedRef.current = null;
+    canvasLoadedRef.current = null;
+  }, [product?.id]);
+
 
   useEffect(() => {
     if (!active) return;
@@ -30,8 +37,6 @@ const ConfiguratorRuntime = ({ active }: { active: boolean }) => {
     initializedRef.current = product.id;
   }, [product?.id, initOptions, active]);
 
-
-  const canvasLoadedRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!active) return;
