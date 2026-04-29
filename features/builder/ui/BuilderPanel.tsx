@@ -12,7 +12,7 @@ const BuilderPanel = () => {
     const isBuilderSelected = activeTab==="builder";
     
     return (
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-6 w-full md:w-1/3">
             <div className="flex gap-6">
                 <Button variant={isMeshSelected ? "active-outline" : "outline"} onClick={() =>
                     !isMeshSelected &&

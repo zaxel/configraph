@@ -7,6 +7,6 @@ export type ProductStudio = {
 }
 
 export const useProductStudioStore = create<ProductStudio>()((set) => ({
-    mode: "builder", 
+    mode: "preview", 
     setMode: (mode) => set({ mode }), 
 }));
