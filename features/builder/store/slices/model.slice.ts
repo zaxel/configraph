@@ -31,6 +31,12 @@ export const createModelSlice: StateCreator<
             return;
         }
 
+        // Check format
+        if (!file.name.toLowerCase().endsWith('.glb')) {
+            set({ status: "error", error: "Only .glb files are supported." });
+            return;
+        }
+
         try {
             // 1. Check size
             if (file.size > MAX_FILE_SIZE) {
@@ -47,12 +53,12 @@ export const createModelSlice: StateCreator<
             const formData = new FormData();
             formData.append("file", file);
 
-            
+
             const res = await fetch("/api/upload-model", {
                 method: "POST",
                 body: formData,
             });
-            
+
             // 2. distinguish processing stage
             set({ status: "processing" });
 
@@ -70,9 +76,10 @@ export const createModelSlice: StateCreator<
                 error: null,
             });
         } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : "Something went wrong";
             set({
                 status: "error",
-                error: err.message || "Something went wrong",
+                error: message,
             });
 
         }
