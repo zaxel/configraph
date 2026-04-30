@@ -1,4 +1,4 @@
-﻿import { GLTFLoader } from 'three-stdlib';
+﻿import { GLTFLoader, GLTF } from 'three-stdlib';
 import { DRACOLoader } from 'three-stdlib';
 
 export async function loadGLB(buffer: ArrayBuffer) {
@@ -9,7 +9,7 @@ export async function loadGLB(buffer: ArrayBuffer) {
   draco.setDecoderPath(process.cwd() + '/public/draco/'); 
   loader.setDRACOLoader(draco);
 
-  return new Promise<any>((resolve, reject) => {
+  return new Promise<GLTF>((resolve, reject) => {
     loader.parse(
       buffer,
       '',

@@ -1,16 +1,23 @@
-﻿import { Object3D } from 'three';
+﻿import { Object3D, Mesh } from 'three';
 
 export type MeshInfo = {
     id: string;
     name: string;
-    materialCount: any[];
+    materialCount: number;
 };
+
+export interface GLTFMesh {
+    name?: string;
+    primitives: Array<{
+        material?: number;
+    }>;
+}
 
 export function extractMeshes(root: Object3D): MeshInfo[] {
     const meshes: MeshInfo[] = [];
 
-    root.traverse((obj: any) => {
-        if (obj.isMesh) {
+    root.traverse((obj: Object3D) => {
+        if (obj instanceof Mesh) {
             meshes.push({
                 id: obj.uuid,              // stable inside this model snapshot
                 name: obj.name || `mesh_${meshes.length}`,
@@ -34,12 +41,12 @@ export function extractMeshesFromGLB(buffer: ArrayBuffer): MeshInfo[] {
 
     const meshes: MeshInfo[] = [];
 
-    (json.meshes || []).forEach((mesh: any, i: number) => {
+    (json.meshes || []).forEach((mesh: GLTFMesh, i: number) => {
         meshes.push({
             id: `mesh_${i}`,
             name: mesh.name || `mesh_${i}`,
             materialCount: new Set(
-                (mesh.primitives || []).map((p: any) => p.material ?? 0)
+                (mesh.primitives || []).map((p) => p.material ?? 0)
             ).size,
         });
     });

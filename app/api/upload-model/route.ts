@@ -92,17 +92,7 @@ export async function POST(req: Request) {
             await fs.promises.copyFile(rawPath, optimizedPath);
         }
 
-
         const url = `/models/optimized/${fileName}`;
-
-        // const fileBuffer = await fs.promises.readFile(optimizedPath);
-        // const arrayBuffer = fileBuffer.buffer.slice(
-        //     fileBuffer.byteOffset,
-        //     fileBuffer.byteOffset + fileBuffer.byteLength
-        // );
-
-        // const gltf = await loadGLB(arrayBuffer);
-        // const meshes = extractMeshes(gltf.scene);
 
         const fileBuffer = await fs.promises.readFile(optimizedPath);
         const meshes = extractMeshesFromGLB(fileBuffer.buffer);
@@ -116,7 +106,6 @@ export async function POST(req: Request) {
             }
         });
 
-        console.log(configurator);
 
         return Response.json({
             configuratorId: configurator.id,

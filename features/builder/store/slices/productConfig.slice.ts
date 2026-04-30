@@ -52,7 +52,7 @@ export const createProductConfigSlice: StateCreator<
 
             const data = await res.json();
 
-            set((state) => ({
+            set(() => ({ 
                 configuratorId: id,
 
                 product: data.product, // overwrite (authoritative)

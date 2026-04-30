@@ -9,11 +9,9 @@ import { useBuilderStore } from "../builder/store/builder.store";
 import BuilderDisabled from "../builder/ui/components/BuilderDisabled";
 import { initProductSample } from "../builder/store/slices/productConfig.slice";
 import { useEffect } from "react";
-import { product } from "../configurator/store/slices/product.slice";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 const ProductStudio = () => {
-    const router = useRouter();
     const params = useParams();
     const id = params.id;
 
@@ -27,14 +25,10 @@ const ProductStudio = () => {
         if (!id) {
             initProduct(initProductSample); // empty state
         } else {
-            loadConfigurator(id); // fetch from server
+            const configuratorId = Array.isArray(id) ? id[0] : id;
+            loadConfigurator(configuratorId); // fetch from server
         }
-    }, [id]);
-
-    // useEffect(()=>{
-    //     initProduct(initProductSample);
-    //     // initProduct(product);
-    // }, [])
+    }, [id, initProduct, loadConfigurator]);
 
     return (
         <div className="w-full flex flex-col md:flex-row relative">
