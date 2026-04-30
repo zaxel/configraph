@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# db simulation
+/db/data
+
 # modules
 public/models/*
 

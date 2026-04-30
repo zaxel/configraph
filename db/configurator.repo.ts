@@ -1,4 +1,7 @@
-﻿const db = new Map();
+﻿import fs from "fs";
+import path from 'path';
+
+const DATA_DIR = path.join(process.cwd(), 'db', 'data');
 
 export async function createConfigurator(data: any) {
   const id = 'cfg_' + crypto.randomUUID();
@@ -9,11 +12,18 @@ export async function createConfigurator(data: any) {
     createdAt: Date.now()
   };
 
-  db.set(id, record);
+  await fs.promises.mkdir(DATA_DIR, { recursive: true });
+  await fs.promises.writeFile(
+    path.join(DATA_DIR, `${id}.json`),
+    JSON.stringify(record, null, 2)
+  );
 
   return record;
+
 }
 
 export async function getConfigurator(id: string) {
-  return db.get(id);
+  const filePath = path.join(DATA_DIR, `${id}.json`);
+  const data = await fs.promises.readFile(filePath, 'utf-8');
+  return JSON.parse(data);
 }
