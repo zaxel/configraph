@@ -1,39 +1,31 @@
 ﻿import { Checkbox } from '@/components/ui/checkbox';
+import { useBuilderStore } from "../../store/builder.store";
 import React from 'react';
 
 const MeshChecker = () => {
+    const builderConfig = useBuilderStore((s) => s.builderConfig);
+
+    console.log(builderConfig);
+
+
+
     return (
         <div className="w-full">
             <div className="mb-6 flex justify-between items-center gap-4 text-xl">
-                <div >Detected Meshes</div>
+                <div >Detected <br/> Meshes</div>
+                <div className="ml-auto">Mat <br/> Count</div>
                 <div className="mr-6">Toggle</div>
 
             </div>
             <ul className="flex flex-col gap-4">
-                <li className="flex justify-between items-center gap-4">
-                    <span>Object-kslkd-98</span>
-                    <Checkbox checked className='mr-10 cursor-pointer'/>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                    <span>Object-kslkd-98</span>
-                    <Checkbox className='mr-10 cursor-pointer'/>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                    <span>Object-k-9</span>
-                    <Checkbox className='mr-10 cursor-pointer'/>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                    <span>Object-ks-8</span>
-                    <Checkbox className='mr-10 cursor-pointer'/>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                    <span>Object-k-7</span>
-                    <Checkbox className='mr-10 cursor-pointer'/>
-                </li>
-                <li className="flex justify-between items-center gap-4">
-                    <span>sole</span>
-                    <Checkbox className='mr-10 cursor-pointer'/>
-                </li>
+
+                {(builderConfig?.meshes ?? []).map(mesh => {
+                    return <li key={mesh.id} className="flex justify-between items-center gap-4">
+                        <span>{mesh.name}</span>
+                        <span className="ml-auto mr-12">{mesh.materialCount}</span>
+                        <Checkbox checked className='mr-10 cursor-pointer' />
+                    </li>
+                })}
             </ul>
         </div>
     );
