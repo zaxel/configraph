@@ -5,7 +5,6 @@ import { BoundBuilderStore } from "../builder.types";
 export const MAX_FILE_SIZE = 200 * 1024 * 1024;
 export const MAX_UNOPTIMIZED_SIZE = 2 * 1024 * 1024;
 
-
 export const createModelSlice: StateCreator<
     BoundBuilderStore,
     [["zustand/devtools", never], ["zustand/immer", never]],
@@ -67,14 +66,17 @@ export const createModelSlice: StateCreator<
                 throw new Error(text || "Upload failed");
             }
 
-            const data = await res.json();
+            const { configuratorId } = await res.json();
 
-            get().setModelUrl(data.url);
+            get().setConfiguratorId(configuratorId);
 
             set({
-                status: "ready",
+                status: "idle",
                 error: null,
             });
+
+            return configuratorId;
+
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : "Something went wrong";
             set({

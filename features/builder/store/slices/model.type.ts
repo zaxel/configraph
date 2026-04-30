@@ -1,7 +1,8 @@
-﻿export type UploadStatus =
+﻿type UploadStatus =
   | "idle"
   | "uploading"
   | "processing"
+  | "loading"
   | "ready"
   | "error";
 
@@ -9,7 +10,7 @@ export interface ModelSlice {
   status: UploadStatus;
   error: string | null;
 
-  uploadModel: (file: File) => Promise<void>;
   resetModel: () => void;
   initModel: (url: string) => void;
+  uploadModel: (url: any) => Promise<string>;
 }

@@ -10,16 +10,31 @@ import BuilderDisabled from "../builder/ui/components/BuilderDisabled";
 import { initProductSample } from "../builder/store/slices/productConfig.slice";
 import { useEffect } from "react";
 import { product } from "../configurator/store/slices/product.slice";
+import { useParams, useRouter } from "next/navigation";
 
 const ProductStudio = () => {
+    const router = useRouter();
+    const params = useParams();
+    const id = params.id;
+
+
     const mode = useProductStudioStore(s => s.mode);
     const initProduct = useBuilderStore(s => s.initProduct);
+    const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
     const { status } = useBuilderStore();
 
-    useEffect(()=>{
-        initProduct(initProductSample);
-        // initProduct(product);
-    }, [])
+    useEffect(() => {
+        if (!id) {
+            initProduct(initProductSample); // empty state
+        } else {
+            loadConfigurator(id); // fetch from server
+        }
+    }, [id]);
+
+    // useEffect(()=>{
+    //     initProduct(initProductSample);
+    //     // initProduct(product);
+    // }, [])
 
     return (
         <div className="w-full flex flex-col md:flex-row relative">

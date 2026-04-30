@@ -2,17 +2,21 @@
 import { useBuilderStore } from "../../store/builder.store";
 import Button from "@/components/common/Button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const UploadModel = () => {
     const uploadModel = useBuilderStore((s) => s.uploadModel);
     const uploadInput = useRef<HTMLInputElement>(null);
+    const router = useRouter();
 
     async function handleImgUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
 
        
-        uploadModel(file);
+        const configuratorId = await uploadModel(file, router);
+        router.replace(`/builder/${configuratorId}`);
+
 
 
         // reset input so same file works again
