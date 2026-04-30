@@ -297,7 +297,7 @@ export const product_decal: Product = {
     },
   ],
 };
-export const product: Product = {
+export const product_sample: Product = {
   id: "nike-basic-uv",
   quantity: 1,
 
@@ -655,7 +655,7 @@ export const createProductSlice: StateCreator<
 > = (set) => ({
   quantity: 1,
   
-  product: product, // Initial value
+  product: null, // Initial value
 
   setProduct: (product) =>
     set({ product }, false, "setProduct"), // Third arg is for Devtools action name
