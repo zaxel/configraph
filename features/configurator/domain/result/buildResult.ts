@@ -21,7 +21,7 @@ export function buildResult(
         price,
         configuration: {
             parts: state.selectedOptions.parts.items,
-            size: state.selectedOptions.size,
+            size: state.selectedOptions.size ?? undefined,
             addons: state.selectedOptions.addon || [],
             decals: state.decals,
         },

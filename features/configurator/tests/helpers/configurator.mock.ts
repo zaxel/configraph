@@ -1,9 +1,9 @@
-﻿import { Product } from "../../model";
+﻿import { AddonModule, PartsModule, Product, SizeModule } from "../../model";
 
 export function mockState(product: Product, overrides = {}) {
-    const partsModule = product.modules.find(m => m.id === "parts");
-    const sizeModule = product.modules.find(m => m.id === "size");
-    const addonModule = product.modules.find(m => m.id === "addon");
+    const partsModule = product.modules.find(m => m.id === "parts") as PartsModule | undefined;
+    const sizeModule = product.modules.find(m => m.id === "size") as SizeModule | undefined;
+    const addonModule = product.modules.find(m => m.id === "addon") as AddonModule | undefined;
 
     return {
         quantity: product.quantity ?? 1,

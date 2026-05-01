@@ -1,7 +1,7 @@
 ﻿import { describe, it, expect } from "vitest";
 import { calculatePrice } from "./calculatePrice";
 import { getProduct, mockState } from "../../tests/helpers/configurator.mock";
-import { product as item } from "../../store/slices/product.slice";
+import { product_sample as item } from "../../store/slices/product.slice";
 import { DecalConfig } from "../../store/slices/decals.types";
 
 const unsafe = <T>(v: unknown) => v as T;

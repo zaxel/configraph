@@ -12,7 +12,7 @@ export type PartsSelection = {
 
 export type SelectedOptions = {
     parts: PartsSelection;
-    size: string;
+    size: string | null;
     addon: string[];
 };
 

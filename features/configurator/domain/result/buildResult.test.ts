@@ -1,7 +1,7 @@
 ﻿import { describe, it, expect } from "vitest";
 import { buildResult } from "./buildResult";
 import { getProduct, mockState } from "../../tests/helpers/configurator.mock";
-import { product as item } from "../../store/slices/product.slice";
+import { product_sample as item } from "../../store/slices/product.slice";
 
 describe("buildResult", () => {
   it("builds full result correctly", () => {

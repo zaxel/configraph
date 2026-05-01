@@ -1,7 +1,7 @@
 ﻿import { describe, it, expect } from "vitest";
 import { calculatePrice } from "./calculatePrice";
 import { getProduct, mockState } from "../../tests/helpers/configurator.mock";
-import { product as prod } from "../../store/slices/product.slice";
+import { product_sample as prod } from "../../store/slices/product.slice";
 
 describe("calculatePrice (real product)", () => {
     it("returns base price when no extras", () => {
