@@ -1,17 +1,30 @@
 ﻿import { useEffect, useRef } from "react";
 import { useConfiguratorStore } from "../store/configurator.store";
+import { useBuilderStore } from "@/features/builder/store/builder.store";
+import { Product } from "../model";
+import { useProduct } from "@/features/product-studio/context/ProductContext";
 
-const ConfiguratorRuntime = ({ active }: { active: boolean }) => {
-  const product = useConfiguratorStore(s => s.product);
+export type ConfiguratorRuntime = {
+  active: boolean;
+};
+
+const ConfiguratorRuntime = ({ active }: ConfiguratorRuntime) => {
+  // const product = useConfiguratorStore(s => s.product);
+  const product = useProduct();
+
+  // const setProduct = useConfiguratorStore(s => s.setProduct);
+  // const builderProduct = useBuilderStore(s => s.product);
   const initOptions = useConfiguratorStore(s => s.initOptions);
   const loadUserCanvas = useConfiguratorStore(s => s.loadUserCanvas);
 
+
+
   // useEffect(() => {
   //   if(!active) return;
-  //   if (product) {
-  //     initOptions();
+  //   if (builderProduct) {
+  //     setProduct(builderProduct);
   //   }
-  // }, [product, initOptions, active]);
+  // }, [builderProduct, setProduct, active]);
 
   // useEffect(() => {
   //   if (!product?.id || !active) return;
@@ -28,14 +41,14 @@ const ConfiguratorRuntime = ({ active }: { active: boolean }) => {
 
 
   useEffect(() => {
+    console.log("init", product)
     if (!active) return;
     if (!product?.id) return;
 
     if (initializedRef.current === product.id) return;
-
-    initOptions();
+    initOptions(product);
     initializedRef.current = product.id;
-  }, [product?.id, initOptions, active]);
+  }, [product, initOptions, active]);
 
 
   useEffect(() => {

@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import { useConfiguratorStore } from '../../store/configurator.store';
 import { ModuleRenderer } from '../ModuleRenderer';
+import { useProduct } from '@/features/product-studio/context/ProductContext';
 
 
 const ConfiguratorPanel = () => {
-    const product = useConfiguratorStore(s => s.product);
+    const product = useProduct();
     if(!product) return null;
 
     return (

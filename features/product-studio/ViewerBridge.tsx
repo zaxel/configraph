@@ -6,29 +6,20 @@ import { useBuilderStore } from "../builder/store/builder.store";
 const ViewerBridge = () => {
   const mode = useProductStudioStore(s => s.mode);
 
-  const product = useConfiguratorStore(s => s.product);
-  const productUrl = useBuilderStore(s => s.product?.model.url);
-  const selectedOptions = useConfiguratorStore(s => s.selectedOptions); 
+  const product = useBuilderStore(s => s.product);
+  const productUrl = product?.model.url;
+
+  const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
 
   if (!productUrl) return null;
-  if (mode === "builder") {
-
-    return (
-      <Viewer
-        modelUrl={productUrl}
-        mode={mode}
-      />
-    );
-  }
 
   return (
     <Viewer
       modelUrl={productUrl}
-      product={product}
-      selectedOptions={selectedOptions}
+      product={mode === "preview" ? product : undefined}
+      selectedOptions={mode === "preview" ? selectedOptions : undefined}
       mode={mode}
     />
   );
 };
-
 export default ViewerBridge;

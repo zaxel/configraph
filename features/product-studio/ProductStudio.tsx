@@ -10,6 +10,8 @@ import BuilderDisabled from "../builder/ui/components/BuilderDisabled";
 import { initProductSample } from "../builder/store/slices/productConfig.slice";
 import { useEffect } from "react";
 import { useParams } from "next/navigation";
+import Toggle from "./Toggle";
+import { ProductContext } from "./context/ProductContext";
 
 const ProductStudio = () => {
     const params = useParams();
@@ -19,7 +21,10 @@ const ProductStudio = () => {
     const mode = useProductStudioStore(s => s.mode);
     const initProduct = useBuilderStore(s => s.initProduct);
     const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
-    const { status } = useBuilderStore();
+    const { status, product } = useBuilderStore();
+
+
+    console.log(product);
 
     useEffect(() => {
         if (!id) {
@@ -32,6 +37,8 @@ const ProductStudio = () => {
 
     return (
         <div className="w-full flex flex-col md:flex-row relative">
+            {/* TOGGLE MODE BTN */}
+            <Toggle />
             {/* LEFT — always visible */}
             <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2">
                 <ViewerBridge />
@@ -39,17 +46,18 @@ const ProductStudio = () => {
             </div>
 
             {/* RIGHT — changes */}
-            {status !== "ready"
-                ? <BuilderDisabled />
-                : <>{mode === "builder" && <BuilderPanel />}
-                    {mode === "preview" && (
-                        <>
-                            <ConfiguratorRuntime active={mode === "preview"} />
-                            <ConfiguratorPanel />
-                        </>
-                    )}
-                </>
-            }
+            <ProductContext.Provider value={product}>
+                {mode === "builder" ? (
+                    status !== "ready"
+                        ? <BuilderDisabled />
+                        : <BuilderPanel />
+                ) : (
+                    <>
+                        <ConfiguratorRuntime active />
+                        <ConfiguratorPanel />
+                    </>
+                )}
+            </ProductContext.Provider>
         </div>
     );
 };

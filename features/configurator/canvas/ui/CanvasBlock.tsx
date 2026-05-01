@@ -32,7 +32,7 @@ const CanvasBlock = ({ data }: { data: CanvasComponent }) => {
         <h3 className="font-medium text-xl mb-4">{data.label}</h3>
       )}
       <div className={editorTab === "applied" ? "hidden" : ""}>
-        <FabricCanvas />
+          <FabricCanvas />
       </div>
       <CanvasToolbar />
     </div>

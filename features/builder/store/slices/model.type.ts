@@ -12,5 +12,5 @@ export interface ModelSlice {
 
   resetModel: () => void;
   initModel: (url: string) => void;
-  uploadModel: (url: any) => Promise<string>;
+ uploadModel: (file: File) => Promise<string>;
 }

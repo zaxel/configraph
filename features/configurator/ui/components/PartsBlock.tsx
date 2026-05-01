@@ -1,9 +1,9 @@
 ﻿import { HexColorPicker } from 'react-colorful';
 import { PartsComponent } from '../../model';
 import { useConfiguratorStore } from '../../store/configurator.store';
-import * as THREE from "three"
 import Button from '@/components/common/Button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useProduct } from '@/features/product-studio/context/ProductContext';
 
 export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const selectedPartOption = useConfiguratorStore(s => s.selectedOptions.parts.selectedPart);
@@ -12,11 +12,12 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const setGroup = useConfiguratorStore(s => s.setGroup);
   const setColor = useConfiguratorStore(s => s.setColor);
   const setEnabled = useConfiguratorStore(s => s.setEnabled);
+  const product = useProduct();
 
   const parts = data.options.map(part => {
     const isSelected = part.id === selectedPartOption;
     return <li key={part.id}>
-      <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setPart(part.id)}>
+      <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setPart(product, part.id)}>
         {part.id}
       </Button>
     </li>
@@ -35,7 +36,10 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
     const isSelected = group.id === partSelection.groupId;
 
     return <li key={group.id}>
-      <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setGroup(selectedPartOption, group.id)}>
+      <Button
+        variant={isSelected ? "active" : "primary"}
+        onClick={() => !isSelected && selectedPartOption && setGroup(product, selectedPartOption, group.id)
+        }>
         {group.label}
       </Button>
     </li>
@@ -51,8 +55,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
 
     return <li
       onClick={() =>
-        !isSelected &&
-        setColor(selectedPartOption, color.value)
+        !isSelected && selectedPartOption && setColor(selectedPartOption, color.value)
       }
       key={color.value}
       className={`w-8 h-8 rounded-full ring-1 ring-gray-300 cursor-pointer relative`}
@@ -72,14 +75,24 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
         <Checkbox
           className="h-5 w-5 cursor-pointer"
           checked={partSelection.enabled}
-          onCheckedChange={(checked) => setEnabled(selectedPartOption, Boolean(checked))}
+          disabled={!selectedPartOption}
+          onCheckedChange={(checked) => {
+            if (selectedPartOption)
+              setEnabled(selectedPartOption, Boolean(checked))
+          }
+          }
         />
         <span>toggle part</span>
       </label>
       }
       {partSelection.enabled && !isCustomAllowed && colors && colors.length > 0 && <ul className='flex items-center gap-3'>{colors}</ul>}
       {partSelection.enabled && isCustomAllowed && <div className="h-24">
-        <HexColorPicker className="max-h-full" color={partSelection.color as string} onChange={(color: string | number | THREE.Color) => setColor(selectedPartOption, color)} />
+        <HexColorPicker className="max-h-full" color={partSelection.color as string}
+          onChange={(color) => {
+            if (selectedPartOption)
+              setColor(selectedPartOption, color)
+          }
+          } />
       </div>}
     </div>
   );

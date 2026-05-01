@@ -1,4 +1,5 @@
 ﻿import * as THREE from "three"
+import { Product } from "./product.types";
 
 export type PartsSelection = {
   selectedPart?: string;
@@ -25,9 +26,9 @@ export type OptionsSlice = {
     toggleAddon: (value: string) => void;
 
     resetOptions: () => void;
-    initOptions: () => void;
-    setPart: (partId: string) => void;
-    setGroup: (part: string, group: string) => void;
+    initOptions: (product: Product) => void;
+    setPart: (product: Product, partId: string) => void;
+    setGroup: (product: Product, part: string, group: string) => void;
     setColor: (part: string, color: string | number | THREE.Color) => void;
     setEnabled: (part: string, status: boolean) => void;
 };

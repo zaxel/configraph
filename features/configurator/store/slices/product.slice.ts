@@ -305,7 +305,7 @@ export const product_sample: Product = {
     url: "/models/nike5.glb",
   },
 
-  modules: [
+  modules: [ 
     {
       id: "price",
       order: 1,

@@ -18,11 +18,10 @@ export const createOptionsSlice: StateCreator<
   [],
   [],
   OptionsSlice
-> = (set, get): OptionsSlice => ({
+> = (set): OptionsSlice => ({
   selectedOptions: initValue,
 
-  initOptions: () => {
-    const product = get().product;
+  initOptions: (product) => {
     if (!product) return;
     const initialSelections = {
       ...initValue,
@@ -41,9 +40,9 @@ export const createOptionsSlice: StateCreator<
       },
     })),
 
-  setPart: (partId) =>
+  setPart: (product, partId) =>
     set((state) => {
-      const product = state.product;
+      // const product = state.product;
       if (!product) return state;
 
       const partsModule = product.modules.find(
@@ -83,9 +82,9 @@ export const createOptionsSlice: StateCreator<
       };
     }),
 
-  setGroup: (part, groupId) =>
+  setGroup: (product, part, groupId) =>
     set((state) => {
-      const product = state.product;
+      // const product = state.product;
       if (!product) return state;
 
       const partsModule = product.modules.find((m): m is PartsModule => m.id === "parts");

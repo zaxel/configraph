@@ -11,7 +11,67 @@ export const initProductSample: Product = {
         url: "",
     },
 
-    modules: [],
+    modules: [
+        {
+            id: "price",
+            order: 1,
+            components: [
+                {
+                    id: "102",
+                    type: "price",
+                    pricing: {
+                        basePrice: 100.0,
+                        oldPrice: 115.0,
+                        currency: "USD",
+                        order: 1,
+                    },
+                }
+            ],
+        },
+        {
+            id: "addon",
+            order: 5,
+
+            default: {
+                type: "addon",
+                selections: ["spare velcro", "exclusively signed by Michel Jordan",]
+            },
+
+
+
+            components: [
+                {
+                    id: "318",
+                    type: "addon",
+                    label: "Addons:",
+                    options: [
+                        {
+                            value: "fancy and beautiful loop",
+                            label: "fancy and beautiful loop",
+                            price: 0
+                        },
+                        {
+                            value: "spare velcro",
+                            label: "spare velcro",
+                            price: 10.0
+                        },
+                        {
+                            value: "antibacterial and antifungal powder",
+                            label: "antibacterial and antifungal powder",
+                            price: 11.8
+                        },
+                        {
+                            value: "exclusively signed by Michel Jordan",
+                            label: "exclusively signed by Michel Jordan",
+                            price: 99.99
+                        },
+                    ]
+                },
+
+
+            ],
+        },
+    ],
 };
 
 export const createProductConfigSlice: StateCreator<
@@ -40,6 +100,11 @@ export const createProductConfigSlice: StateCreator<
         set({ configuratorId: id }, false, "setConfiguratorId"),
 
     loadConfigurator: async (id) => {
+        const { configuratorId, status } = get();
+        if (configuratorId === id && status === "ready") {
+            return;
+        }
+
         set({ status: "loading", error: null });
 
         try {
@@ -52,14 +117,22 @@ export const createProductConfigSlice: StateCreator<
 
             const data = await res.json();
 
-            set(() => ({ 
+
+            /* temp modules injection. to be removed */
+            const tempProduct = data.product;
+            tempProduct.modules = initProductSample.modules;
+            tempProduct.id = initProductSample.id;
+            console.log(tempProduct)
+            /* temp modules injection. to be removed */
+
+            set(() => ({
                 configuratorId: id,
 
-                product: data.product, // overwrite (authoritative)
+                product: tempProduct, // overwrite (authoritative)
                 builderConfig: data.builderConfig, // overwrite
 
                 status: "ready",
-                error: null, 
+                error: null,
             }));
 
         } catch (err) {

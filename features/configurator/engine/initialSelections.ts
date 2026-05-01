@@ -1,4 +1,4 @@
-﻿import { AddonModule, Component, Module, PartsModule, Product, SizeComponent, SizeModule } from "../model";
+﻿import { AddonModule, Module, PartsModule, Product, SizeModule } from "../model";
 import { PartsSelection } from "../model/selections.types";
 
 
@@ -66,7 +66,6 @@ export function buildInitialAddonSelections(product: Product) {
 
   const def = addonModule.default?.selections ?? null;
   if (def === null) return {};
-
   return {
     addon: def
   };
