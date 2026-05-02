@@ -36,7 +36,10 @@ const MeshChecker = () => {
 
                     return (
                         <li key={mesh.name} className="flex justify-between items-center gap-4">
-                            <span className="truncate ml-6">{mesh.name}</span>
+                            <span 
+                                onMouseEnter={()=>debuggerApi?.highlight(mesh.name, isEnabled)}
+                                onMouseLeave={()=>debuggerApi?.resetHighlight(mesh.name, isEnabled)}
+                            className="truncate ml-6">{mesh.name}</span>
                             {/* <span className="ml-auto mr-12">{mesh.materialCount}</span> */}
                             <Checkbox
                                 checked={isEnabled}

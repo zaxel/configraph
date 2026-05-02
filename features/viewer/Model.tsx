@@ -9,6 +9,7 @@ import { ViewerProps } from './Viewer';
 import { useConfiguratorStore } from '../configurator/store/configurator.store';
 import { useBuilderStore } from '../builder/store/builder.store';
 import { MeshLayout } from '@/lib/extractMeshes';
+import { useMeshDebugger } from '../builder/hooks/useMeshDebugger';
 
 const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     const { gltf } = useGLTF(modelUrl);
@@ -17,7 +18,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     const setDebuggerApi = useBuilderStore(s => s.setDebuggerApi);
     const setRegistry = useBuilderStore(s => s.setRegistry);
     const configuratorId = useBuilderStore(s => s.configuratorId);
-   const meshesRegistered = useBuilderStore(s => (s.builderConfig?.meshes?.length ?? 0) > 0);
+    const meshesRegistered = useBuilderStore(s => (s.builderConfig?.meshes?.length ?? 0) > 0);
     const setBuilderConfig = useBuilderStore(s => s.setBuilderConfig);
 
     const registry = useMeshRegistry(gltf, product);
@@ -29,7 +30,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     useEffect(() => {
         if (!registry || !configuratorId || meshesRegistered) return;
 
-        const meshLayout: MeshLayout[] = []; 
+        const meshLayout: MeshLayout[] = [];
         gltf.scene.traverse((child: THREE.Mesh) => {
             if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
@@ -53,29 +54,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
 
     }, [registry, configuratorId, meshesRegistered, gltf.scene, setBuilderConfig]);
 
-    const debuggerApi = useMemo(() => {
-        if (!registry) return null;
-        return {
-            toggleVisibility: (name: string) => {
-                const obj = registry.byName.get(name);
-                if (!obj || !(obj as THREE.Mesh).isMesh) return;
-
-                obj.visible = !obj.visible;
-            },
-            highlight: (name: string, enabled: boolean) => {
-                if (!enabled) return;
-            
-                const obj = registry.byName.get(name);
-                if (!obj || !(obj as THREE.Mesh).isMesh) return;
-            
-                const mesh = obj as THREE.Mesh;
-            
-                mesh.material = new THREE.MeshBasicMaterial({
-                  color: 0xff0000,
-                });
-              }
-        };
-    }, [registry]);
+    const debuggerApi = useMeshDebugger(registry);
 
     useEffect(() => {
         if (!registry) return;
@@ -101,7 +80,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     });
 
     useMaterialSystem({
-        registry, 
+        registry,
         product,
         selectedOptions,
         enabled: mode === "preview",

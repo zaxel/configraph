@@ -3,6 +3,7 @@
 export type MeshDebuggerApi = {
   toggleVisibility: (name: string) => void;
   highlight: (name: string, enabled: boolean) => void;
+  resetHighlight: (name: string, enabled: boolean) => void;
 } | null;
 
 export type SceneSlice = {
