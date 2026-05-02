@@ -25,6 +25,7 @@ const ProductStudio = () => {
 
 
     console.log(product);
+    console.log(status);
 
     useEffect(() => {
         if (!id) {
@@ -38,7 +39,7 @@ const ProductStudio = () => {
     return (
         <div className="w-full flex flex-col md:flex-row relative">
             {/* TOGGLE MODE BTN */}
-            <Toggle />
+            {status === "ready" && <Toggle />}
             {/* LEFT — always visible */}
             <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2">
                 <ViewerBridge />
