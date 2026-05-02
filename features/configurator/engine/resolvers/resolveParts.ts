@@ -1,4 +1,4 @@
-﻿import { meshGroup, OptionsComponent, Product } from "../../model";
+﻿import { meshGroup, OptionsComponent, PartsComponent, Product } from "../../model";
 import { SelectedOptions } from "../../model/selections.types";
 import { ResolvedParts } from "../types/resolved.types";
 

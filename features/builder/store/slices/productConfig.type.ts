@@ -1,5 +1,5 @@
 ﻿import { Product } from "@/features/configurator/model";
-import { MeshInfo } from "@/lib/extractMeshes";
+import { MeshLayout } from "@/lib/extractMeshes";
 
 export type ProductConfigSlice = {
     product: Product | null;
@@ -9,8 +9,9 @@ export type ProductConfigSlice = {
     setModelUrl: (url: string) => void;
     setConfiguratorId: (id: string) => void;
     loadConfigurator: (id: string) => void;
+    setBuilderConfig: (config: BuilderConfig) => void,
 }
 
 export type BuilderConfig = {
-  meshes: MeshInfo[];
+  meshes: MeshLayout[];
 } | null;

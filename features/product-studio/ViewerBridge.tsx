@@ -16,7 +16,7 @@ const ViewerBridge = () => {
   return (
     <Viewer
       modelUrl={productUrl}
-      product={mode === "preview" ? product : undefined}
+      product={product}
       selectedOptions={mode === "preview" ? selectedOptions : undefined}
       mode={mode}
     />

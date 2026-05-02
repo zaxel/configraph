@@ -10,7 +10,7 @@ import { SelectedOptions } from "../../configurator/model/selections.types";
 }; 
 
 export type MaterialSystemProps = {
-    registry?: MeshRegistry;
+    registry: MeshRegistry | null;
     product?: Product | null;
     selectedOptions?: SelectedOptions; 
     enabled: boolean;

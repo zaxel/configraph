@@ -1,6 +1,6 @@
 ﻿import { StateCreator } from "zustand";
 import { BoundBuilderStore } from "../builder.types";
-import { ProductConfigSlice } from "./productConfig.type";
+import { BuilderConfig, ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
 
 export const initProductSample: Product = {
@@ -130,7 +130,7 @@ export const createProductConfigSlice: StateCreator<
 
                 product: tempProduct, // overwrite (authoritative)
                 builderConfig: data.builderConfig, // overwrite
-
+                meshesRegistered: data.builderConfig.meshes?.length > 0,
                 status: "ready",
                 error: null,
             }));
@@ -141,5 +141,6 @@ export const createProductConfigSlice: StateCreator<
                 error: err instanceof Error ? err.message : "Failed to load",
             });
         }
-    }
+    },
+    setBuilderConfig: (config) => set({ builderConfig: config }),
 });

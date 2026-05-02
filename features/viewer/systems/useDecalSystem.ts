@@ -5,8 +5,9 @@ import { MeshRegistry } from "../types/registry.types";
 import { DecalGeometry } from "three/examples/jsm/Addons.js";
 import { useConfiguratorStore } from "../../configurator/store/configurator.store";
 import { DecalSource } from "../../configurator/store/slices/decals.types";
+import { registryItemFileSchema } from "shadcn/schema";
 
-export const useDecalSystem = ({ registry, enabled }: { registry: MeshRegistry, enabled: boolean }) => {
+export const useDecalSystem = ({ registry, enabled }: { registry: MeshRegistry | null, enabled: boolean }) => {
   const { scene, camera } = useThree();
 
   const decals = useConfiguratorStore((s) => s.decals);
@@ -53,7 +54,7 @@ export const useDecalSystem = ({ registry, enabled }: { registry: MeshRegistry, 
     decals.forEach((decal) => {
       if (decalRefs.current.has(decal.id)) return;
 
-      const mesh = registry.byName.get(decal.target);
+      const mesh = registry?.byName.get(decal.target);
       if (!mesh) return;
 
       const texture = new THREE.TextureLoader().load(decal.texture);
@@ -106,7 +107,7 @@ export const useDecalSystem = ({ registry, enabled }: { registry: MeshRegistry, 
   // PREVIEW + RAYCAST
   // =========================================================
   useFrame(() => {
-    if (!enabled) return;
+    if (!enabled || !registry) return;
     if (!preview?.texture) return;
 
     // throttle raycast to every 5 frames

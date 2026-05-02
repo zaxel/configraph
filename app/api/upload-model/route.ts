@@ -8,8 +8,6 @@ import { KHRDracoMeshCompression } from '@gltf-transform/extensions';
 import draco3d from 'draco3d';
 import type { DecoderModule, EncoderModule } from 'draco3d';
 import sharp from 'sharp';
-import { loadGLB } from "@/lib/loadGLB";
-import { extractMeshes, extractMeshesFromGLB } from "@/lib/extractMeshes";
 import { createConfigurator } from "@/db/configurator.repo";
 
 let encoderPromise: Promise<EncoderModule> | null = null;
@@ -94,15 +92,13 @@ export async function POST(req: Request) {
 
         const url = `/models/optimized/${fileName}`;
 
-        const fileBuffer = await fs.promises.readFile(optimizedPath);
-        const meshes = extractMeshesFromGLB(fileBuffer.buffer);
         const configurator = await createConfigurator({ 
             product: {
                 model: { url },
                 modules: []
             },
             builderConfig: {
-                meshes
+                meshes: []
             }
         });
 

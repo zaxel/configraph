@@ -56,7 +56,7 @@ export const createModelSlice: StateCreator<
             const res = await fetch("/api/upload-model", {
                 method: "POST",
                 body: formData,
-            });
+            });  
 
             // 2. distinguish processing stage
             set({ status: "processing" });
@@ -65,6 +65,8 @@ export const createModelSlice: StateCreator<
                 const text = await res.text();
                 throw new Error(text || "Upload failed");
             }
+
+
 
             const { configuratorId } = await res.json();
 
