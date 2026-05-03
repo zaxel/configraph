@@ -5,7 +5,7 @@ export const ProductContext = createContext<Product | null>(null);
 
 export const useProduct = () => {
   const ctx = useContext(ProductContext);
-  if (!ctx) {
+  if (ctx === undefined) {
     throw new Error("useProduct must be used inside ProductContext.Provider");
   }
   return ctx;

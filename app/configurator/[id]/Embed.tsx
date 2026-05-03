@@ -4,6 +4,7 @@ import { useConfiguratorStore } from '@/features/configurator/store/configurator
 import { product_sample } from '@/features/configurator/store/slices/product.slice';
 import ConfiguratorPanel from '@/features/configurator/ui/components/ConfiguratorPanel';
 import { ProductContext } from '@/features/product-studio/context/ProductContext';
+import { useProductStudioStore } from '@/features/product-studio/product-studio.store';
 import Viewer from '@/features/viewer/Viewer';
 import React, { useEffect } from 'react';
 
@@ -11,9 +12,10 @@ const Embed = () => {
     const product = useConfiguratorStore(s => s.product);
     const setProduct = useConfiguratorStore(s => s.setProduct);
     const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
-
+    const setMode = useProductStudioStore(s => s.setMode);
 
     useEffect(() => {
+        setMode("embed");
         setProduct(product_sample);
     }, [])
 

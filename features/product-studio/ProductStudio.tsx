@@ -21,7 +21,7 @@ const ProductStudio = () => {
     const mode = useProductStudioStore(s => s.mode);
     const initProduct = useBuilderStore(s => s.initProduct);
     const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
-    const { status, product } = useBuilderStore();
+    const { status, product, draft } = useBuilderStore();
 
 
     console.log(product);
@@ -47,7 +47,7 @@ const ProductStudio = () => {
             </div>
 
             {/* RIGHT — changes */}
-            <ProductContext.Provider value={product}>
+            <ProductContext.Provider value={(mode === "embed" ? product : draft) ?? null}>
                 {mode === "builder" ? (
                     status !== "ready"
                         ? <BuilderDisabled />
