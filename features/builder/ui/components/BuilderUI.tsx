@@ -1,9 +1,10 @@
 ﻿import React from 'react';
+import ModuleSelect from './ModuleSelect';
 
 const BuilderUI = () => {
     return (
         <div>
-            Builder UI
+            <ModuleSelect />
         </div>
     );
 };

@@ -5,7 +5,6 @@ export type ComponentType =
   | "size"
   | "addon"
   | "content"
-  | "price"
   | "canvas"
   | "submit"
   | "price";
