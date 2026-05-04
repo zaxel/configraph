@@ -20,13 +20,11 @@ const MeshChecker = () => {
             return next;
         });
     };
-    console.log(builderConfig?.meshes)
 
     return (
         <div className="w-full">
             <div className="mb-6 flex justify-between items-center gap-4 text-xl">
                 <div className="w-5/6 text-center">Detected Meshes</div>
-                {/* <div className="ml-auto">Mat <br /> Count</div> */}
                 <div className="mr-6 w-1/6">Toggle</div>
             </div>
 
@@ -40,7 +38,6 @@ const MeshChecker = () => {
                                 onMouseEnter={()=>debuggerApi?.highlight(mesh.name, isEnabled)}
                                 onMouseLeave={()=>debuggerApi?.resetHighlight(mesh.name, isEnabled)}
                             className="truncate ml-6">{mesh.name}</span>
-                            {/* <span className="ml-auto mr-12">{mesh.materialCount}</span> */}
                             <Checkbox
                                 checked={isEnabled}
                                 onCheckedChange={() => {

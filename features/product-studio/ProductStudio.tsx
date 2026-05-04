@@ -17,16 +17,11 @@ const ProductStudio = () => {
     const params = useParams();
     const id = params.id;
 
-
     const mode = useProductStudioStore(s => s.mode);
     const initProduct = useBuilderStore(s => s.initProduct);
     const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
-    const { status, product, draft } = useBuilderStore();
+    const { status, draft } = useBuilderStore();
     const activeBuilderTab = useBuilderStore(s => s.activeTab);
-
-
-    console.log(product);
-    console.log(status);
 
     useEffect(() => {
         if (!id) {
@@ -42,7 +37,6 @@ const ProductStudio = () => {
             {/* TOGGLE MODE BTN */}
             {status === "ready" && <Toggle />}
             {/* LEFT — always visible */} 
-            {/* <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2"> */}
                 <div className={`w-full ${(mode === "builder" && activeBuilderTab==="builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab==="builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2`}>
                 <ViewerBridge />
                 {mode === "builder" && <BuilderOverlay />}

@@ -11,6 +11,6 @@ export function isComponentType<T extends Component["type"]>(
 export function isModuleType<T extends Module["id"]>(
   m: Module,
   id: T
-): m is Extract<Module, { id: T }> {
+): m is Extract<Module, { id: T }> { 
   return m.id === id;
 }

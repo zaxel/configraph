@@ -1,6 +1,5 @@
-﻿import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field';
+﻿import { Field, FieldGroup } from '@/components/ui/field';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import React, { useState } from 'react';
 
 const ModuleSelect = () => {

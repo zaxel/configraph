@@ -11,7 +11,7 @@ export const BuilderModuleRenderer = ({ module }: { module: Module }) => {
                 if (!Block) return null;
 
                 return <BlockContainer key={comp.id} id={module.id}>
-                    <Block data={comp as never} moduleId={module.instanceId} defaultOpt={module.default}/>
+                    <Block data={comp as never} moduleId={module.instanceId} defaultOpt={module.default as never}/> 
                 </BlockContainer> 
             })}
              <hr className='h-0.5 bg-gray-100 text-transparent' />
