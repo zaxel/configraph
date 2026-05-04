@@ -1,14 +1,18 @@
 ﻿import { Component, Module } from "@/features/configurator/model";
 import { componentRegistry } from "./registry";
+import BlockContainer from "./components/BlockContainer";
 
 export const BuilderModuleRenderer = ({ module }: { module: Module }) => {
+    console.log(module)
     return (
         <div className="flex flex-col gap-4">
             {module.components.map((comp: Component) => {
                 const Block = componentRegistry[comp.type as keyof typeof componentRegistry];
                 if (!Block) return null;
 
-                return <Block key={comp.id} data={comp as never} moduleId={module.instanceId}/>;
+                return <BlockContainer key={comp.id} id={module.id}>
+                    <Block data={comp as never} moduleId={module.instanceId}/>
+                </BlockContainer> 
             })}
              <hr className='h-0.5 bg-gray-100 text-transparent' />
         </div>

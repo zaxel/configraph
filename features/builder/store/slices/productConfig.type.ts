@@ -1,5 +1,7 @@
-﻿import { Product } from "@/features/configurator/model";
+﻿import { AddonComponent, Product } from "@/features/configurator/model";
 import { MeshLayout } from "@/lib/extractMeshes";
+
+type AddonOption = AddonComponent["options"][number];
 
 export type ProductConfigSlice = {
     product: Product | null;
@@ -11,6 +13,7 @@ export type ProductConfigSlice = {
     setConfiguratorId: (id: string) => void;
     loadConfigurator: (id: string) => void;
     setBuilderConfig: (config: BuilderConfig) => void,
+    updateAddonOption: (moduleId: string, optionId: string, patch: Partial<AddonOption>) => void,
 }
 
 export type BuilderConfig = {

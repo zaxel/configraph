@@ -2,6 +2,7 @@
 import { BoundBuilderStore } from "../builder.types";
 import { BuilderConfig, ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
+import { isComponentType } from "@/features/configurator/model/component.guards";
 
 export const initProductSample: Product = {
     id: `${'prod_' + crypto.randomUUID()}`,
@@ -152,10 +153,10 @@ export const createProductConfigSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return state;
 
-            const module = draft.modules.find(m => m.instanceId === moduleId);
-            if (!module) return state;
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return state;
 
-            const component = module.components.find(c => c.type === "addon");
+            const component = mod.components.find(c => isComponentType(c, "addon"));
             if (!component) return state;
 
             const option = component.options.find(o => o.id === optionId);

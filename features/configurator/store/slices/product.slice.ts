@@ -347,7 +347,7 @@ export const product_sample: Product = {
     },
 
     {
-      id: "content-01",
+      id: "content",
       instanceId: "rand9997",
       order: 0,
 
@@ -598,7 +598,7 @@ export const product_sample: Product = {
       ],
     },
     {
-      id: "content-02",
+      id: "content",
       instanceId: "rand935",
       order: 6,
 
