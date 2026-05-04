@@ -6,6 +6,7 @@ import { createSceneSlice } from "./slices/scene.slice";
 import { createModelSlice } from "./slices/model.slice";
 import { createProductConfigSlice } from "./slices/productConfig.slice";
 import { immer } from "zustand/middleware/immer";
+import { createAddonSlice } from "./slices/addon.slice";
 
 export const useBuilderStore = create<BoundBuilderStore>()(
   immer(devtools((...a) => ({
@@ -13,5 +14,6 @@ export const useBuilderStore = create<BoundBuilderStore>()(
     ...createModelSlice(...a),
     ...createProductConfigSlice(...a),
     ...createSceneSlice(...a),
+    ...createAddonSlice(...a),
   })))
 );
