@@ -23,6 +23,27 @@ export type DefaultCanvas = {
   type: "canvas",
 }
 
+export type DefaultContent = {
+  type: "content",
+}
+
+export type DefaultSubmit = {
+  type: "submit",
+}
+export type DefaultPrice = {
+  type: "price",
+}
+export type ModuleDefault =  
+  | DefaultParts 
+  | DefaultAddons 
+  | DefaultSizes 
+
+  | DefaultCanvas 
+  | DefaultContent
+  | DefaultSubmit 
+  | DefaultPrice;
+
+
 export type BaseModule = {
   id: string;
   instanceId: string;
@@ -30,6 +51,13 @@ export type BaseModule = {
   type?: string;
   components: Component[];
 };
+
+export type ContentModule = BaseModule & {
+  id: "content";
+  type: "content";
+  default?: DefaultContent;
+};
+
 
 export type PartsModule = BaseModule & {
   id: "parts";
@@ -52,8 +80,17 @@ export type CanvasModule = BaseModule & {
   default?: DefaultCanvas;
 };
 
+export type SubmitModule = BaseModule & {
+  id: "submit";
+  default?: DefaultSubmit;
+};
+export type PriceModule = BaseModule & {
+  id: "price";
+  default?: DefaultPrice;
+};
 
-export type Module = PartsModule | SizeModule | AddonModule | CanvasModule | BaseModule;
+
+export type Module = PartsModule | SizeModule | AddonModule | CanvasModule | ContentModule | SubmitModule | PriceModule;
 
 export type Product = {
   id: string;

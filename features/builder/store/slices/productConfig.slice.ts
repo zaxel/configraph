@@ -2,7 +2,7 @@
 import { BoundBuilderStore } from "../builder.types";
 import { BuilderConfig, ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
-import { isComponentType } from "@/features/configurator/model/component.guards";
+import { isComponentType, isModuleType } from "@/features/configurator/model/component.guards";
 
 export const initProductSample: Product = {
     id: `${'prod_' + crypto.randomUUID()}`,
@@ -164,5 +164,47 @@ export const createProductConfigSlice: StateCreator<
 
             Object.assign(option, patch);
 
-        })
+        }),
+    deleteAddonOption: (moduleId, optionId) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return state;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return state;
+
+            const component = mod.components.find(c => isComponentType(c, "addon"));
+            if (!component) return state;
+
+            const options = component.options.filter(o => o.id !== optionId);
+            if (!options) return state;
+            component.options = options;
+        }),
+    addAddonOption: (moduleId, option) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return state;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return state;
+
+            const component = mod.components.find(c => isComponentType(c, "addon"));
+            if (!component) return state;
+
+            component.options.push(option);
+
+        }),
+    updateCheckOption: (moduleId, optionId, isSelected) =>
+        set((state) => {
+            const mod = state.draft?.modules.find(m => m.instanceId === moduleId);
+            if (mod && isModuleType(mod, "addon")) {
+                const selections = mod.default?.selections || [];
+
+                if (isSelected) {
+                    mod.default = { ...mod.default, type: "addon", selections: selections.filter(id => id !== optionId) };
+                } else {
+                    mod.default = { ...mod.default, type: "addon", selections: [...selections, optionId] };
+                }
+            }
+        }),
 });

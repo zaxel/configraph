@@ -5,10 +5,28 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { useBuilderStore } from '../../store/builder.store';
 import { Plus, Save, Trash2 } from 'lucide-react';
+import { Value } from 'three/examples/jsm/inspector/ui/Values.js';
 
-const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, moduleId: string }) => {
+type AddonBuilderBlock = { data: BuilderAddonComponent, moduleId: string, defaultOpt: any };
+
+const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) => {
 
     const updateAddonOption = useBuilderStore(s => s.updateAddonOption);
+    const deleteAddonOption = useBuilderStore(s => s.deleteAddonOption);
+    const addAddonOption = useBuilderStore(s => s.addAddonOption);
+    const updateCheckOption = useBuilderStore(s => s.updateCheckOption);
+
+    console.log(defaultOpt)
+
+    const onAddClickHandler = () => {
+        const option = {
+            id: crypto.randomUUID(),
+            value: "new addon",
+            label: "new addon",
+            price: 0
+        }
+        addAddonOption(moduleId, option);
+    }
 
     console.log(data)
     return (
@@ -32,7 +50,9 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                         <tr key={opt.id} className="border-t">
                             {/* ID (readonly) */}
                             <td className="p-2 text-xs text-muted-foreground">
-                                {opt.id}
+                                <div className="w-14 truncate">
+                                    {opt.id}
+                                </div>
                             </td>
 
                             {/* VALUE */}
@@ -41,8 +61,6 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                                     value={opt.value}
                                     onChange={(e) =>
                                         updateAddonOption(moduleId, opt.id, { value: e.target.value })
-                                        // onUpdate(opt.id, { value: e.target.value })
-                                        // console.log("update value") 
                                     }
                                 />
                             </td>
@@ -53,8 +71,6 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                                     value={opt.label}
                                     onChange={(e) =>
                                         updateAddonOption(moduleId, opt.id, { label: e.target.value })
-                                        // onUpdate(opt.id, { label: e.target.value })
-                                        // console.log("update lable")
                                     }
                                 />
                             </td>
@@ -79,10 +95,10 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                             {/* CHECKED */}
                             <td className="p-2 text-center">
                                 <Checkbox
-                                    // checked={!!opt.checked}
-                                    checked={false}
-                                    onCheckedChange={(val) =>
-                                        updateAddonOption(moduleId, opt.id, { checked: !!val })
+                                    checked={defaultOpt.selections.includes(opt.id)}
+
+                                    onCheckedChange={() =>
+                                        updateCheckOption(moduleId, opt.id, defaultOpt.selections.includes(opt.id))
                                         // onUpdate(opt.id, { checked: !!val })
                                         // console.log("update")
                                     }
@@ -97,7 +113,7 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                                     size="sm"
                                     // onClick={() => updateAddonOption(data.id, opt.id, { checked: !!val })}
                                     // onClick={() => onDelete(opt.id)}
-                                    onClick={() => console.log("delete")}
+                                    onClick={() => deleteAddonOption(moduleId, opt.id)}
                                 >
                                     Delete
                                 </Button>
@@ -111,9 +127,9 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
             <div className="flex items-center justify-between gap-2 p-3 bg-muted/40">
                 {/* LEFT */}
                 <div>
-                    <Button 
-                    // onClick={onAdd} 
-                    variant="default" size="sm" className="cursor-pointer">
+                    <Button
+                        onClick={onAddClickHandler}
+                        variant="default" size="sm" className="cursor-pointer">
                         <Plus className="w-4 h-4 mr-1" />
                         Add addon
                     </Button>
@@ -126,7 +142,7 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                         // onClick={onDelete}
                         variant="destructive"
                         size="sm"
-                        // disabled={disableDelete}
+                    // disabled={disableDelete}
                     >
                         <Trash2 className="w-4 h-4 mr-1" />
                         Delete
@@ -137,7 +153,7 @@ const AddonBuilderBlock = ({ data, moduleId }: { data: BuilderAddonComponent, mo
                         // onClick={onSave}
                         variant="secondary"
                         size="sm"
-                        // disabled={disableSave}
+                    // disabled={disableSave}
                     >
                         <Save className="w-4 h-4 mr-1 cursor-pointer" />
                         Save

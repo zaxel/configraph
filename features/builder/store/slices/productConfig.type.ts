@@ -13,7 +13,10 @@ export type ProductConfigSlice = {
     setConfiguratorId: (id: string) => void;
     loadConfigurator: (id: string) => void;
     setBuilderConfig: (config: BuilderConfig) => void,
+    deleteAddonOption: (moduleId: string, optionId: string) => void,
+    addAddonOption: (moduleId: string, option: AddonOption) => void,
     updateAddonOption: (moduleId: string, optionId: string, patch: Partial<AddonOption>) => void,
+    updateCheckOption: (moduleId: string, optionId: string, isSelected: boolean) => void,
 }
 
 export type BuilderConfig = {

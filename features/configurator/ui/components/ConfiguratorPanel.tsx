@@ -18,7 +18,7 @@ const ConfiguratorPanel = () => {
                 .slice()
                 .sort((a, b)=> a.order - b.order) 
                 .map((module) => {
-                    return <ModuleRenderer key={module.id} module={module}/>
+                    return <ModuleRenderer key={module.instanceId} module={module}/>
                 })}
         </div>
     );

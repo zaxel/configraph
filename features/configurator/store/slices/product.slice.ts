@@ -310,6 +310,9 @@ export const product_sample: Product = {
       id: "price",
       instanceId: "rand987",
       order: 1,
+      default: {
+        type: "price"
+      },
       components: [
         {
           id: "102",
@@ -327,6 +330,9 @@ export const product_sample: Product = {
       id: "canvas",
       instanceId: "rand989",
       order: 2,
+      default: {
+        type: "canvas"
+      },
       components: [
         {
           label: "Add a sticker:",
@@ -350,6 +356,10 @@ export const product_sample: Product = {
       id: "content",
       instanceId: "rand9997",
       order: 0,
+      type: "content",
+      default: {
+        type: "content"
+      },
 
       components: [
         {
@@ -601,6 +611,10 @@ export const product_sample: Product = {
       id: "content",
       instanceId: "rand935",
       order: 6,
+      type: "content",
+      default: {
+        type: "content"
+      },
 
       components: [
         {
@@ -641,6 +655,10 @@ export const product_sample: Product = {
       id: "submit",
       instanceId: "rand101",
       order: 7,
+      type: "submit",
+      default: {
+        type: "submit",
+      },
       components: [
         {
           id: "111",
