@@ -25,6 +25,7 @@ export type DefaultCanvas = {
 
 export type BaseModule = {
   id: string;
+  instanceId: string;
   order: number;
   type?: string;
   components: Component[];

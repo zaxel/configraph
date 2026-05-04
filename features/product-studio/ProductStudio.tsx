@@ -22,6 +22,7 @@ const ProductStudio = () => {
     const initProduct = useBuilderStore(s => s.initProduct);
     const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
     const { status, product, draft } = useBuilderStore();
+    const activeBuilderTab = useBuilderStore(s => s.activeTab);
 
 
     console.log(product);
@@ -40,14 +41,15 @@ const ProductStudio = () => {
         <div className="w-full flex flex-col md:flex-row relative">
             {/* TOGGLE MODE BTN */}
             {status === "ready" && <Toggle />}
-            {/* LEFT — always visible */}
-            <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2">
+            {/* LEFT — always visible */} 
+            {/* <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2"> */}
+                <div className={`w-full ${(mode === "builder" && activeBuilderTab==="builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab==="builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2`}>
                 <ViewerBridge />
                 {mode === "builder" && <BuilderOverlay />}
             </div>
 
             {/* RIGHT — changes */}
-            <ProductContext.Provider value={(mode === "embed" ? product : draft) ?? null}>
+            <ProductContext.Provider value={draft ?? null}>
                 {mode === "builder" ? (
                     status !== "ready"
                         ? <BuilderDisabled />

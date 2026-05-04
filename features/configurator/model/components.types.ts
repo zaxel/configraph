@@ -58,6 +58,7 @@ export type SizeComponent = BaseComponent & {
 export type AddonComponent = BaseComponent & {
   type: "addon";
   options: {
+    id: string;
     value: string;
     label: string;
     price?: number;

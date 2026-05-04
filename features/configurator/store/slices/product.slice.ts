@@ -308,6 +308,7 @@ export const product_sample: Product = {
   modules: [ 
     {
       id: "price",
+      instanceId: "rand987",
       order: 1,
       components: [
         {
@@ -324,6 +325,7 @@ export const product_sample: Product = {
     },
     {
       id: "canvas",
+      instanceId: "rand989",
       order: 2,
       components: [
         {
@@ -335,17 +337,18 @@ export const product_sample: Product = {
             'liberty.png', 'elvis.jpg', 'pluto.png',
 
           ],
-          zones: ['wamp_left', 'wamp_right'],
-          uvTemplates: {
-            wamp_left: '11234_wamp_left_uv.png',
-            wamp_right: '11211_wamp_right_uv.png',
-          }
+          // zones: ['wamp_left', 'wamp_right'],
+          // uvTemplates: {
+          //   wamp_left: '11234_wamp_left_uv.png',
+          //   wamp_right: '11211_wamp_right_uv.png',
+          // }
         }
       ]
     },
 
     {
       id: "content-01",
+      instanceId: "rand9997",
       order: 0,
 
       components: [
@@ -369,6 +372,7 @@ export const product_sample: Product = {
     },
     {
       id: "parts",
+      instanceId: "rand9876",
       type: "parts",
       order: 3,
 
@@ -508,6 +512,7 @@ export const product_sample: Product = {
 
     {
       id: "size",
+      instanceId: "rand787",
       order: 4,
       default: {
         type: "size",
@@ -546,6 +551,7 @@ export const product_sample: Product = {
     },
     {
       id: "addon",
+      instanceId: "rand117",
       order: 5,
 
       default: {
@@ -562,21 +568,25 @@ export const product_sample: Product = {
           label: "Addons:",
           options: [
             {
+              id: "opt-123",
               value: "fancy and beautiful loop",
               label: "fancy and beautiful loop",
               price: 0
             },
             {
+              id: "opt-124",
               value: "spare velcro",
               label: "spare velcro",
               price: 10.0
             },
             {
+              id: "opt-125",
               value: "antibacterial and antifungal powder",
               label: "antibacterial and antifungal powder",
               price: 11.8
             },
             {
+              id: "opt-126",
               value: "exclusively signed by Michel Jordan",
               label: "exclusively signed by Michel Jordan",
               price: 99.99
@@ -589,6 +599,7 @@ export const product_sample: Product = {
     },
     {
       id: "content-02",
+      instanceId: "rand935",
       order: 6,
 
       components: [
@@ -628,6 +639,7 @@ export const product_sample: Product = {
     },
     {
       id: "submit",
+      instanceId: "rand101",
       order: 7,
       components: [
         {
@@ -660,4 +672,3 @@ export const createProductSlice: StateCreator<
   setProduct: (product) =>
     set({ product }, false, "setProduct"), // Third arg is for Devtools action name
 });
-

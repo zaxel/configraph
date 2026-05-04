@@ -18,7 +18,7 @@ const ModuleSelect = () => {
                         console.log("New value selected:", value)
                     }}
                 >
-                    <SelectTrigger className="w-full max-w-48">
+                    <SelectTrigger className="w-full max-w-58">
                         <SelectValue placeholder="Add a module" />
                     </SelectTrigger>
                     <SelectContent

@@ -147,4 +147,21 @@ export const createProductConfigSlice: StateCreator<
         }
     },
     setBuilderConfig: (config) => set({ builderConfig: config }),
+    updateAddonOption: (moduleId, optionId, patch) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return state;
+
+            const module = draft.modules.find(m => m.instanceId === moduleId);
+            if (!module) return state;
+
+            const component = module.components.find(c => c.type === "addon");
+            if (!component) return state;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return state;
+
+            Object.assign(option, patch);
+
+        })
 });
