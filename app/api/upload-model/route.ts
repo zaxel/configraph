@@ -93,10 +93,13 @@ export async function POST(req: Request) {
         const url = `/models/optimized/${fileName}`;
 
         const configurator = await createConfigurator({ 
-            product: {
+            draft: {
+                id: "dft_" + crypto.randomUUID(),
+                quantity: 1,             
                 model: { url },
                 modules: []
             },
+            published: null,
             builderConfig: {
                 meshes: []
             }

@@ -12,6 +12,7 @@ export type ProductConfigSlice = {
     setConfiguratorId: (id: string) => void;
     loadConfigurator: (id: string) => void;
     setBuilderConfig: (config: BuilderConfig) => void,
+    saveDraft: () => Promise<void>,
 }
 
 export type BuilderConfig = {

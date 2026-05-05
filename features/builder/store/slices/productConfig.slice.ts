@@ -75,7 +75,7 @@ export const initProductSample: Product = {
     ],
 };
 
-export const createProductConfigSlice: StateCreator< 
+export const createProductConfigSlice: StateCreator<
     BoundBuilderStore,
     [["zustand/devtools", never], ["zustand/immer", never]],
     [],
@@ -121,18 +121,10 @@ export const createProductConfigSlice: StateCreator<
 
             const data = await res.json();
 
-
-            /* temp modules injection. to be removed */
-            // const tempProduct = data.product;
-            // tempProduct.modules = initProductSample.modules;
-            // tempProduct.id = initProductSample.id;
-            // console.log(tempProduct)
-            /* temp modules injection. to be removed */
-
             set(() => ({
                 configuratorId: id,
 
-                product: data.product, // overwrite (authoritative)
+                product: data.published ?? data.draft, // overwrite (authoritative)
                 draft: data.draft, // overwrite (authoritative)
                 builderConfig: data.builderConfig, // overwrite
                 meshesRegistered: data.builderConfig.meshes?.length > 0,
@@ -148,4 +140,22 @@ export const createProductConfigSlice: StateCreator<
         }
     },
     setBuilderConfig: (config) => set({ builderConfig: config }),
+    saveDraft: async () => {
+        const { draft, configuratorId, setSaving } = get();
+        if (!draft || !configuratorId) return;
+
+        setSaving(true);
+
+        try {
+            await fetch(`/api/configurator/${configuratorId}/draft`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(draft),
+            });
+        } catch (e) {
+            console.error("Failed to save draft", e);
+        } finally {
+            setSaving(false);
+        }
+    },
 });

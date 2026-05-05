@@ -10,8 +10,12 @@ export const createUiSlice: StateCreator<
   UiSlice
 > = (set) => ({
   activeTab: "mesh",
+  saving: false,
 
   setActiveTab: (name) =>
     set({ activeTab: name }, false, "setActiveTab"),
+
+  setSaving: (status) =>
+    set({ saving: status }, false, "setSaving"),
 
 });
