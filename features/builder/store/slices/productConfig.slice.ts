@@ -5,7 +5,6 @@ import { Product } from "@/features/configurator/model";
 import { isComponentType, isModuleType } from "@/features/configurator/model/component.guards";
 
 export const initProductSample: Product = {
-    id: `${'prod_' + crypto.randomUUID()}`,
     quantity: 1,
 
     model: {
@@ -158,4 +157,12 @@ export const createProductConfigSlice: StateCreator<
             setSaving(false);
         }
     },
+    deleteModule: (moduleId) =>
+        set((state) => {
+            if (!state.draft) return;
+
+            state.draft.modules = state.draft.modules.filter(
+                (m) => m.instanceId !== moduleId
+            );
+        })
 });

@@ -93,7 +93,7 @@ export type PriceModule = BaseModule & {
 export type Module = PartsModule | SizeModule | AddonModule | CanvasModule | ContentModule | SubmitModule | PriceModule;
 
 export type Product = {
-  id: string;
+  id?: string;
 
   quantity: number;
 

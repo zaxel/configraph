@@ -3,16 +3,17 @@ import { MeshLayout } from "@/lib/extractMeshes";
 
 
 export type ProductConfigSlice = {
-    product: Product | null;
-    draft: Product | null;
-    configuratorId: string | null;
-    builderConfig: BuilderConfig;
-    initProduct: (product: Product) => void;
-    setModelUrl: (url: string) => void;
-    setConfiguratorId: (id: string) => void;
-    loadConfigurator: (id: string) => void;
-    setBuilderConfig: (config: BuilderConfig) => void,
-    saveDraft: () => Promise<void>,
+  product: Product | null;
+  draft: Product | null;
+  configuratorId: string | null;
+  builderConfig: BuilderConfig;
+  initProduct: (product: Product) => void;
+  setModelUrl: (url: string) => void;
+  setConfiguratorId: (id: string) => void;
+  loadConfigurator: (id: string) => void;
+  setBuilderConfig: (config: BuilderConfig) => void;
+  saveDraft: () => Promise<void>;
+  deleteModule: (moduleId: string) => void;
 }
 
 export type BuilderConfig = {

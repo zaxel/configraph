@@ -18,7 +18,8 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
     const updateCheckOption = useBuilderStore(s => s.updateCheckOption);
     const saveDraft = useBuilderStore(s => s.saveDraft); 
     const saving = useBuilderStore(s => s.saving); 
-    console.log(defaultOpt)
+    const deleteModule = useBuilderStore(s => s.deleteModule); 
+   
 
     const onAddClickHandler = () => {
         const option = {
@@ -30,7 +31,6 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
         addAddonOption(moduleId, option);
     }
 
-    console.log(data)
     return (
 
 
@@ -133,10 +133,9 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                 <div className="flex items-center gap-2">
                     <Button
                         className="cursor-pointer"
-                        // onClick={onDelete}
+                        onClick={()=>deleteModule(moduleId)}
                         variant="destructive"
                         size="sm"
-                    // disabled={disableDelete}
                     >
                         <Trash2 className="w-4 h-4 mr-1" />
                         Delete
