@@ -3,6 +3,8 @@ import { BoundBuilderStore } from "../builder.types";
 import { BuilderConfig, ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
 import { isComponentType, isModuleType } from "@/features/configurator/model/component.guards";
+import { canAddModule } from "@/features/configurator/model/module.rules";
+import { createModuleFactory } from "../../lib/factories/createAddonModule";
 
 export const initProductSample: Product = {
     quantity: 1,
@@ -164,5 +166,23 @@ export const createProductConfigSlice: StateCreator<
             state.draft.modules = state.draft.modules.filter(
                 (m) => m.instanceId !== moduleId
             );
-        })
+        }),
+    addModule: (type) =>
+        set((state) => {
+            if (!state.draft) return state;
+
+            const order = state.draft.modules.length;
+
+            if (!canAddModule(type, state.draft)) return;
+
+            
+            const newModule = createModuleFactory(type, order);
+
+            return {
+                draft: {
+                    ...state.draft,
+                    modules: [...state.draft.modules, newModule],
+                },
+            };
+        }),
 });

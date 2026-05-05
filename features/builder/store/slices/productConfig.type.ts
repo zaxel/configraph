@@ -1,4 +1,4 @@
-﻿import { Product } from "@/features/configurator/model";
+﻿import { ComponentType, Product } from "@/features/configurator/model";
 import { MeshLayout } from "@/lib/extractMeshes";
 
 
@@ -14,6 +14,7 @@ export type ProductConfigSlice = {
   setBuilderConfig: (config: BuilderConfig) => void;
   saveDraft: () => Promise<void>;
   deleteModule: (moduleId: string) => void;
+  addModule: (type: ComponentType) => void;
 }
 
 export type BuilderConfig = {
