@@ -25,7 +25,7 @@ const AddonBlock = ({ data }: { data: AddonComponent }) => {
                   checked={isSelected}
                   onCheckedChange={() => toggleAddon(option.value)}
                 />
-                <span>{option.label}</span>
+                <span>{option.value}</span>
               </label>
             </li>
           );

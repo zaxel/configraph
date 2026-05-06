@@ -31,7 +31,7 @@ function createAddonModule(order: number): AddonModule {
             {
                 id: crypto.randomUUID(),
                 type: "addon",
-                label: "Addons:",
+                label: "",
                 options: [],
             },
         ],

@@ -69,4 +69,17 @@ export const createAddonSlice: StateCreator<
                 }
             }
         }),
+    updateAddonTittle: (moduleId, value) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return state;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return state;
+
+            const component = mod.components.find(c => isComponentType(c, "addon"));
+            if (!component) return state;
+
+            component.label = value; 
+        }),
 });

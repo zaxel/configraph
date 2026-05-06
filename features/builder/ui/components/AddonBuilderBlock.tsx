@@ -22,6 +22,7 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
     const setFieldDirty = useBuilderStore(s => s.setFieldDirty);
     const setFieldTouched = useBuilderStore(s => s.setFieldTouched);
     const validateField = useBuilderStore(s => s.validateField);
+    const updateAddonTittle = useBuilderStore(s => s.updateAddonTittle);
 
     const errors = useBuilderStore(s => s.errors);
     const touched = useBuilderStore(s => s.touched);
@@ -35,9 +36,41 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
         }
         addAddonOption(moduleId, option);
     }
-
     return (
         <div className="overflow-x-auto">
+            {/* CONTAINER TITLE */}
+            <div className="flex gap-6 items-center">
+                <p className="p-2 text-left">Component Title:</p>
+                <div className="p-2">
+                    <Input
+                        value={data.label} 
+                        onChange={(e) => {
+                            const path = `modules.${moduleId}.components.${data.id}.label`;
+                            setFieldDirty(path);
+                            inputHandlers["containerLabel"]({
+                                raw: e.target.value,
+                                moduleId,
+                                update: updateAddonTittle, 
+                            });
+                        }}
+                        onBlur={() => {
+                            const path = `modules.${moduleId}.components.${data.id}.label`;
+                            setFieldTouched(path);
+                            validateField(path);
+                        }}
+                    />
+                    {(() => {
+                        const path = `modules.${moduleId}.components.${data.id}.label`;
+                        const fieldErrors = errors[path];
+                        const isTouched = touched[path];
+                        return isTouched && fieldErrors && fieldErrors.length > 0 ? (
+                            <span className="text-red-500 text-xs">
+                                {fieldErrors[0].message}
+                            </span>
+                        ) : null;
+                    })()}
+                </div>
+            </div>
             <table className="w-full text-sm border rounded-md">
                 <thead className="bg-muted">
                     <tr>
@@ -85,8 +118,6 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                                     const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.value`;
                                     const fieldErrors = errors[path];
                                     const isTouched = touched[path];
-                                    console.log(path);
-                                    console.log(touched);
                                     return isTouched && fieldErrors && fieldErrors.length > 0 ? (
                                         <span className="text-red-500 text-xs">
                                             {fieldErrors[0].message}
@@ -111,7 +142,6 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                                     }}
                                     onBlur={() => {
                                         const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
-                                        console.log("blur", path)
                                         setFieldTouched(path);
                                         validateField(path);
                                     }}
@@ -120,8 +150,6 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                                     const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
                                     const fieldErrors = errors[path];
                                     const isTouched = touched[path];
-                                    console.log(path);
-                                    console.log(touched);
                                     return isTouched && fieldErrors && fieldErrors.length > 0 ? (
                                         <span className="text-red-500 text-xs">
                                             {fieldErrors[0].message}

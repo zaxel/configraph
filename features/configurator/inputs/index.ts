@@ -1,29 +1,33 @@
 ﻿import { UpdateAddonOption } from "@/features/builder/store/slices/addon.types";
 
-type AddonHandler = InputHandlerFunc<UpdateAddonOption>;
-
-type InputHandlerFunc<TUpdate> = (args: {
+type InputHandlerFunc<TUpdate, TArgs extends object = object> = (args: {
   raw: string;
   moduleId: string;
-  optionId: string;
   update: TUpdate;
-}) => void;
+} & TArgs) => void;
 
-type InputHandlerKey =
-  | "addonOptionValue"
-  | "addonOptionLabel"
-  | "price"
-  | "color";
+type WithOptionId = { optionId: string };
+
+type InputHandlerMap = {
+  containerLabel: InputHandlerFunc<(moduleId: string, label: string) => void>;
+  addonOptionValue: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+  addonOptionLabel: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+  price: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+  color: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+};
 
 const isValidHex = (value: string) =>
     /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(value);
 
-export const inputHandlers: Record<InputHandlerKey, AddonHandler> = {
+export const inputHandlers: InputHandlerMap = {
     addonOptionValue: ({ raw, update, moduleId, optionId }) => {
         update(moduleId, optionId, { value: raw.trimStart() });
     },
     addonOptionLabel: ({ raw, update, moduleId, optionId }) => {
         update(moduleId, optionId, { label: raw.trimStart() });
+    },
+    containerLabel: ({ raw, update, moduleId}) => {  
+        update(moduleId, raw.trimStart());
     },
 
     price: ({ raw, update, moduleId, optionId }) => {
@@ -33,7 +37,6 @@ export const inputHandlers: Record<InputHandlerKey, AddonHandler> = {
         const parsed = Number(raw); 
 
         if (parsed < 0) return; 
-        console.log(moduleId, optionId, parsed)
         update(moduleId, optionId, { price: parsed });
     },
     color: ({ raw, update, moduleId, optionId }) => {
