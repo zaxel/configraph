@@ -305,7 +305,7 @@ export const product_sample: Product = {
     url: "/models/nike5.glb",
   },
 
-  modules: [ 
+  modules: [
     {
       id: "price",
       instanceId: "rand987",
@@ -526,7 +526,10 @@ export const product_sample: Product = {
       order: 4,
       default: {
         type: "size",
+        id: "256",
         value: "XL",
+        label: "XL",
+        price: 0,
       },
 
       components: [
@@ -536,21 +539,25 @@ export const product_sample: Product = {
           label: "Size:",
           options: [
             {
+              id: "234",
               value: "M",
               label: "M",
               price: 5,
             },
             {
+              id: "235",
               value: "S",
               label: "S",
               price: 10,
             },
             {
+              id: "237",
               value: "L",
               label: "L",
               price: 15,
             },
             {
+              id: "256",
               value: "XL",
               label: "XL",
               price: 0,
@@ -663,7 +670,7 @@ export const product_sample: Product = {
         {
           id: "111",
           type: "submit",
-          label: "Add To Cart:", 
+          label: "Add To Cart:",
           text: "Add To cart",
         }
       ],
@@ -684,7 +691,7 @@ export const createProductSlice: StateCreator<
   ProductSlice
 > = (set) => ({
   quantity: 1,
-  
+
   product: null, // Initial value
 
   setProduct: (product) =>

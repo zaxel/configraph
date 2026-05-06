@@ -1,9 +1,12 @@
-﻿import { AddonComponent, Component, DefaultAddons, DefaultCanvas, DefaultContent, DefaultParts, DefaultPrice, DefaultSizes, DefaultSubmit, ModuleDefault } from "@/features/configurator/model";
+﻿import { AddonComponent, Component, DefaultAddons, DefaultCanvas, DefaultContent, DefaultParts, DefaultPrice, DefaultSizes, DefaultSubmit, ModuleDefault, SizeComponent } from "@/features/configurator/model";
 export type BuilderAddonComponent = AddonComponent;
+export type BuilderSizeComponent = SizeComponent;
+
 import AddonBuilderBlock from "./components/AddonBuilderBlock";
+import SizeBuilderBlock from "./components/SizeBuilderBlock";
 
 
-export type Renderer<T extends Component> = (props: {
+export type Renderer<T extends Component> = (props: { 
   data: T;
   moduleId: string;
   defaultOpt: ModuleDefault | undefined; 
@@ -11,6 +14,7 @@ export type Renderer<T extends Component> = (props: {
 
 type ComponentMap = {
   addon: BuilderAddonComponent;
+  size: BuilderSizeComponent;
 };
 
 type ComponentDefaultMap = {
@@ -34,4 +38,5 @@ type Registry = {
 
 export const componentRegistry: Registry = {
   addon: AddonBuilderBlock,
+  size: SizeBuilderBlock, 
 };  

@@ -4,9 +4,10 @@ import { BuilderConfig, ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
 import { isComponentType, isModuleType } from "@/features/configurator/model/component.guards";
 import { canAddModule } from "@/features/configurator/model/module.rules";
-import { createModuleFactory } from "../../lib/factories/createAddonModule";
+import { createModuleFactory } from "../../lib/factories/createModule";
 
 export const initProductSample: Product = {
+    id: `${crypto.randomUUID()}`,
     quantity: 1,
 
     model: {
@@ -14,65 +15,7 @@ export const initProductSample: Product = {
     },
 
     modules: [
-        // {
-        //     id: "price",
-        //     order: 1,
-        //     components: [
-        //         {
-        //             id: "102",
-        //             type: "price",
-        //             pricing: {
-        //                 basePrice: 100.0,
-        //                 oldPrice: 115.0,
-        //                 currency: "USD",
-        //                 order: 1,
-        //             },
-        //         }
-        //     ],
-        // },
-        // {
-        //     id: "addon",
-        //     order: 5,
-
-        //     default: {
-        //         type: "addon",
-        //         selections: ["spare velcro", "exclusively signed by Michel Jordan",]
-        //     },
-
-
-
-        //     components: [
-        //         {
-        //             id: "318",
-        //             type: "addon",
-        //             label: "Addons:",
-        //             options: [
-        //                 {
-        //                     value: "fancy and beautiful loop",
-        //                     label: "fancy and beautiful loop",
-        //                     price: 0
-        //                 },
-        //                 {
-        //                     value: "spare velcro",
-        //                     label: "spare velcro",
-        //                     price: 10.0
-        //                 },
-        //                 {
-        //                     value: "antibacterial and antifungal powder",
-        //                     label: "antibacterial and antifungal powder",
-        //                     price: 11.8
-        //                 },
-        //                 {
-        //                     value: "exclusively signed by Michel Jordan",
-        //                     label: "exclusively signed by Michel Jordan",
-        //                     price: 99.99
-        //                 },
-        //             ]
-        //         },
-
-
-        //     ],
-        // },
+       
     ],
 };
 

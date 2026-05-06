@@ -48,6 +48,7 @@ const ProductStudio = () => {
                     status !== "ready"
                         ? <BuilderDisabled />
                         : <BuilderPanel />
+                        
                 ) : (
                     <>
                         <ConfiguratorRuntime active />

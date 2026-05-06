@@ -14,13 +14,14 @@ export const SizeModuleSchema = z.object({
     z.object({
       id: z.string(),
       type: z.literal("size"),
-      label: z.string(),
+      label: z.string().max(100, "Max 100 characters"),
 
       options: z.array(
         z.object({
-          value: z.string(),
-          label: z.string(),
-          price: z.number(),
+          id: z.string(),
+          value: z.string().min(1, "Value cannot be empty").max(100, "Max 100 characters"),
+          label: z.string().max(100, "Max 100 characters"),
+          price: z.number().min(0, "Price cannot be negative").max(500000, "Price cannot exceed 500000"),
         })
       ),
     })

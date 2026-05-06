@@ -1,19 +1,22 @@
 ﻿import { UpdateAddonOption } from "@/features/builder/store/slices/addon.types";
+import { UpdateSizeOption } from "@/features/builder/store/slices/size.types";
 
 type InputHandlerFunc<TUpdate, TArgs extends object = object> = (args: {
-  raw: string;
-  moduleId: string;
-  update: TUpdate;
+    raw: string;
+    moduleId: string;
+    update: TUpdate;
 } & TArgs) => void;
 
 type WithOptionId = { optionId: string };
 
 type InputHandlerMap = {
-  containerLabel: InputHandlerFunc<(moduleId: string, label: string) => void>;
-  addonOptionValue: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
-  addonOptionLabel: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
-  price: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
-  color: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+    containerLabel: InputHandlerFunc<(moduleId: string, label: string) => void>;
+    addonOptionValue: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+    addonOptionLabel: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+    sizeOptionValue: InputHandlerFunc<UpdateSizeOption, WithOptionId>;
+    sizeOptionLabel: InputHandlerFunc<UpdateSizeOption, WithOptionId>;
+    price: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+    color: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
 };
 
 const isValidHex = (value: string) =>
@@ -26,7 +29,7 @@ export const inputHandlers: InputHandlerMap = {
     addonOptionLabel: ({ raw, update, moduleId, optionId }) => {
         update(moduleId, optionId, { label: raw.trimStart() });
     },
-    containerLabel: ({ raw, update, moduleId}) => {  
+    containerLabel: ({ raw, update, moduleId }) => {
         update(moduleId, raw.trimStart());
     },
 
@@ -34,15 +37,22 @@ export const inputHandlers: InputHandlerMap = {
         if (!/^\d*\.?\d*$/.test(raw)) return;
 
         if (raw === "") return;
-        const parsed = Number(raw); 
+        const parsed = Number(raw);
 
-        if (parsed < 0) return; 
+        if (parsed < 0) return;
         update(moduleId, optionId, { price: parsed });
     },
     color: ({ raw, update, moduleId, optionId }) => {
         const value = raw.trim();
 
         update(moduleId, optionId, { value });
+    },
+
+    sizeOptionValue: ({ raw, update, moduleId, optionId }) => {
+        update(moduleId, optionId, { value: raw.trimStart() });
+    },
+    sizeOptionLabel: ({ raw, update, moduleId, optionId }) => {
+        update(moduleId, optionId, { label: raw.trimStart() });
     },
 
 };

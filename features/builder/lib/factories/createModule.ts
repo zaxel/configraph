@@ -19,7 +19,7 @@ export function createModuleFactory(type: ComponentType, order: number){
 function createAddonModule(order: number): AddonModule {
     return {
         id: "addon",
-        instanceId: crypto.randomUUID(),
+        instanceId: `mdl_${crypto.randomUUID()}`,
         order,
 
         default: {
@@ -29,7 +29,7 @@ function createAddonModule(order: number): AddonModule {
 
         components: [
             {
-                id: crypto.randomUUID(),
+                id: `cmp_${crypto.randomUUID()}`,
                 type: "addon",
                 label: "",
                 options: [],
@@ -39,7 +39,21 @@ function createAddonModule(order: number): AddonModule {
 }
 
 function createSizeModule(order: number): SizeModule {
+    return {
+      id: "size",
+      instanceId: `mod_${crypto.randomUUID()}`,
+      order,
+      default: undefined,
 
+      components: [
+        {
+           id: `cmp_${crypto.randomUUID()}`,
+          type: "size",
+          label: "",
+          options: []
+        }
+      ],
+    }
 }
 function createPartsModule(order: number): PartsModule {
 

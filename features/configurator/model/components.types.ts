@@ -49,6 +49,7 @@ export type PartsComponent = BaseComponent & {
 export type SizeComponent = BaseComponent & {
   type: "size";
   options: {
+    id: string;
     value: string;
     label?: string;
     price?: number;

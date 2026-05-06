@@ -11,7 +11,6 @@ const ConfiguratorPanel = () => {
     const activeBuilderTab = useBuilderStore(s => s.activeTab);
 
     if(!product) return null; 
-
     return (
        <div className={`w-full shrink-0 flex flex-col gap-6 ${(mode === "builder" && activeBuilderTab==="builder") ? "md:w-2/3" : "md:w-1/3"}`}>
             {product.modules

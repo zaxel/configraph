@@ -16,7 +16,10 @@ export type DefaultAddons = {
 
 export type DefaultSizes = {
   type: "size",
-  value: string;
+  id: string,
+  value: string,
+  label?: string,
+  price?: number,
 }
 
 export type DefaultCanvas = {
@@ -33,14 +36,14 @@ export type DefaultSubmit = {
 export type DefaultPrice = {
   type: "price",
 }
-export type ModuleDefault =  
-  | DefaultParts 
-  | DefaultAddons 
-  | DefaultSizes 
+export type ModuleDefault =
+  | DefaultParts
+  | DefaultAddons
+  | DefaultSizes
 
-  | DefaultCanvas 
+  | DefaultCanvas
   | DefaultContent
-  | DefaultSubmit 
+  | DefaultSubmit
   | DefaultPrice;
 
 
