@@ -9,3 +9,9 @@ export type AddonSlice = {
     updateAddonOption: (moduleId: string, optionId: string, patch: Partial<AddonOption>) => void,
     updateCheckOption: (moduleId: string, optionId: string, isSelected: boolean) => void,
 }
+
+export type UpdateAddonOption = (
+  moduleId: string,
+  optionId: string,
+  patch: Partial<AddonOption>
+) => void;

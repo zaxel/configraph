@@ -19,9 +19,8 @@ const ModuleSelect = () => {
                 <Select
                     value={selectedModule}
                     onValueChange={(value: ComponentType) => {
-                        addModule(value)
-                        setSelectedModule("")
-                        console.log("New value selected:", value)
+                        addModule(value);
+                        setSelectedModule("");
                     }}
                 >
                     <SelectTrigger className="w-full max-w-58">

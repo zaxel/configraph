@@ -5,8 +5,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { useBuilderStore } from '../../store/builder.store';
 import { Plus, Save, Trash2 } from 'lucide-react';
-import { Value } from 'three/examples/jsm/inspector/ui/Values.js';
 import { DefaultAddons } from '@/features/configurator/model';
+import { inputHandlers } from '@/features/configurator/inputs';
 
 type AddonBuilderBlock = { data: BuilderAddonComponent, moduleId: string, defaultOpt: DefaultAddons };
 
@@ -16,10 +16,15 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
     const deleteAddonOption = useBuilderStore(s => s.deleteAddonOption);
     const addAddonOption = useBuilderStore(s => s.addAddonOption);
     const updateCheckOption = useBuilderStore(s => s.updateCheckOption);
-    const saveDraft = useBuilderStore(s => s.saveDraft); 
-    const saving = useBuilderStore(s => s.saving); 
-    const deleteModule = useBuilderStore(s => s.deleteModule); 
-   
+    const saveDraft = useBuilderStore(s => s.saveDraft);
+    const saving = useBuilderStore(s => s.saving);
+    const deleteModule = useBuilderStore(s => s.deleteModule);
+    const setFieldDirty = useBuilderStore(s => s.setFieldDirty);
+    const setFieldTouched = useBuilderStore(s => s.setFieldTouched);
+    const validateField = useBuilderStore(s => s.validateField);
+
+    const errors = useBuilderStore(s => s.errors);
+    const touched = useBuilderStore(s => s.touched);
 
     const onAddClickHandler = () => {
         const option = {
@@ -32,8 +37,6 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
     }
 
     return (
-
-
         <div className="overflow-x-auto">
             <table className="w-full text-sm border rounded-md">
                 <thead className="bg-muted">
@@ -61,20 +64,70 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                             <td className="p-2">
                                 <Input
                                     value={opt.value}
-                                    onChange={(e) =>
-                                        updateAddonOption(moduleId, opt.id, { value: e.target.value })
-                                    }
+                                    onChange={(e) => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.value`;
+                                        setFieldDirty(path);
+                                        inputHandlers["addonOptionValue"]({
+                                            raw: e.target.value,
+                                            moduleId,
+                                            optionId: opt.id,
+                                            update: updateAddonOption,
+                                        });
+                                    }}
+                                    onBlur={() => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.value`;
+                                        console.log("blur", path)
+                                        setFieldTouched(path);
+                                        validateField(path);
+                                    }}
                                 />
+                                {(() => {
+                                    const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.value`;
+                                    const fieldErrors = errors[path];
+                                    const isTouched = touched[path];
+                                    console.log(path);
+                                    console.log(touched);
+                                    return isTouched && fieldErrors && fieldErrors.length > 0 ? (
+                                        <span className="text-red-500 text-xs">
+                                            {fieldErrors[0].message}
+                                        </span>
+                                    ) : null;
+                                })()}
                             </td>
 
                             {/* LABEL */}
                             <td className="p-2">
                                 <Input
                                     value={opt.label}
-                                    onChange={(e) =>
-                                        updateAddonOption(moduleId, opt.id, { label: e.target.value })
-                                    }
+                                    onChange={(e) => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
+                                        setFieldDirty(path);
+                                        inputHandlers["addonOptionLabel"]({
+                                            raw: e.target.value,
+                                            moduleId,
+                                            optionId: opt.id,
+                                            update: updateAddonOption,
+                                        });
+                                    }}
+                                    onBlur={() => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
+                                        console.log("blur", path)
+                                        setFieldTouched(path);
+                                        validateField(path);
+                                    }}
                                 />
+                                {(() => {
+                                    const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
+                                    const fieldErrors = errors[path];
+                                    const isTouched = touched[path];
+                                    console.log(path);
+                                    console.log(touched);
+                                    return isTouched && fieldErrors && fieldErrors.length > 0 ? (
+                                        <span className="text-red-500 text-xs">
+                                            {fieldErrors[0].message}
+                                        </span>
+                                    ) : null;
+                                })()}
                             </td>
 
                             {/* PRICE */}
@@ -82,12 +135,35 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                                 <Input
                                     type="number"
                                     value={opt.price ?? 0}
-                                    onChange={(e) =>
-                                        updateAddonOption(moduleId, opt.id, {
-                                            price: Number(e.target.value),
-                                        })
-                                    }
+                                    onChange={(e) => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.price`;
+                                        setFieldDirty(path);
+                                        inputHandlers["price"]({
+                                            raw: e.target.value,
+                                            moduleId,
+                                            optionId: opt.id,
+                                            update: updateAddonOption,
+                                        });
+                                    }}
+                                    onBlur={() => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.price`;
+                                        setFieldTouched(path);
+                                        validateField(path);
+                                    }}
                                 />
+                                {(() => {
+                                    const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.price`;
+                                    const fieldErrors = errors[path];
+                                    const isTouched = touched[path];
+
+                                    // Check if touched and if there is at least one error in the array
+                                    return isTouched && fieldErrors && fieldErrors.length > 0 ? (
+                                        <span className="text-red-500 text-xs">
+                                            {fieldErrors[0].message}
+                                        </span>
+                                    ) : null;
+                                })()}
+
                             </td>
 
                             {/* CHECKED */}
@@ -133,7 +209,7 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                 <div className="flex items-center gap-2">
                     <Button
                         className="cursor-pointer"
-                        onClick={()=>deleteModule(moduleId)}
+                        onClick={() => deleteModule(moduleId)}
                         variant="destructive"
                         size="sm"
                     >
@@ -143,7 +219,7 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
 
                     <Button
                         className="cursor-pointer"
-                        onClick={()=>saveDraft()}
+                        onClick={() => saveDraft()}
                         variant="secondary"
                         size="sm"
                         disabled={saving}
