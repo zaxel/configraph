@@ -37,6 +37,7 @@ export type OptionsComponent = {
   type?: string,
   label?: string;
   optional: boolean;
+  enabled: boolean;
   groups: meshGroup[];
 
 };

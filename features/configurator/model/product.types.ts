@@ -6,7 +6,6 @@ export type DefaultParts = {
   selections: Record<string, {
     groupId: string;
     color?: string | number | THREE.Color;
-    enabled: boolean;
   }>
 }
 export type DefaultAddons = {

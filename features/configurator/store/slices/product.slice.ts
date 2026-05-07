@@ -393,25 +393,22 @@ export const product_sample: Product = {
           "body left": {
             groupId: "id-83866e",
             color: "red",
-            enabled: true,
+            
           },
           "body right": {
             groupId: "id-83867e",
             color: "white",
-            enabled: true,
           },
           laces: {
             groupId: "id-889776",
             color: "red",
-            enabled: true,
           },
           sole: {
             groupId: "id-76653",
             color: "white",
-            enabled: false,
           },
         },
-        selectedPart: "body left"
+        selectedPart: "body right"
 
       },
 
@@ -420,10 +417,11 @@ export const product_sample: Product = {
           id: "parts",
           type: "parts",
           label: "Parts:",
-          options: [
+          options: [ 
             {
               id: "body left",
               optional: false,
+              enabled: true,
               groups: [
                 {
                   id: "id-83866e",
@@ -444,6 +442,7 @@ export const product_sample: Product = {
             {
               id: "body right",
               optional: false,
+              enabled: true,
               groups: [
                 {
                   id: "id-83867e",
@@ -464,7 +463,8 @@ export const product_sample: Product = {
             {
               id: "laces",
               type: "part",
-              optional: false,
+              optional: true,
+              enabled: false,
               groups: [
                 {
                   id: "id-889776",
@@ -497,6 +497,7 @@ export const product_sample: Product = {
               id: "sole",
               type: "part",
               optional: true,
+              enabled: true,
               groups: [
                 {
                   id: "id-76653",

@@ -6,7 +6,7 @@ export type PartsSelection = {
   items: Record<string, {
     groupId: string;
     color?: string | number | THREE.Color;
-    enabled: boolean;
+    enabled?: boolean;
   }>;
 };
 

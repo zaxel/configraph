@@ -1,4 +1,4 @@
-﻿import { AddonModule, Module, PartsModule, Product, SizeModule } from "../model";
+﻿import { AddonModule, Module, PartsComponent, PartsModule, Product, SizeModule } from "../model";
 import { PartsSelection } from "../model/selections.types";
 
 
@@ -7,7 +7,7 @@ function isPartsModule(m: Module): m is PartsModule {
 }
 
 type initPartsType = { parts: PartsSelection }
-export function buildInitialPartsSelections(product: Product) {
+export function buildInitialPartsSelections(product: Product): initPartsType {
   const result: initPartsType = {
     parts: {
       selectedPart: "",
@@ -16,23 +16,29 @@ export function buildInitialPartsSelections(product: Product) {
   };
 
   const partsModule = product.modules.find(isPartsModule);
-
   if (!partsModule) return result;
 
   const defaults = partsModule.default;
   if (!defaults) return result;
 
+  const component = partsModule.components.find(
+    (c): c is PartsComponent => c.type === "parts"
+  );
+
+  if (!component) return result;
+
   for (const partId in defaults.selections) {
     const def = defaults.selections[partId];
 
-    result.parts = {
-      ...result.parts,
-      items: {
-        ...result.parts.items,
-        [partId]: def
-      }
+    const option = component.options.find(o => o.id === partId);
+    if (!option) continue; 
+
+    result.parts.items[partId] = {
+      ...def,
+      enabled: option.enabled,
     };
   }
+
   result.parts.selectedPart = defaults.selectedPart;
   return result;
 }

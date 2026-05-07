@@ -39,7 +39,6 @@ export const createOptionsSlice: StateCreator<
         [module]: value,
       },
     })),
-
   setPart: (product, partId) =>
     set((state) => {
       // const product = state.product;
@@ -53,17 +52,17 @@ export const createOptionsSlice: StateCreator<
       const partsComponent = partsModule.components.find(
         (c): c is PartsComponent => c.type === "parts"
       );
-      if (!partsComponent) return state;
+      if (!partsComponent) return state; 
 
       const part = partsComponent.options.find(p => p.id === partId);
       if (!part) return state;
 
       const firstGroup = part.groups[0];
       const firstColor = firstGroup?.colors?.variants?.[0];
-      const firstIsEnabled = partsModule.default?.selections[partId].enabled;
       const existing = state.selectedOptions.parts.items[partId];
 
       return {
+        ...state,
         selectedOptions: {
           ...state.selectedOptions,
           parts: {
@@ -74,14 +73,14 @@ export const createOptionsSlice: StateCreator<
               [partId]: existing ?? {
                 groupId: firstGroup?.id ?? "",
                 color: firstColor?.value ?? "#fff",
-                enabled: firstIsEnabled,
+                enabled: !part.optional,
               }
             }
           }
         }
       };
     }),
-
+ 
   setGroup: (product, part, groupId) =>
     set((state) => {
       // const product = state.product;
