@@ -1,9 +1,25 @@
 ﻿import { z } from "zod";
 
+const CSS_NAMED_COLORS = new Set([
+  "black", "white", "red", "green", "blue", "yellow", "orange", "purple",
+  "pink", "brown", "gray", "grey", "cyan", "magenta", "lime", "indigo",
+  "violet", "gold", "silver", "transparent",
+  // add more
+]);
+
+
+const colorValue = z.string().refine(
+  (val) =>
+    /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(val) ||
+    CSS_NAMED_COLORS.has(val.toLowerCase()),
+  "Must be a valid color (#ffffff)"
+);
+
 const ColorVariantSchema = z.object({
-  value: z.string(),
-  label: z.string(),
-  price: z.number(),
+  id: z.string(),
+  value: colorValue,
+  label: z.string().max(100, "Max 100 characters"),
+  price: z.number().min(0, "Price cannot be negative").max(500000, "Price cannot exceed 500000"),
 });
 
 const GroupSchema = z.object({
@@ -45,7 +61,7 @@ export const PartsModuleSchema = z.object({
     z.object({
       id: z.string(),
       type: z.literal("parts"),
-      label: z.string(),
+      label: z.string().max(100, "Max 100 characters"), 
 
       options: z.array(PartOptionSchema),
     })

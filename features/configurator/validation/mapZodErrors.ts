@@ -14,6 +14,8 @@ export const mapZodErrors = (
       ? resolvePath(issue.path)
       : issue.path.join(".");
 
+      console.log(path);
+
     if (!result[path]) result[path] = [];
 
     result[path].push({ 

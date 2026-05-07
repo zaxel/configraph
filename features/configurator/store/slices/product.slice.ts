@@ -432,10 +432,10 @@ export const product_sample: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 0 },
-                      { value: "black", label: "black", price: 10 },
-                      { value: "blue", label: "blue", price: 15 },
-                      { value: "white", label: "white", price: 20 },
+                      { id: "34", value: "red", label: "red", price: 0 },
+                      { id: "35", value: "black", label: "black", price: 10 },
+                      { id: "36", value: "blue", label: "blue", price: 15 },
+                      { id: "37", value: "white", label: "white", price: 20 },
                     ]
                   },
                 },
@@ -452,10 +452,10 @@ export const product_sample: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 5 },
-                      { value: "black", label: "black", price: 10 },
-                      { value: "blue", label: "blue", price: 15 },
-                      { value: "white", label: "white", price: 0 },
+                      { id: "12", value: "red", label: "red", price: 5 },
+                      { id: "13", value: "black", label: "black", price: 10 },
+                      { id: "14", value: "blue", label: "blue", price: 15 },
+                      { id: "15", value: "white", label: "white", price: 0 },
                     ]
                   },
                 }
@@ -482,12 +482,12 @@ export const product_sample: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "black", label: "black", price: 5 },
-                      { value: "brown", label: "brown", price: 10 },
-                      { value: "green", label: "green", price: 15 },
-                      { value: "yellow", label: "yellow", price: 20 },
-                      { value: "gray", label: "gray", price: 0 },
-                      { value: "red", label: "red", price: 0 },
+                      { id: "21", value: "black", label: "black", price: 5 },
+                      { id: "22", value: "brown", label: "brown", price: 10 },
+                      { id: "23", value: "green", label: "green", price: 15 },
+                      { id: "24", value: "yellow", label: "yellow", price: 20 },
+                      { id: "25", value: "gray", label: "gray", price: 0 },
+                      { id: "26", value: "red", label: "red", price: 0 },
                     ]
                   },
                 }
@@ -505,11 +505,11 @@ export const product_sample: Product = {
                   colors: {
                     allowCustom: false,
                     variants: [
-                      { value: "red", label: "red", price: 5 },
-                      { value: "black", label: "black", price: 10 },
-                      { value: "blue", label: "blue", price: 15 },
-                      { value: "white", label: "white", price: 0 },
-                      { value: "gold", label: "nova wave", price: 1.0 },
+                      { id: "321", value: "red", label: "red", price: 5 },
+                      { id: "322", value: "black", label: "black", price: 10 },
+                      { id: "323", value: "blue", label: "blue", price: 15 },
+                      { id: "324", value: "white", label: "white", price: 0 },
+                      { id: "325", value: "gold", label: "nova wave", price: 1.0 },
                     ]
                   },
                 }

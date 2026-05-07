@@ -51,6 +51,7 @@ export const createValidationSlice: StateCreator<
             get().clearErrors();
         } else {
             const resolver = buildPathResolver(draft); 
+            console.log(parsed.error);
             const mapped = mapZodErrors(parsed.error, resolver); 
             get().setErrors(mapped);
         }

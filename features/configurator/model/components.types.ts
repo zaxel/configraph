@@ -24,6 +24,7 @@ export type meshGroup = {
   colors: {
     allowCustom: boolean;
     variants: {
+      id: string;
       value: string;
       label?: string;
       price?: number;
