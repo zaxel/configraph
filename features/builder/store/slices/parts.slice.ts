@@ -25,15 +25,47 @@ export const createPartsSlice: StateCreator<
             component.label = value;
         }),
     setDefaultPart: (moduleId, optionId, isSelected) =>
-    set((state) => {
-        const draft = state.draft;
-        if (!draft) return;
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
 
-        const mod = draft.modules.find(m => m.instanceId === moduleId);
-        if (!mod) return;
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
 
-        mod.default.selectedPart = isSelected ? "" : optionId;
-    }),
+            mod.default.selectedPart = isSelected ? "" : optionId; 
+        }),
+    setOptionalPart: (moduleId, optionId, isSelected) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            option.optional = !isSelected;
+        }),
+    setPartEnabled: (moduleId, optionId, isSelected) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            option.enabled = !isSelected;
+        }),
     updatePartColor: (moduleId, optionId, groupId, variantId, patch) =>
         set((state) => {
             const draft = state.draft;
@@ -54,7 +86,7 @@ export const createPartsSlice: StateCreator<
             const variant = group.colors.variants.find(v => v.id === variantId);
             if (!variant) return;
 
-            Object.assign(variant, patch); 
+            Object.assign(variant, patch);
         }),
 
 

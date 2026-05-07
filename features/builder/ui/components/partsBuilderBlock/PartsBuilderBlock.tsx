@@ -23,7 +23,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const deleteModule = useBuilderStore(s => s.deleteModule);
     const setFieldDirty = useBuilderStore(s => s.setFieldDirty);
     const setFieldTouched = useBuilderStore(s => s.setFieldTouched);
-    const validateField = useBuilderStore(s => s.validateField);
+    const validateField = useBuilderStore(s => s.validateField); 
 
 
 
@@ -34,6 +34,9 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const updatePartsTittle = useBuilderStore(s => s.updatePartsTittle);
     const updatePartColor = useBuilderStore(s => s.updatePartColor);
     const setDefaultPart = useBuilderStore(s => s.setDefaultPart);
+    const setOptionalPart = useBuilderStore(s => s.setOptionalPart);
+    const setPartEnabled = useBuilderStore(s => s.setPartEnabled);
+    
 
     const onAddClickHandler = () => {
         const option = {
@@ -84,9 +87,9 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
 
                 {data.options.map((opt) => {
                     return <PartContainer key={opt.id} id={opt.id}>
-                        {opt.groups.length > 0 && <div className="flex justify-between">
-                            <p>variants:</p>
-                            {/*DEFAULT PART*/}
+                        {/*DEFAULT SETTINGS*/}
+                        {opt.groups.length > 0 && <div className="flex justify-end gap-4">
+                            <p className="mr-auto">variants:</p>
                             <label className="flex gap-2 items-center">
                                 <Checkbox
                                     checked={defaultOpt?.selectedPart === opt.id || false}
@@ -97,6 +100,24 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                 />
                                 <span>default part</span>
                             </label>
+                            <label className="flex gap-2 items-center">
+                                <Checkbox
+                                    checked={opt.optional}
+                                    onCheckedChange={() => {
+                                        setOptionalPart(moduleId, opt.id, opt.optional); 
+                                    }}
+                                />
+                                <span>optional</span>
+                            </label>
+                            {opt.optional && <label className="flex gap-2 items-center">
+                                <Checkbox
+                                    checked={opt.enabled}
+                                    onCheckedChange={() => {
+                                        setPartEnabled(moduleId, opt.id, opt.enabled);
+                                    }}
+                                />
+                                <span>enabled</span>
+                            </label>}
                         </div>}
                         {opt.groups.map(group => {
                             return <GroupContainer key={group.id} label={group.label}>
@@ -181,7 +202,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                             <div
                                                                 style={{ backgroundColor: color.value ?? "gray" }} 
                                                                 className="m-1 w-6 h-6 rounded-full ring-1 ring-gray-300 relative">
-                                                            </div>
+                                                            </div> 
                                                         </div>
                                                     </td>
                                                     {/* VALUE */}
