@@ -4,6 +4,7 @@ import { Product } from "./product.types";
 export const MODULE_RULES = {
   size: { max: 1 },
   price: { max: 1 },
+  parts: { max: 1 },
   canvas: { max: 1 },
   addon: { max: 1 },
 } as const;

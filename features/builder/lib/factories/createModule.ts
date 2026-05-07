@@ -56,7 +56,31 @@ function createSizeModule(order: number): SizeModule {
     }
 }
 function createPartsModule(order: number): PartsModule {
+    return {
+      id: "parts",
+      instanceId: `mod_${crypto.randomUUID()}`,
+      type: "parts",
+      order,
 
+
+      default: {
+        type: "parts",
+        selections: {
+          
+        },
+        selectedPart: ""
+
+      },
+
+      components: [ 
+        {
+          id: `cmp_${crypto.randomUUID()}`,
+          type: "parts",
+          label: "",
+          options: []
+        }
+      ],
+    }
 }
 function createContentModule(order: number): ContentModule {
 

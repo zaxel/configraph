@@ -4,7 +4,6 @@ import ModuleSelect from './ModuleSelect';
 
 const BuilderUI = () => {
         const product = useProduct();
-        console.log(product)
         if (!product) return null;
 
     return (

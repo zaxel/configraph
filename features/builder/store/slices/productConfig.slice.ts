@@ -120,7 +120,6 @@ export const createProductConfigSlice: StateCreator<
 
             
             const newModule = createModuleFactory(type, order);
-
             return {
                 draft: {
                     ...state.draft,
