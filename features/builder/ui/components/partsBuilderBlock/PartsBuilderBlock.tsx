@@ -10,6 +10,8 @@ import { inputHandlers } from '@/features/configurator/inputs';
 import PartContainer from './PartContainer';
 import GroupContainer from './GroupContainer';
 import ColorTypeSelect from './ColorTypeSelect';
+import AddMeshSelect from './AddMeshSelect';
+import { findPartsGroup } from '@/features/builder/lib/findPartsGroup';
 
 type PartsBuilderBlock = { data: BuilderPartsComponent, moduleId: string, defaultOpt: DefaultParts };
 
@@ -18,12 +20,14 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     console.log(data);
     console.log(defaultOpt);
 
+    const draft = useBuilderStore(s => s.draft);
+
     const saveDraft = useBuilderStore(s => s.saveDraft);
     const saving = useBuilderStore(s => s.saving);
     const deleteModule = useBuilderStore(s => s.deleteModule);
     const setFieldDirty = useBuilderStore(s => s.setFieldDirty);
     const setFieldTouched = useBuilderStore(s => s.setFieldTouched);
-    const validateField = useBuilderStore(s => s.validateField); 
+    const validateField = useBuilderStore(s => s.validateField);
 
 
 
@@ -37,17 +41,28 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const setOptionalPart = useBuilderStore(s => s.setOptionalPart);
     const setPartEnabled = useBuilderStore(s => s.setPartEnabled);
     const updateDefaultPartColor = useBuilderStore(s => s.updateDefaultPartColor);
-     
-    
+    const deleteColorOption = useBuilderStore(s => s.deleteColorOption);
+    const addColorOption = useBuilderStore(s => s.addColorOption);
+    const deleteVariant = useBuilderStore(s => s.deleteVariant);
+    const deletePart = useBuilderStore(s => s.deletePart);
+    const deleteMeshOption = useBuilderStore(s => s.deleteMeshOption);
 
-    const onAddClickHandler = () => {
-        const option = {
-            id: crypto.randomUUID(),
-            value: "new size value",
-            label: "new size label",
+
+
+
+
+    const onAddColorClickHandler = (optionId: string, group) => {
+        if (group.meshes.length === 0) {
+            alert("Attach meshes before adding colors");
+            return;
+        }
+        const newColorOption = {
+            id: `clr_${crypto.randomUUID()}`,
+            value: "#ffffff",
+            label: "white",
             price: 0
         }
-        // addSizeOption(moduleId, option);
+        addColorOption(moduleId, optionId, group.id, newColorOption);
     }
 
     return (
@@ -106,7 +121,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                 <Checkbox
                                     checked={opt.optional}
                                     onCheckedChange={() => {
-                                        setOptionalPart(moduleId, opt.id, opt.optional); 
+                                        setOptionalPart(moduleId, opt.id, opt.optional);
                                     }}
                                 />
                                 <span>optional</span>
@@ -149,7 +164,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                         className="cursor-pointer"
                                                         variant="destructive"
                                                         size="sm"
-                                                    // onClick={() => deleteSizeOption(moduleId, opt.id)}
+                                                        onClick={() => deleteMeshOption(moduleId, opt.id, group.id, mesh)}
                                                     >
                                                         Delete
                                                     </Button>
@@ -159,12 +174,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                     </tbody>
                                 </table>
                                 <div >
-                                    <Button
-                                        // onClick={onAddClickHandler}
-                                        variant="default" size="sm" className="cursor-pointer">
-                                        <Plus className="w-4 h-4 mr-1" />
-                                        Add Mesh
-                                    </Button>
+                                    <AddMeshSelect moduleId={moduleId} optionId={opt.id} groupId={group.id} />
                                 </div>
 
 
@@ -202,9 +212,9 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                     <td className="p-2 text-xs text-muted-foreground">
                                                         <div className="w-14 truncate">
                                                             <div
-                                                                style={{ backgroundColor: color.value ?? "gray" }} 
+                                                                style={{ backgroundColor: color.value ?? "gray" }}
                                                                 className="m-1 w-6 h-6 rounded-full ring-1 ring-gray-300 relative">
-                                                            </div> 
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     {/* VALUE */}
@@ -213,6 +223,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                             value={color.value}
                                                             onChange={(e) => {
                                                                 setFieldDirty(valuePath);
+
                                                                 inputHandlers["updatePartsColorValue"]({
                                                                     raw: e.target.value,
                                                                     moduleId,
@@ -223,10 +234,6 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                                 });
                                                             }}
                                                             onBlur={() => {
-                                                                console.log("blur");
-                                                                console.log(valuePath);
-
-
                                                                 setFieldTouched(valuePath);
                                                                 validateField(valuePath);
                                                             }}
@@ -314,7 +321,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                             checked={defaultOpt?.selections[opt.id].color === color.value}
                                                             onCheckedChange={() => {
                                                                 const isSelected = defaultOpt?.selections[opt.id].color === color.value || false;
-                                                                updateDefaultPartColor(moduleId, opt.id, color.value, isSelected) 
+                                                                updateDefaultPartColor(moduleId, opt.id, color.value, isSelected)
                                                             }}
                                                         />
                                                     </td>
@@ -325,7 +332,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                             className="cursor-pointer"
                                                             variant="destructive"
                                                             size="sm"
-                                                        // onClick={() => deleteSizeOption(moduleId, opt.id)}
+                                                            onClick={() => deleteColorOption(moduleId, opt.id, group.id, color.id)}
                                                         >
                                                             Delete
                                                         </Button>
@@ -335,36 +342,45 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                         })}
                                     </tbody>
                                 </table>
+                                <div className="flex items-center justify-between gap-2 p-3 bg-muted/40">
+                                    {/*VARIANTS BUTTONS*/}
+                                    <div>
+                                        <Button
+                                            onClick={() => onAddColorClickHandler(opt.id, group)}
+                                            variant="default" size="sm" className="cursor-pointer">
+                                            <Plus className="w-4 h-4 mr-1" />
+                                            Add Color
+                                        </Button>
+                                    </div>
 
+                                    {/* DELETE VARIANT BTN */}
+                                    <div className="flex items-center gap-2">
+                                        <Button
+                                            className="cursor-pointer"
+                                            onClick={() => deleteVariant(moduleId, opt.id, group.id)}
+                                            variant="destructive"
+                                            size="sm"
+                                        >
+                                            <Trash2 className="w-4 h-4 mr-1" />
+                                            Delete Variant
+                                        </Button>
+                                    </div>
+                                </div>
 
                             </GroupContainer>
                         })}
-
-                        {/*VARIANTS BUTTONS*/}
-                        <div className="flex items-center justify-between gap-2 p-3 bg-muted/40">
-                            {/* LEFT */}
-                            <div>
-                                <Button
-                                    // onClick={onAddClickHandler}
-                                    variant="default" size="sm" className="cursor-pointer">
-                                    <Plus className="w-4 h-4 mr-1" />
-                                    Add variant
-                                </Button>
-                            </div>
-
-                            {/* RIGHT */}
-                            <div className="flex items-center gap-2">
-                                <Button
-                                    className="cursor-pointer"
-                                    // onClick={() => deleteModule(moduleId)}
-                                    variant="destructive"
-                                    size="sm"
-                                >
-                                    <Trash2 className="w-4 h-4 mr-1" />
-                                    Delete Variants
-                                </Button>
-                            </div>
+                        <div className="w-full flex items-center justify-end gap-2">
+                            <Button
+                                className="cursor-pointer"
+                                onClick={() => deletePart(moduleId, opt.id)}
+                                variant="destructive"
+                                size="sm"
+                            >
+                                <Trash2 className="w-4 h-4 mr-1" />
+                                Delete Part
+                            </Button>
                         </div>
+
                     </PartContainer>
                 })}
             </div>
@@ -374,7 +390,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                 {/* LEFT */}
                 <div>
                     <Button
-                        onClick={onAddClickHandler}
+                        // onClick={onAddClickHandler}
                         variant="default" size="sm" className="cursor-pointer">
                         <Plus className="w-4 h-4 mr-1" />
                         Add part

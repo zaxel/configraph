@@ -3,6 +3,7 @@ import { BoundBuilderStore } from "../builder.types";
 import { isComponentType } from "@/features/configurator/model/component.guards";
 import { PartsSlice } from "./parts.types";
 import { current } from 'immer';
+import { PartsComponent } from "@/features/configurator/model";
 
 
 export const createPartsSlice: StateCreator<
@@ -32,7 +33,7 @@ export const createPartsSlice: StateCreator<
             const mod = draft.modules.find(m => m.instanceId === moduleId);
             if (!mod) return;
 
-            mod.default.selectedPart = isSelected ? "" : optionId; 
+            mod.default.selectedPart = isSelected ? "" : optionId;
         }),
     setOptionalPart: (moduleId, optionId, isSelected) =>
         set((state) => {
@@ -76,8 +77,8 @@ export const createPartsSlice: StateCreator<
             if (!mod) return;
 
             const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return; 
-            mod.default.selections[optionId].color = (isSelected ?  "" : color); 
+            if (!component) return;
+            mod.default.selections[optionId].color = (isSelected ? "" : color);
 
         }),
     updatePartColor: (moduleId, optionId, groupId, variantId, patch) =>
@@ -105,33 +106,119 @@ export const createPartsSlice: StateCreator<
 
 
 
-    deletePartColor: (moduleId, optionId) =>
+    deleteColorOption: (moduleId, optionId, groupId, colorId) =>
         set((state) => {
             const draft = state.draft;
-            if (!draft) return state;
+            if (!draft) return;
 
             const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return state;
+            if (!mod) return;
 
-            const component = mod.components.find(c => isComponentType(c, "addon"));
-            if (!component) return state;
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
 
-            const options = component.options.filter(o => o.id !== optionId);
-            if (!options) return state;
-            component.options = options;
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            const group = option.groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            group.colors.variants = group.colors.variants.filter(v => v.id !== colorId);
         }),
-    addPartColor: (moduleId, option) =>
+
+    addColorOption: (moduleId, optionId, groupId, newOption) =>
         set((state) => {
             const draft = state.draft;
-            if (!draft) return state;
+            if (!draft) return;
 
             const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return state;
+            if (!mod) return;
 
-            const component = mod.components.find(c => isComponentType(c, "addon"));
-            if (!component) return state;
+            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
+            if (!component) return;
 
-            component.options.push(option);
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            const group = option.groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            if (group.meshes.length === 0) return;
+
+            group.colors.variants ??= [];
+            group.colors.variants.push(newOption);
+        }),
+    deleteVariant: (moduleId, optionId, groupId) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            option.groups = option.groups.filter(g => g.id !== groupId);
 
         }),
+    deletePart: (moduleId, optionId) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            component.options = component.options.filter(o => o.id !== optionId);
+        }),
+    addMeshToGroup: (moduleId, optionId, groupId, mesh) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            const group = option.groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            group.meshes.push(mesh);
+        }),
+    deleteMeshOption: (moduleId, optionId, groupId, mesh) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            const group = option.groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            group.meshes = group.meshes.filter(m => m !== mesh);
+
+            if (group.meshes.length > 0) return;
+            group.colors.variants = [];
+        }),
+
+
 });
