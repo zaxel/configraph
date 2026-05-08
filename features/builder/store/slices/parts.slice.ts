@@ -3,7 +3,7 @@ import { BoundBuilderStore } from "../builder.types";
 import { isComponentType } from "@/features/configurator/model/component.guards";
 import { PartsSlice } from "./parts.types";
 import { current } from 'immer';
-import { DefaultParts, PartsComponent } from "@/features/configurator/model";
+import { DefaultParts, meshGroup, PartsComponent } from "@/features/configurator/model";
 
 
 export const createPartsSlice: StateCreator<
@@ -172,6 +172,44 @@ export const createPartsSlice: StateCreator<
             if (!isCustomAllowed) return;
             group.colors.variants = [];
         }),
+    addPartGroup: (moduleId, optionId) => 
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            const existingLabels = new Set(option.groups.map(g => g.label));
+            let label = "New Label";
+            let counter = 0;
+            while (existingLabels.has(label)) {
+                if (counter++ > 100) return;
+                label = `New Label ${counter}`;
+            }
+
+            const newGroup: meshGroup = {
+                id: `grp_${crypto.randomUUID()}`,
+                meshes: [],
+                label,
+                colors: { allowCustom: false, variants: [] } 
+            };
+
+            option.groups.push(newGroup);
+
+            const partsDefault = mod.default as DefaultParts | undefined;
+            if (!partsDefault?.selections) return;
+
+            if (!partsDefault.selections[optionId]) {
+                partsDefault.selections[optionId] = { groupId: newGroup.id, color: "" };
+            }
+        }),
     deleteVariant: (moduleId, optionId, groupId) =>
         set((state) => {
             const draft = state.draft;
@@ -203,6 +241,34 @@ export const createPartsSlice: StateCreator<
                 }
             }
 
+        }),
+    addPart: (moduleId) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return;
+
+            const existingLabels = new Set(component.options.map(o => o.id));
+            let label = "New Label";
+            let counter = 0;
+            while (existingLabels.has(label)) {
+                if (counter++ > 100) return;
+                label = `New Part ${counter}`;
+            }
+
+            const newOption = {
+                "id": label,
+                "optional": false,
+                "enabled": true,
+                "groups": [] 
+              }
+
+            component.options.push(newOption);
         }),
     deletePart: (moduleId, optionId) =>
         set((state) => {

@@ -407,6 +407,10 @@ export const product_sample: Product = {
             groupId: "id-76653",
             color: "white",
           },
+          solaris: {
+            groupId: "id-653",
+            color: "gray",
+          },
         },
         selectedPart: "body right"
 

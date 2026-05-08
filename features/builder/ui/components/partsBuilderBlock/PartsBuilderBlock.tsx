@@ -46,6 +46,8 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const deleteVariant = useBuilderStore(s => s.deleteVariant);
     const deletePart = useBuilderStore(s => s.deletePart);
     const deleteMeshOption = useBuilderStore(s => s.deleteMeshOption);
+    const addPartGroup = useBuilderStore(s => s.addPartGroup);
+    const addPart = useBuilderStore(s => s.addPart);
 
 
 
@@ -64,8 +66,11 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
         }
         addColorOption(moduleId, optionId, group.id, newColorOption);
     }
+    const onAddVariantClickHandler = (optionId: string) => {
+        addPartGroup(moduleId, optionId);
+    }
 
-    return (
+    return ( 
         <div className="overflow-x-auto">
             {/* CONTAINER TITLE */}
             <div className="flex gap-6 items-center">
@@ -167,7 +172,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                         onClick={() => deleteMeshOption(moduleId, opt.id, group.id, mesh)}
                                                     >
                                                         Delete
-                                                    </Button> 
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -177,7 +182,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                     <AddMeshSelect moduleId={moduleId} optionId={opt.id} groupId={group.id} />
                                 </div>
 
-                                <ColorTypeSelect moduleId={moduleId} optionId={opt.id} groupId={group.id}/>
+                                <ColorTypeSelect moduleId={moduleId} optionId={opt.id} groupId={group.id} />
 
                                 {/*COLORS TABLE*/}
                                 {!group.colors.allowCustom && <table className="w-full text-sm border rounded-md">
@@ -365,7 +370,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                             {/*ADD VARIANT BTN*/}
                             <div>
                                 <Button
-                                    // onClick={() => onAddColorClickHandler(opt.id, group)}
+                                    onClick={() => onAddVariantClickHandler(opt.id)}
                                     variant="default" size="sm" className="cursor-pointer">
                                     <Plus className="w-4 h-4 mr-1" />
                                     Add Variant
@@ -393,7 +398,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                 {/* LEFT */}
                 <div>
                     <Button
-                        // onClick={onAddClickHandler}
+                        onClick={()=>addPart(moduleId)}
                         variant="default" size="sm" className="cursor-pointer">
                         <Plus className="w-4 h-4 mr-1" />
                         Add part
