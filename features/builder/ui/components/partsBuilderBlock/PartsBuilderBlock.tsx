@@ -167,7 +167,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                         onClick={() => deleteMeshOption(moduleId, opt.id, group.id, mesh)}
                                                     >
                                                         Delete
-                                                    </Button>
+                                                    </Button> 
                                                 </td>
                                             </tr>
                                         ))}
@@ -177,18 +177,10 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                     <AddMeshSelect moduleId={moduleId} optionId={opt.id} groupId={group.id} />
                                 </div>
 
-
-
-
-                                <ColorTypeSelect />
-
-
-
-
-
+                                <ColorTypeSelect moduleId={moduleId} optionId={opt.id} groupId={group.id}/>
 
                                 {/*COLORS TABLE*/}
-                                <table className="w-full text-sm border rounded-md">
+                                {!group.colors.allowCustom && <table className="w-full text-sm border rounded-md">
                                     <thead className="bg-muted">
                                         <tr>
                                             <th className="p-2 text-left">UI</th>
@@ -341,17 +333,17 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                             )
                                         })}
                                     </tbody>
-                                </table>
+                                </table>}
                                 <div className="flex items-center justify-between gap-2 p-3 bg-muted/40">
                                     {/*VARIANTS BUTTONS*/}
-                                    <div>
+                                    {!group.colors.allowCustom && <div>
                                         <Button
                                             onClick={() => onAddColorClickHandler(opt.id, group)}
                                             variant="default" size="sm" className="cursor-pointer">
                                             <Plus className="w-4 h-4 mr-1" />
                                             Add Color
                                         </Button>
-                                    </div>
+                                    </div>}
 
                                     {/* DELETE VARIANT BTN */}
                                     <div className="flex items-center gap-2">
@@ -369,7 +361,18 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
 
                             </GroupContainer>
                         })}
-                        <div className="w-full flex items-center justify-end gap-2">
+                        <div className="w-full flex items-center justify-between gap-2">
+                            {/*ADD VARIANT BTN*/}
+                            <div>
+                                <Button
+                                    // onClick={() => onAddColorClickHandler(opt.id, group)}
+                                    variant="default" size="sm" className="cursor-pointer">
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add Variant
+                                </Button>
+                            </div>
+
+                            {/*DELETE PART BTN*/}
                             <Button
                                 className="cursor-pointer"
                                 onClick={() => deletePart(moduleId, opt.id)}

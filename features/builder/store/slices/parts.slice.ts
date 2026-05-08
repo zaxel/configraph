@@ -3,7 +3,7 @@ import { BoundBuilderStore } from "../builder.types";
 import { isComponentType } from "@/features/configurator/model/component.guards";
 import { PartsSlice } from "./parts.types";
 import { current } from 'immer';
-import { PartsComponent } from "@/features/configurator/model";
+import { DefaultParts, PartsComponent } from "@/features/configurator/model";
 
 
 export const createPartsSlice: StateCreator<
@@ -148,6 +148,30 @@ export const createPartsSlice: StateCreator<
             group.colors.variants ??= [];
             group.colors.variants.push(newOption);
         }),
+    setColorSelectType: (moduleId, optionId, groupId, isCustomAllowed) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+
+            const group = option.groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            if (group.meshes.length === 0) return;
+
+            group.colors.allowCustom = isCustomAllowed;
+
+            if (!isCustomAllowed) return;
+            group.colors.variants = [];
+        }),
     deleteVariant: (moduleId, optionId, groupId) =>
         set((state) => {
             const draft = state.draft;
@@ -164,6 +188,21 @@ export const createPartsSlice: StateCreator<
 
             option.groups = option.groups.filter(g => g.id !== groupId);
 
+            const partsDefault = mod.default as DefaultParts | undefined;
+            if (!partsDefault?.selections) return;
+
+            if (option.groups.length > 0) {
+                if (partsDefault.selections[optionId]?.groupId === groupId)
+                    partsDefault.selections[optionId].groupId = option.groups[0].id;
+            } else {
+                delete partsDefault.selections[optionId];
+
+                if (partsDefault.selectedPart === optionId) {
+                    const remaining = Object.keys(partsDefault.selections);
+                    partsDefault.selectedPart = remaining[0] ?? "";
+                }
+            }
+
         }),
     deletePart: (moduleId, optionId) =>
         set((state) => {
@@ -177,6 +216,16 @@ export const createPartsSlice: StateCreator<
             if (!component) return;
 
             component.options = component.options.filter(o => o.id !== optionId);
+
+            const partsDefault = mod.default as DefaultParts | undefined;
+            if (!partsDefault?.selections) return;
+
+            delete partsDefault.selections[optionId];
+
+            if (partsDefault.selectedPart === optionId) {
+                const remaining = Object.keys(partsDefault.selections);
+                partsDefault.selectedPart = remaining[0] ?? "";
+            }
         }),
     addMeshToGroup: (moduleId, optionId, groupId, mesh) =>
         set((state) => {

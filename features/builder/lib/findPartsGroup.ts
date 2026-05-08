@@ -1,7 +1,7 @@
 ﻿import { PartsComponent, Product } from "@/features/configurator/model";
 import { isComponentType } from "@/features/configurator/model/component.guards";
 
-export const findPartsGroup = ( 
+export const findPartsGroup = (
   draft: Product,
   moduleId: string,
   optionId: string,
