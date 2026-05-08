@@ -392,7 +392,7 @@ export const product_sample: Product = {
         selections: {
           "body left": {
             groupId: "id-83866e",
-            color: "red",
+            color: "red", 
             
           },
           "body right": {

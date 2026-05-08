@@ -66,6 +66,20 @@ export const createPartsSlice: StateCreator<
 
             option.enabled = !isSelected;
         }),
+    updateDefaultPartColor: (moduleId, optionId, color, isSelected) =>
+        // updateDefaultPartColor(moduleId, isSelected, color.value)
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts"));
+            if (!component) return; 
+            mod.default.selections[optionId].color = (isSelected ?  "" : color); 
+
+        }),
     updatePartColor: (moduleId, optionId, groupId, variantId, patch) =>
         set((state) => {
             const draft = state.draft;

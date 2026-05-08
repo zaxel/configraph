@@ -36,6 +36,8 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const setDefaultPart = useBuilderStore(s => s.setDefaultPart);
     const setOptionalPart = useBuilderStore(s => s.setOptionalPart);
     const setPartEnabled = useBuilderStore(s => s.setPartEnabled);
+    const updateDefaultPartColor = useBuilderStore(s => s.updateDefaultPartColor);
+     
     
 
     const onAddClickHandler = () => {
@@ -308,16 +310,11 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                     {/* DEFAULT */}
                                                     <td className="p-2 text-center">
                                                         <Checkbox
-                                                            checked={defaultOpt?.value === color.value || false}
+                                                            // checked={defaultOpt?.value === color.value || false}
+                                                            checked={defaultOpt?.selections[opt.id].color === color.value}
                                                             onCheckedChange={() => {
-                                                                const isSelected = defaultOpt && defaultOpt.value === color.value || false;
-                                                                const patch = {
-                                                                    type: "part" as const,
-                                                                    value: color.value ?? "",
-                                                                    label: color.label ?? "",
-                                                                    price: color.price ?? 0,
-                                                                }
-                                                                // updateDefaultSize(moduleId, isSelected, patch)
+                                                                const isSelected = defaultOpt?.selections[opt.id].color === color.value || false;
+                                                                updateDefaultPartColor(moduleId, opt.id, color.value, isSelected) 
                                                             }}
                                                         />
                                                     </td>
