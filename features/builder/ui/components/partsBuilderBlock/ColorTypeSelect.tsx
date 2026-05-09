@@ -1,7 +1,7 @@
 ﻿import { Field, FieldGroup } from '@/components/ui/field';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useBuilderStore } from '../../../store/builder.store';
-import { findPartsGroup } from '@/features/builder/lib/findPartsGroup';
+import { findPartsGroup } from '@/features/builder/lib/parts.traversal';
 
 const ColorTypeSelect = ({ moduleId, optionId, groupId }: { moduleId: string, optionId: string, groupId: string }) => {
 

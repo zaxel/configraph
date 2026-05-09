@@ -4,6 +4,7 @@ import { isComponentType } from "@/features/configurator/model/component.guards"
 import { PartsSlice } from "./parts.types";
 import { current } from 'immer';
 import { DefaultParts, meshGroup, PartsComponent } from "@/features/configurator/model";
+import { findPartsColorVariant, findPartsComponent, findPartsGroup, findPartsOption } from "../../lib/parts.traversal";
 
 
 export const createPartsSlice: StateCreator<
@@ -17,10 +18,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return state;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return state;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
+            const component = findPartsComponent(draft, moduleId);
             if (!component) return state;
 
             component.label = value;
@@ -30,13 +28,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
+            const option = findPartsOption(draft, moduleId, optionId);
             if (!option) return;
             option.label = value;
         }),
@@ -45,16 +37,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
+            const group = findPartsGroup(draft, moduleId, optionId, groupId);
             if (!group) return;
 
             group.label = value;
@@ -77,13 +60,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
+            const option = findPartsOption(draft, moduleId, optionId);
             if (!option) return;
 
             option.optional = !isSelected;
@@ -92,16 +69,8 @@ export const createPartsSlice: StateCreator<
         set((state) => {
             const draft = state.draft;
             if (!draft) return;
-
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
+            const option = findPartsOption(draft, moduleId, optionId);
             if (!option) return;
-
             option.enabled = !isSelected;
         }),
     updateDefaultPartColor: (moduleId, optionId, color, isSelected) =>
@@ -126,19 +95,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
-            if (!group) return;
-
-            const variant = group.colors?.variants?.find(v => v.id === variantId);
+            const variant = findPartsColorVariant(draft, moduleId, optionId, groupId, variantId);
             if (!variant) return;
 
             Object.assign(variant, patch);
@@ -151,13 +108,7 @@ export const createPartsSlice: StateCreator<
             const mod = draft.modules.find(m => m.instanceId === moduleId);
             if (!mod) return;
 
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
+            const group = findPartsGroup(draft, moduleId, optionId, groupId);
             if (!group) return;
 
             if (!group.colors) return;
@@ -176,16 +127,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
+            const group = findPartsGroup(draft, moduleId, optionId, groupId);
             if (!group) return;
 
             group.colors.variants ??= [];
@@ -196,16 +138,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
+            const group = findPartsGroup(draft, moduleId, optionId, groupId);
             if (!group) return;
 
             if (group.meshes.length === 0) return;
@@ -223,10 +156,7 @@ export const createPartsSlice: StateCreator<
             const mod = draft.modules.find(m => m.instanceId === moduleId);
             if (!mod) return;
 
-            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
+            const option = findPartsOption(draft, moduleId, optionId);
             if (!option) return;
 
             const existingLabels = new Set(option.groups.map(g => g.label));
@@ -261,10 +191,7 @@ export const createPartsSlice: StateCreator<
             const mod = draft.modules.find(m => m.instanceId === moduleId);
             if (!mod) return;
 
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
+            const option = findPartsOption(draft, moduleId, optionId);
             if (!option) return;
 
             option.groups = option.groups.filter(g => g.id !== groupId);
@@ -289,10 +216,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
+            const component = findPartsComponent(draft, moduleId);
             if (!component) return;
 
             const existingLabels = new Set(component.options.map(o => o.id));
@@ -321,7 +245,7 @@ export const createPartsSlice: StateCreator<
             const mod = draft.modules.find(m => m.instanceId === moduleId);
             if (!mod) return;
 
-            const component = mod.components.find(c => isComponentType(c, "parts"));
+            const component = findPartsComponent(draft, moduleId);
             if (!component) return;
 
             component.options = component.options.filter(o => o.id !== optionId);
@@ -341,16 +265,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
+            const group = findPartsGroup(draft, moduleId, optionId, groupId);
             if (!group) return;
 
             group.meshes.push(mesh);
@@ -360,16 +275,7 @@ export const createPartsSlice: StateCreator<
             const draft = state.draft;
             if (!draft) return;
 
-            const mod = draft.modules.find(m => m.instanceId === moduleId);
-            if (!mod) return;
-
-            const component = mod.components.find(c => isComponentType(c, "parts"));
-            if (!component) return;
-
-            const option = component.options.find(o => o.id === optionId);
-            if (!option) return;
-
-            const group = option.groups.find(g => g.id === groupId);
+            const group = findPartsGroup(draft, moduleId, optionId, groupId);
             if (!group) return;
 
             group.meshes = group.meshes.filter(m => m !== mesh);
