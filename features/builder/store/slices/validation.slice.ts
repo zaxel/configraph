@@ -52,7 +52,7 @@ export const createValidationSlice: StateCreator<
         } else {
             const resolver = buildPathResolver(draft); 
             console.log(parsed.error);
-            const mapped = mapZodErrors(parsed.error, resolver); 
+            const mapped = mapZodErrors(parsed.error, resolver);  
             get().setErrors(mapped);
         }
     },

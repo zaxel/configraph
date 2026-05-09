@@ -1,26 +1,20 @@
 ﻿import React from 'react';
-import { BuilderAddonComponent, BuilderPartsComponent, BuilderSizeComponent } from '../../registry';
+import { BuilderPartsComponent } from '../../registry';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { useBuilderStore } from '../../../store/builder.store';
 import { Plus, Save, Trash2 } from 'lucide-react';
-import { DefaultParts } from '@/features/configurator/model';
+import { DefaultParts, meshGroup } from '@/features/configurator/model';
 import { inputHandlers } from '@/features/configurator/inputs';
 import PartContainer from './PartContainer';
 import GroupContainer from './GroupContainer';
 import ColorTypeSelect from './ColorTypeSelect';
 import AddMeshSelect from './AddMeshSelect';
-import { findPartsGroup } from '@/features/builder/lib/findPartsGroup';
 
 type PartsBuilderBlock = { data: BuilderPartsComponent, moduleId: string, defaultOpt: DefaultParts };
 
 const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) => {
-
-    console.log(data);
-    console.log(defaultOpt);
-
-    const draft = useBuilderStore(s => s.draft);
 
     const saveDraft = useBuilderStore(s => s.saveDraft);
     const saving = useBuilderStore(s => s.saving);
@@ -29,11 +23,8 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const setFieldTouched = useBuilderStore(s => s.setFieldTouched);
     const validateField = useBuilderStore(s => s.validateField);
 
-
-
     const errors = useBuilderStore(s => s.errors);
     const touched = useBuilderStore(s => s.touched);
-
 
     const updatePartsTittle = useBuilderStore(s => s.updatePartsTittle);
     const updatePartColor = useBuilderStore(s => s.updatePartColor);
@@ -51,12 +42,9 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
 
     const updatePartLabel = useBuilderStore(s => s.updatePartLabel);
     const updateVariantLabel = useBuilderStore(s => s.updateVariantLabel);
- 
 
 
-
-
-    const onAddColorClickHandler = (optionId: string, group) => {
+    const onAddColorClickHandler = (optionId: string, group: meshGroup) => {
         if (group.meshes.length === 0) {
             alert("Attach meshes before adding colors");
             return;
@@ -111,8 +99,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
             <div className="flex flex-col gap-2">
 
                 {data.options.map((opt) => {
-                    return <PartContainer key={opt.id} id={opt.label}>
-
+                    return <PartContainer key={opt.id} id={opt.label ?? ""}>
 
                         {/* PART TITLE */}
                         <div className="flex gap-6 items-center">
@@ -123,7 +110,6 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                     onChange={(e) => {
                                         const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
                                         setFieldDirty(path);
-                                        // updatePartLabel(moduleId, opt.id, e.target.value); 
                                         inputHandlers["partLabel"]({
                                             raw: e.target.value,
                                             moduleId,
@@ -149,7 +135,6 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                 })()}
                             </div>
                         </div>
-
 
                         {/*DEFAULT SETTINGS*/}
                         {opt.groups.length > 0 && <div className="flex justify-end gap-4">
@@ -187,7 +172,6 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                             return <GroupContainer key={group.id} label={group.label}>
 
 
-
                                 {/* VARIANT TITLE */}
                                 <div className="flex gap-6 items-center">
                                     <p className="p-2 text-left">Variant Title:</p>
@@ -199,7 +183,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                 setFieldDirty(path);
                                                 inputHandlers["variantLabel"]({
                                                     raw: e.target.value,
-                                                    moduleId,
+                                                    moduleId, 
                                                     optionId: opt.id,
                                                     groupId: group.id,
                                                     update: updateVariantLabel,
@@ -299,7 +283,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                         <Input
                                                             value={color.value}
                                                             onChange={(e) => {
-                                                                setFieldDirty(valuePath);
+                                                                setFieldDirty(valuePath); 
 
                                                                 inputHandlers["updatePartsColorValue"]({
                                                                     raw: e.target.value,
@@ -394,7 +378,6 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                     {/* DEFAULT */}
                                                     <td className="p-2 text-center">
                                                         <Checkbox
-                                                            // checked={defaultOpt?.value === color.value || false}
                                                             checked={defaultOpt?.selections[opt.id]?.color === color.value}
                                                             onCheckedChange={() => {
                                                                 const isSelected = defaultOpt?.selections[opt.id]?.color === color.value || false;

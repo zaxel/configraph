@@ -9,7 +9,7 @@ export const getTakenMeshes = (draft: Product): Set<string> => {
       if (component.type !== 'parts') return;
       (component as PartsComponent).options.forEach((part) => {
         part.groups.forEach((group) => {
-          group.meshes.forEach((mesh) => taken.add(mesh));
+          group.meshes.forEach((mesh) => taken.add(mesh)); 
         });
       });
     });

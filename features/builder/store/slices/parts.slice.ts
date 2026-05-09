@@ -40,8 +40,6 @@ export const createPartsSlice: StateCreator<
             if (!option) return;
             option.label = value;
         }),
-
-
     updateVariantLabel: (moduleId, optionId, groupId, value) =>
         set((state) => {
             const draft = state.draft;
@@ -55,15 +53,12 @@ export const createPartsSlice: StateCreator<
 
             const option = component.options.find(o => o.id === optionId);
             if (!option) return;
-            
+
             const group = option.groups.find(g => g.id === groupId);
             if (!group) return;
 
             group.label = value;
         }),
-
-
-
     setDefaultPart: (moduleId, optionId, isSelected) =>
         set((state) => {
             const draft = state.draft;
@@ -72,7 +67,10 @@ export const createPartsSlice: StateCreator<
             const mod = draft.modules.find(m => m.instanceId === moduleId);
             if (!mod) return;
 
-            mod.default.selectedPart = isSelected ? "" : optionId;
+            const partsDefault = mod.default as DefaultParts | undefined;
+            if (!partsDefault) return;
+
+            partsDefault.selectedPart = isSelected ? "" : optionId;
         }),
     setOptionalPart: (moduleId, optionId, isSelected) =>
         set((state) => {
@@ -107,7 +105,6 @@ export const createPartsSlice: StateCreator<
             option.enabled = !isSelected;
         }),
     updateDefaultPartColor: (moduleId, optionId, color, isSelected) =>
-        // updateDefaultPartColor(moduleId, isSelected, color.value)
         set((state) => {
             const draft = state.draft;
             if (!draft) return;
@@ -117,7 +114,11 @@ export const createPartsSlice: StateCreator<
 
             const component = mod.components.find(c => isComponentType(c, "parts"));
             if (!component) return;
-            mod.default.selections[optionId].color = (isSelected ? "" : color);
+
+            const partsDefault = mod.default as DefaultParts | undefined;
+            if (!partsDefault) return;
+
+            partsDefault.selections[optionId].color = (isSelected ? "" : color);
 
         }),
     updatePartColor: (moduleId, optionId, groupId, variantId, patch) =>
@@ -137,14 +138,11 @@ export const createPartsSlice: StateCreator<
             const group = option.groups.find(g => g.id === groupId);
             if (!group) return;
 
-            const variant = group.colors.variants.find(v => v.id === variantId);
+            const variant = group.colors?.variants?.find(v => v.id === variantId);
             if (!variant) return;
 
             Object.assign(variant, patch);
         }),
-
-
-
     deleteColorOption: (moduleId, optionId, groupId, colorId) =>
         set((state) => {
             const draft = state.draft;
@@ -162,9 +160,17 @@ export const createPartsSlice: StateCreator<
             const group = option.groups.find(g => g.id === groupId);
             if (!group) return;
 
-            group.colors.variants = group.colors.variants.filter(v => v.id !== colorId);
-        }),
+            if (!group.colors) return;
+            group.colors.variants = group.colors.variants?.filter(v => v.id !== colorId) ?? [];
 
+            const partsDefault = mod.default as DefaultParts | undefined;
+            if (!partsDefault?.selections) return;
+
+            const selection = partsDefault.selections[optionId];
+            if (selection?.groupId === groupId && selection?.color === colorId) {
+                selection.color = group.colors.variants?.[0]?.value ?? "";
+            }
+        }),
     addColorOption: (moduleId, optionId, groupId, newOption) =>
         set((state) => {
             const draft = state.draft;
@@ -181,8 +187,6 @@ export const createPartsSlice: StateCreator<
 
             const group = option.groups.find(g => g.id === groupId);
             if (!group) return;
-
-            if (group.meshes.length === 0) return;
 
             group.colors.variants ??= [];
             group.colors.variants.push(newOption);
@@ -279,7 +283,6 @@ export const createPartsSlice: StateCreator<
                     partsDefault.selectedPart = remaining[0] ?? "";
                 }
             }
-
         }),
     addPart: (moduleId) =>
         set((state) => {
@@ -374,6 +377,4 @@ export const createPartsSlice: StateCreator<
             if (group.meshes.length > 0) return;
             group.colors.variants = [];
         }),
-
-
 });

@@ -8,6 +8,12 @@ type InputHandlerFunc<TUpdate, TArgs extends object = object> = (args: {
 } & TArgs) => void;
 
 type WithOptionId = { optionId: string };
+type WithGroupId = { optionId: string; groupId: string };
+type WithVariantId = { optionId: string; groupId: string; variantId: string };
+
+type UpdatePartsColor = (moduleId: string, optionId: string, groupId: string, variantId: string, patch: { value?: string; label?: string; price?: number }) => void;
+type UpdatePartLabel = (moduleId: string, optionId: string, value: string) => void;
+type UpdateVariantLabel = (moduleId: string, optionId: string, groupId: string, value: string) => void;
 
 type InputHandlerMap = {
     containerLabel: InputHandlerFunc<(moduleId: string, label: string) => void>;
@@ -17,6 +23,13 @@ type InputHandlerMap = {
     sizeOptionLabel: InputHandlerFunc<UpdateSizeOption, WithOptionId>;
     price: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
     color: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
+
+    updatePartsColorValue: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
+    updatePartsColorLabel: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
+    updatePartsColorPrice: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
+
+    partLabel: InputHandlerFunc<UpdatePartLabel, WithOptionId>;
+    variantLabel: InputHandlerFunc<UpdateVariantLabel, WithGroupId>;
 };
 
 const isValidHex = (value: string) =>
@@ -82,6 +95,6 @@ export const inputHandlers: InputHandlerMap = {
     },
 
     variantLabel: ({ raw, moduleId, optionId, groupId, update }) => {
-        update(moduleId, optionId, groupId, raw.trimStart());
+        update(moduleId, optionId, groupId, raw.trimStart()); 
     },
 };

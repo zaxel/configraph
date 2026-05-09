@@ -17,18 +17,20 @@ export type BaseComponent = {
   order?: number;
 };
 
+export type ColorVariant = {
+  id: string;
+  value: string;
+  label?: string;
+  price?: number;
+}
+
 export type meshGroup = {
   id: string;
   label: string;
   meshes: string[];
   colors: {
     allowCustom: boolean;
-    variants: {
-      id: string;
-      value: string;
-      label?: string;
-      price?: number;
-    }[] | null;
+    variants: ColorVariant[] | null;
   }
 }
 
@@ -85,7 +87,7 @@ export type CanvasComponent = BaseComponent & {
   stickers: string[];
   zones?: string[];
   uvTemplates?: Record<string, string>;
-  
+
 };
 
 export type PriceComponent = BaseComponent & {

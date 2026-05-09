@@ -25,8 +25,8 @@ const ColorVariantSchema = z.object({
 const GroupSchema = z.object({
   id: z.string(),
   meshes: z.array(z.string()),
-  label: z.string().min(1, "Can not be empty").max(5, "Max 100 characters"),
-
+  label: z.string().min(1, "Can not be empty").max(100, "Max 100 characters"),
+ 
   colors: z.object({
     allowCustom: z.boolean(),
     variants: z.array(ColorVariantSchema),

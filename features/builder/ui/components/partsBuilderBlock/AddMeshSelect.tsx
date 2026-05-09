@@ -13,7 +13,7 @@ const AddMeshSelect = ({moduleId, optionId, groupId}: {moduleId: string, optionI
     const draft = useBuilderStore(s => s.draft);
     const addMeshToGroup = useBuilderStore(s => s.addMeshToGroup);
 
-    const takenMeshes = useMemo(() => getTakenMeshes(draft), [draft]);
+    const takenMeshes = useMemo(() => draft ? getTakenMeshes(draft) : new Set<string>(), [draft]);
 
     const availableMeshes = useMemo(
         () => builderConfig?.meshes.filter(m => !takenMeshes.has(m.name)) ?? [],
