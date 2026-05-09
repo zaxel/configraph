@@ -1,7 +1,4 @@
-﻿import React from 'react';
-import { BuilderPartsComponent } from '../../registry';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
+﻿import { BuilderPartsComponent } from '../../registry';
 import { Button } from '@/components/ui/button';
 import { useBuilderStore } from '../../../store/builder.store';
 import { Plus, Save, Trash2 } from 'lucide-react';
@@ -10,7 +7,10 @@ import { inputHandlers } from '@/features/configurator/inputs';
 import PartContainer from './PartContainer';
 import GroupContainer from './GroupContainer';
 import ColorTypeSelect from './ColorTypeSelect';
-import AddMeshSelect from './AddMeshSelect';
+import { ValidatedInput } from '../ValidatedInput';
+import MeshesTable from './MeshesTable';
+import ColorVariantsTable from './ColorVariantsTable';
+import PartSettings from './PartSettings';
 
 type PartsBuilderBlock = { data: BuilderPartsComponent, moduleId: string, defaultOpt: DefaultParts };
 
@@ -27,22 +27,14 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const touched = useBuilderStore(s => s.touched);
 
     const updatePartsTittle = useBuilderStore(s => s.updatePartsTittle);
-    const updatePartColor = useBuilderStore(s => s.updatePartColor);
-    const setDefaultPart = useBuilderStore(s => s.setDefaultPart);
-    const setOptionalPart = useBuilderStore(s => s.setOptionalPart);
-    const setPartEnabled = useBuilderStore(s => s.setPartEnabled);
-    const updateDefaultPartColor = useBuilderStore(s => s.updateDefaultPartColor);
-    const deleteColorOption = useBuilderStore(s => s.deleteColorOption);
     const addColorOption = useBuilderStore(s => s.addColorOption);
     const deleteVariant = useBuilderStore(s => s.deleteVariant);
     const deletePart = useBuilderStore(s => s.deletePart);
-    const deleteMeshOption = useBuilderStore(s => s.deleteMeshOption);
     const addPartGroup = useBuilderStore(s => s.addPartGroup);
     const addPart = useBuilderStore(s => s.addPart);
 
     const updatePartLabel = useBuilderStore(s => s.updatePartLabel);
     const updateVariantLabel = useBuilderStore(s => s.updateVariantLabel);
-
 
     const onAddColorClickHandler = (optionId: string, group: meshGroup) => {
         if (group.meshes.length === 0) {
@@ -64,344 +56,77 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     return (
         <div className="overflow-x-auto">
             {/* CONTAINER TITLE */}
-            <div className="flex gap-6 items-center">
-                <p className="p-2 text-left">Component Title:</p>
-                <div className="p-2">
-                    <Input
-                        value={data.label}
-                        onChange={(e) => {
-                            const path = `modules.${moduleId}.components.${data.id}.label`;
-                            setFieldDirty(path);
-                            inputHandlers["containerLabel"]({
-                                raw: e.target.value,
-                                moduleId,
-                                update: updatePartsTittle,
-                            });
-                        }}
-                        onBlur={() => {
-                            const path = `modules.${moduleId}.components.${data.id}.label`;
-                            setFieldTouched(path);
-                            validateField(path);
-                        }}
-                    />
-                    {(() => {
-                        const path = `modules.${moduleId}.components.${data.id}.label`;
-                        const fieldErrors = errors[path];
-                        const isTouched = touched[path];
-                        return isTouched && fieldErrors && fieldErrors.length > 0 ? (
-                            <span className="text-red-500 text-xs">
-                                {fieldErrors[0].message}
-                            </span>
-                        ) : null;
-                    })()}
-                </div>
-            </div>
-            <div className="flex flex-col gap-2">
+            <ValidatedInput
+                label="Component Title:"
+                value={data.label ?? ""}
+                path={`modules.${moduleId}.components.${data.id}.label`}
+                onChange={(value) => inputHandlers["containerLabel"]({ raw: value, moduleId, update: updatePartsTittle })}
+                errors={errors}
+                touched={touched}
+                setFieldDirty={setFieldDirty}
+                setFieldTouched={setFieldTouched}
+                validateField={validateField}
+            />
 
+            {/* PART CONTAINER */}
+            <div className="flex flex-col gap-2">
                 {data.options.map((opt) => {
                     return <PartContainer key={opt.id} id={opt.label ?? ""}>
 
                         {/* PART TITLE */}
-                        <div className="flex gap-6 items-center">
-                            <p className="p-2 text-left">Part Title:</p>
-                            <div className="p-2">
-                                <Input
-                                    value={opt.label}
-                                    onChange={(e) => {
-                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
-                                        setFieldDirty(path);
-                                        inputHandlers["partLabel"]({
-                                            raw: e.target.value,
-                                            moduleId,
-                                            optionId: opt.id,
-                                            update: updatePartLabel,
-                                        });
-                                    }}
-                                    onBlur={() => {
-                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
-                                        setFieldTouched(path);
-                                        validateField(path);
-                                    }}
-                                />
-                                {(() => {
-                                    const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
-                                    const fieldErrors = errors[path];
-                                    const isTouched = touched[path];
-                                    return isTouched && fieldErrors && fieldErrors.length > 0 ? (
-                                        <span className="text-red-500 text-xs">
-                                            {fieldErrors[0].message}
-                                        </span>
-                                    ) : null;
-                                })()}
-                            </div>
-                        </div>
+                        <ValidatedInput
+                            label="Part Title:"
+                            value={opt.label ?? ""}
+                            path={`modules.${moduleId}.components.${data.id}.options.${opt.id}.label`}
+                            onChange={(value) => inputHandlers["partLabel"]({ raw: value, moduleId, optionId: opt.id, update: updatePartLabel })}
+                            errors={errors}
+                            touched={touched}
+                            setFieldDirty={setFieldDirty}
+                            setFieldTouched={setFieldTouched}
+                            validateField={validateField}
+                        />
+
 
                         {/*DEFAULT SETTINGS*/}
-                        {opt.groups.length > 0 && <div className="flex justify-end gap-4">
-                            <p className="mr-auto">variants:</p>
-                            <label className="flex gap-2 items-center">
-                                <Checkbox
-                                    checked={defaultOpt?.selectedPart === opt.id || false}
-                                    onCheckedChange={() => {
-                                        const isSelected = defaultOpt?.selectedPart === opt.id || false;
-                                        setDefaultPart(moduleId, opt.id, isSelected);
-                                    }}
-                                />
-                                <span>default part</span>
-                            </label>
-                            <label className="flex gap-2 items-center">
-                                <Checkbox
-                                    checked={opt.optional}
-                                    onCheckedChange={() => {
-                                        setOptionalPart(moduleId, opt.id, opt.optional);
-                                    }}
-                                />
-                                <span>optional</span>
-                            </label>
-                            {opt.optional && <label className="flex gap-2 items-center">
-                                <Checkbox
-                                    checked={opt.enabled}
-                                    onCheckedChange={() => {
-                                        setPartEnabled(moduleId, opt.id, opt.enabled);
-                                    }}
-                                />
-                                <span>enabled</span>
-                            </label>}
-                        </div>}
+                        {opt.groups.length > 0 && <PartSettings
+                            moduleId={moduleId}
+                            opt={opt}
+                            defaultOpt={defaultOpt}
+                        />}
                         {opt.groups.map(group => {
                             return <GroupContainer key={group.id} label={group.label}>
 
 
                                 {/* VARIANT TITLE */}
-                                <div className="flex gap-6 items-center">
-                                    <p className="p-2 text-left">Variant Title:</p>
-                                    <div className="p-2">
-                                        <Input
-                                            value={group.label}
-                                            onChange={(e) => {
-                                                const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`;
-                                                setFieldDirty(path);
-                                                inputHandlers["variantLabel"]({
-                                                    raw: e.target.value,
-                                                    moduleId, 
-                                                    optionId: opt.id,
-                                                    groupId: group.id,
-                                                    update: updateVariantLabel,
-                                                });
-                                            }}
-                                            onBlur={() => {
-                                                const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`;
-                                                setFieldTouched(path);
-                                                validateField(path);
-                                            }}
-                                        />
-                                        {(() => {
-                                            const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`;
-                                            const fieldErrors = errors[path];
-                                            const isTouched = touched[path];
-                                            return isTouched && fieldErrors && fieldErrors.length > 0 ? (
-                                                <span className="text-red-500 text-xs">
-                                                    {fieldErrors[0].message}
-                                                </span>
-                                            ) : null;
-                                        })()}
-                                    </div>
-                                </div>
-
+                                <ValidatedInput
+                                    label="Variant Title:"
+                                    value={group.label ?? ""}
+                                    path={`modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`}
+                                    onChange={(value) => inputHandlers["variantLabel"]({ raw: value, moduleId, optionId: opt.id, groupId: group.id, update: updateVariantLabel })}
+                                    errors={errors}
+                                    touched={touched}
+                                    setFieldDirty={setFieldDirty}
+                                    setFieldTouched={setFieldTouched}
+                                    validateField={validateField}
+                                />
 
                                 {/*MESHES TABLE*/}
-                                <table className="w-full text-sm border rounded-md">
-                                    <thead className="bg-muted">
-                                        <tr>
-                                            <th className="p-2 text-left">Meshes</th>
-                                            <th className="p-2 text-center">Delete</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {group.meshes.map((mesh) => (
-                                            <tr key={mesh} className="border-t">
-
-                                                {/* MESHES */}
-                                                <td className="p-2">
-                                                    {mesh}
-                                                </td>
-
-                                                {/* DELETE */}
-                                                <td className="p-2 text-center">
-                                                    <Button
-                                                        className="cursor-pointer"
-                                                        variant="destructive"
-                                                        size="sm"
-                                                        onClick={() => deleteMeshOption(moduleId, opt.id, group.id, mesh)}
-                                                    >
-                                                        Delete
-                                                    </Button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                                <div >
-                                    <AddMeshSelect moduleId={moduleId} optionId={opt.id} groupId={group.id} />
-                                </div>
+                                <MeshesTable
+                                    moduleId={moduleId}
+                                    optionId={opt.id}
+                                    group={group}
+                                />
 
                                 <ColorTypeSelect moduleId={moduleId} optionId={opt.id} groupId={group.id} />
 
                                 {/*COLORS TABLE*/}
-                                {!group.colors.allowCustom && <table className="w-full text-sm border rounded-md">
-                                    <thead className="bg-muted">
-                                        <tr>
-                                            <th className="p-2 text-left">UI</th>
-                                            <th className="p-2 text-left">Value</th>
-                                            <th className="p-2 text-left">Label</th>
-                                            <th className="p-2 text-left">Price</th>
-                                            <th className="p-2 text-center">Default</th>
-                                            <th className="p-2 text-center">Del</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {group.colors?.variants?.map((color) => {
-                                            const valuePath = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.colors.variants.${color.id}.value`;
-                                            const labelPath = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.colors.variants.${color.id}.label`;
-                                            const pricePath = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.colors.variants.${color.id}.price`;
-
-                                            return (
-                                                <tr key={color.id} className="border-t">
-                                                    {/* UI */}
-                                                    <td className="p-2 text-xs text-muted-foreground">
-                                                        <div className="w-14 truncate">
-                                                            <div
-                                                                style={{ backgroundColor: color.value ?? "gray" }}
-                                                                className="m-1 w-6 h-6 rounded-full ring-1 ring-gray-300 relative">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    {/* VALUE */}
-                                                    <td className="p-2">
-                                                        <Input
-                                                            value={color.value}
-                                                            onChange={(e) => {
-                                                                setFieldDirty(valuePath); 
-
-                                                                inputHandlers["updatePartsColorValue"]({
-                                                                    raw: e.target.value,
-                                                                    moduleId,
-                                                                    optionId: opt.id,
-                                                                    groupId: group.id,
-                                                                    variantId: color.id,
-                                                                    update: updatePartColor,
-                                                                });
-                                                            }}
-                                                            onBlur={() => {
-                                                                setFieldTouched(valuePath);
-                                                                validateField(valuePath);
-                                                            }}
-                                                        />
-                                                        {(() => {
-                                                            const fieldErrors = errors[valuePath];
-                                                            const isTouched = touched[valuePath];
-                                                            return isTouched && fieldErrors && fieldErrors.length > 0 ? (
-                                                                <span className="text-red-500 text-xs">
-                                                                    {fieldErrors[0].message}
-                                                                </span>
-                                                            ) : null;
-                                                        })()}
-                                                    </td>
-
-                                                    {/* LABEL */}
-                                                    <td className="p-2">
-                                                        <Input
-                                                            value={color.label}
-                                                            onChange={(e) => {
-                                                                setFieldDirty(labelPath);
-                                                                inputHandlers["updatePartsColorLabel"]({
-                                                                    raw: e.target.value,
-                                                                    moduleId,
-                                                                    optionId: opt.id,
-                                                                    groupId: group.id,
-                                                                    variantId: color.id,
-                                                                    update: updatePartColor,
-                                                                });
-                                                            }}
-                                                            onBlur={() => {
-                                                                setFieldTouched(labelPath);
-                                                                validateField(labelPath);
-                                                            }}
-                                                        />
-                                                        {(() => {
-                                                            const fieldErrors = errors[labelPath];
-                                                            const isTouched = touched[labelPath];
-                                                            return isTouched && fieldErrors && fieldErrors.length > 0 ? (
-                                                                <span className="text-red-500 text-xs">
-                                                                    {fieldErrors[0].message}
-                                                                </span>
-                                                            ) : null;
-                                                        })()}
-                                                    </td>
-
-                                                    {/* PRICE */}
-                                                    <td className="p-2 w-30">
-                                                        <Input
-                                                            type="number"
-                                                            value={color.price ?? 0}
-                                                            onChange={(e) => {
-                                                                setFieldDirty(pricePath);
-
-                                                                inputHandlers["updatePartsColorPrice"]({
-                                                                    raw: e.target.value,
-                                                                    moduleId,
-                                                                    optionId: opt.id,
-                                                                    groupId: group.id,
-                                                                    variantId: color.id,
-                                                                    update: updatePartColor,
-                                                                });
-                                                            }}
-                                                            onBlur={() => {
-                                                                setFieldTouched(pricePath);
-                                                                validateField(pricePath);
-                                                            }}
-                                                        />
-                                                        {(() => {
-                                                            const fieldErrors = errors[pricePath];
-                                                            const isTouched = touched[pricePath];
-                                                            return isTouched && fieldErrors && fieldErrors.length > 0 ? (
-                                                                <span className="text-red-500 text-xs">
-                                                                    {fieldErrors[0].message}
-                                                                </span>
-                                                            ) : null;
-                                                        })()}
-
-                                                    </td>
-
-                                                    {/* DEFAULT */}
-                                                    <td className="p-2 text-center">
-                                                        <Checkbox
-                                                            checked={defaultOpt?.selections[opt.id]?.color === color.value}
-                                                            onCheckedChange={() => {
-                                                                const isSelected = defaultOpt?.selections[opt.id]?.color === color.value || false;
-                                                                updateDefaultPartColor(moduleId, opt.id, color.value, isSelected)
-                                                            }}
-                                                        />
-                                                    </td>
-
-                                                    {/* DELETE */}
-                                                    <td className="p-2 text-center">
-                                                        <Button
-                                                            className="cursor-pointer"
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            onClick={() => deleteColorOption(moduleId, opt.id, group.id, color.id)}
-                                                        >
-                                                            Delete
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>}
+                                {!group.colors.allowCustom && <ColorVariantsTable
+                                    moduleId={moduleId}
+                                    componentId={data.id}
+                                    optionId={opt.id}
+                                    group={group}
+                                    defaultOpt={defaultOpt}
+                                />}
                                 <div className="flex items-center justify-between gap-2 p-3 bg-muted/40">
                                     {/*VARIANTS BUTTONS*/}
                                     {!group.colors.allowCustom && <div>
