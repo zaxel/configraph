@@ -2,11 +2,16 @@
 import { ContentComponent } from '../../model';
 import { Text } from './Text';
 
-const ContentBlock = ({data} : { data: ContentComponent }) => {
+const ContentBlock = ({ data }: { data: ContentComponent }) => {
+    if (!data) return;
     return (
-        <Text variant={data.content.textType}>
-            {data.content.value}
-        </Text>
+        <>
+            {data.content.map(cont => {
+                return <Text key={cont.id} variant={cont.textType}>
+                    {cont.value}
+                </Text>
+            })}
+        </>
     );
 };
 

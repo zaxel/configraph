@@ -365,19 +365,21 @@ export const product_sample: Product = {
         {
           id: "222",
           type: "content",
-          content: {
-            value: "Nike Jordan 3",
-            textType: "heading1"
-          }
+          "label": "cont- label",
+          content: [
+            {
+              id: "cont-01",
+              value: "Nike Jordan 3",
+              textType: "heading1"
+            },
+            {
+              id: "cont-02",
+              value: "A comfortable, everyday T-shirt made from soft, breathable cotton, designed with a classic fit and clean lines for effortless wear.",
+              textType: "text-md-gray"
+            }
+          ]
         },
-        {
-          id: "201",
-          type: "content",
-          content: {
-            value: "A comfortable, everyday T-shirt made from soft, breathable cotton, designed with a classic fit and clean lines for effortless wear.",
-            textType: "text-md-gray"
-          }
-        },
+
       ],
     },
     {
@@ -392,8 +394,8 @@ export const product_sample: Product = {
         selections: {
           "body left": {
             groupId: "id-83866e",
-            color: "red", 
-            
+            color: "red",
+
           },
           "body right": {
             groupId: "id-83867e",
@@ -421,7 +423,7 @@ export const product_sample: Product = {
           id: "parts",
           type: "parts",
           label: "Parts:",
-          options: [ 
+          options: [
             {
               id: "body left",
               label: "body left label",
@@ -636,34 +638,30 @@ export const product_sample: Product = {
         {
           id: "238",
           type: "content",
-          content: {
-            value: "Product Info",
-            textType: "heading2"
-          }
-        },
-        {
-          id: "239",
-          type: "content",
-          content: {
-            value: "I'm a great place to add more information about your product, such as sizing, material, care, and cleaning instructions. This is also a great space to highlight what makes this product special and how your customers can benefit from this item.",
-            textType: "text-sm"
-          }
-        },
-        {
-          id: "240",
-          type: "content",
-          content: {
-            value: "Return & Refund Policy",
-            textType: "heading2"
-          }
-        },
-        {
-          id: "241",
-          type: "content",
-          content: {
-            value: "I’m a great place to let your customers know what to do in case they are dissatisfied with their purchase.Easy Returns &amp; ExchangesHassle-Free ProcessBuilds Customer ConfidenceHaving a straightforward refund or exchange policy is a great way to build trust and reassure your customers that they can buy with confidence.",
-            textType: "text-sm"
-          }
+          label: "content 238 label",
+          content: [
+            {
+              id: "cont-04",
+              value: "Product Info",
+              textType: "heading2"
+            },
+            {
+              id: "cont-05",
+              value: "I'm a great place to add more information about your product, such as sizing, material, care, and cleaning instructions. This is also a great space to highlight what makes this product special and how your customers can benefit from this item.",
+              textType: "text-sm"
+            },
+            {
+              id: "cont-06",
+              value: "Return & Refund Policy",
+              textType: "heading2"
+            },
+            {
+              id: "cont-07",
+              value: "I’m a great place to let your customers know what to do in case they are dissatisfied with their purchase.Easy Returns &amp; ExchangesHassle-Free ProcessBuilds Customer ConfidenceHaving a straightforward refund or exchange policy is a great way to build trust and reassure your customers that they can buy with confidence.",
+              textType: "text-sm"
+            }
+          ],
+
         },
       ],
     },

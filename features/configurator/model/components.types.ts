@@ -73,10 +73,12 @@ export type AddonComponent = BaseComponent & {
 
 export type ContentComponent = BaseComponent & {
   type: "content";
+  label?: string;
   content: {
+    id: string;
     value: string;
     textType: TextType;
-  };
+  }[];
 };
 
 
