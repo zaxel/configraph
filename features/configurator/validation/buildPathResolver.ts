@@ -1,10 +1,11 @@
-﻿import { Product } from "../model";
+﻿import { ColorVariant, meshGroup, OptionsComponent, PartsComponent, Product } from "../model";
 import { PathResolver } from "./mapZodErrors";
 
 
 
 export const buildPathResolver = (draft: Product): PathResolver => {
     return (zodPath) => {
+        console.log(zodPath)
         const resolved: (string | number)[] = [];
 
         for (let i = 0; i < zodPath.length; i++) {
@@ -33,8 +34,8 @@ export const buildPathResolver = (draft: Product): PathResolver => {
                 const component = draft.modules[moduleIdx]?.components[compIdx];
 
                 if (component && "options" in component && Array.isArray(component.options)) {
-                    const option = component.options[segment];
-                    resolved.push((option as any)?.id ?? segment);
+                    const option = component.options[segment] as OptionsComponent | undefined;
+                    resolved.push(option?.id ?? segment);
                 } else {
                     resolved.push(segment);
                 }
@@ -46,9 +47,9 @@ export const buildPathResolver = (draft: Product): PathResolver => {
                 const moduleIdx = zodPath[1] as number;
                 const compIdx = zodPath[3] as number;
                 const optIdx = zodPath[5] as number;
-                const component = draft.modules[moduleIdx]?.components[compIdx];
-                const options = (component as any)?.options;
-                const group = options?.[optIdx]?.groups?.[segment];
+                const component = draft.modules[moduleIdx]?.components[compIdx] as PartsComponent | undefined;;
+                const option = component?.options?.[optIdx] as OptionsComponent | undefined;;
+                const group = option?.groups?.[segment] as meshGroup | undefined;
                 resolved.push(group?.id ?? segment);
                 continue;
             }
@@ -59,13 +60,15 @@ export const buildPathResolver = (draft: Product): PathResolver => {
                 const compIdx = zodPath[3] as number;
                 const optIdx = zodPath[5] as number;
                 const groupIdx = zodPath[7] as number;
-                const component = draft.modules[moduleIdx]?.components[compIdx];
-                const options = (component as any)?.options;
-                const variant = options?.[optIdx]?.groups?.[groupIdx]?.colors?.variants?.[segment];
+                const component = draft.modules[moduleIdx]?.components[compIdx] as PartsComponent | undefined;;
+                const option = component?.options?.[optIdx] as OptionsComponent | undefined;
+                const group = option?.groups?.[groupIdx] as meshGroup | undefined;
+                const variant = group?.colors?.variants?.[segment] as ColorVariant | undefined;
                 resolved.push(variant?.id ?? segment);
                 continue;
             }
 
+            if (typeof segment === "symbol") continue; // or throw, or log
             resolved.push(segment);
         }
 

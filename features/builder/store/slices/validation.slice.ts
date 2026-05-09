@@ -59,7 +59,7 @@ export const createValidationSlice: StateCreator<
 
     validateField: (path) => {
         // MVP: just revalidate whole draft
-        // later you can optimize with schema.pick()
+        // later can optimize with schema.pick()
         get().validateDraft();
     },
 });

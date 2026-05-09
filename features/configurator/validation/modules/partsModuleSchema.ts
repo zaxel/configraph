@@ -52,7 +52,6 @@ export const PartsModuleSchema = z.object({
       z.object({
         groupId: z.string(),
         color: z.string(),
-        enabled: z.boolean(),
       })
     ),
     selectedPart: z.string(),
