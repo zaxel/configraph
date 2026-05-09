@@ -1,4 +1,5 @@
 ﻿import { UpdateAddonOption } from "@/features/builder/store/slices/addon.types";
+import { UpdateContentText } from "@/features/builder/store/slices/content.types";
 import { UpdateSizeOption } from "@/features/builder/store/slices/size.types";
 
 type InputHandlerFunc<TUpdate, TArgs extends object = object> = (args: {
@@ -15,6 +16,8 @@ type UpdatePartsColor = (moduleId: string, optionId: string, groupId: string, va
 type UpdatePartLabel = (moduleId: string, optionId: string, value: string) => void;
 type UpdateVariantLabel = (moduleId: string, optionId: string, groupId: string, value: string) => void;
 
+type WithTextId = { textId: string; };
+
 type InputHandlerMap = {
     containerLabel: InputHandlerFunc<(moduleId: string, label: string) => void>;
     addonOptionValue: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
@@ -27,9 +30,12 @@ type InputHandlerMap = {
     updatePartsColorValue: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
     updatePartsColorLabel: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
     updatePartsColorPrice: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
-
+    
     partLabel: InputHandlerFunc<UpdatePartLabel, WithOptionId>;
     variantLabel: InputHandlerFunc<UpdateVariantLabel, WithGroupId>;
+
+
+    contentTextValue: InputHandlerFunc<UpdateContentText, WithTextId>;
 };
 
 const isValidHex = (value: string) =>
@@ -96,5 +102,9 @@ export const inputHandlers: InputHandlerMap = {
 
     variantLabel: ({ raw, moduleId, optionId, groupId, update }) => {
         update(moduleId, optionId, groupId, raw.trimStart()); 
+    },
+
+    contentTextValue: ({ raw, moduleId, textId, update }) => {
+        update(moduleId, textId, { value: raw.trimStart() });   
     },
 };

@@ -658,7 +658,7 @@ export const product_sample: Product = {
             {
               id: "cont-07",
               value: "I’m a great place to let your customers know what to do in case they are dissatisfied with their purchase.Easy Returns &amp; ExchangesHassle-Free ProcessBuilds Customer ConfidenceHaving a straightforward refund or exchange policy is a great way to build trust and reassure your customers that they can buy with confidence.",
-              textType: "text-sm"
+              textType: "text-sm" 
             }
           ],
 

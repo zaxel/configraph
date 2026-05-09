@@ -6,7 +6,7 @@ type TextProps = {
   children: ReactNode;
 };
 
-const tagMap: Record<TextType, ElementType<{ className?: string; children?: ReactNode }>> = {
+export const tagMap: Record<TextType, ElementType<{ className?: string; children?: ReactNode }>> = {
   heading1: "h2",
   heading2: "h3",
   "text-sm": "p",
@@ -15,13 +15,13 @@ const tagMap: Record<TextType, ElementType<{ className?: string; children?: Reac
   button: "button",
 };
 
-const textStyles: Record<TextType, string> = {
+export const textStyles: Record<TextType, string> = {
   heading1: "text-2xl font-semibold",
   heading2: "text-xl font-medium",
   "text-sm": "text-sm",
   "text-md": "text-base",
   "text-md-gray": "text-base font-light text-gray-500",
-  button: "text-sm font-medium",
+  button: "text-sm font-medium", 
 };
 
 export const Text = ({ variant, children }: TextProps) => {

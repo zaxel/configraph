@@ -12,7 +12,7 @@ const BuilderUI = () => {
                 .slice()
                 .sort((a, b) => a.order - b.order)
                 .map((module) => {
-                    return <BuilderModuleRenderer key={module.id} module={module} />
+                    return <BuilderModuleRenderer key={module.instanceId} module={module} />
                 })}
             <ModuleSelect />
         </div>

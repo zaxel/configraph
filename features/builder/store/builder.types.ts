@@ -1,4 +1,5 @@
 ﻿import { AddonSlice } from "./slices/addon.types";
+import { ContentSlice } from "./slices/content.types";
 import { ModelSlice } from "./slices/model.type";
 import { PartsSlice } from "./slices/parts.types";
 import { ProductConfigSlice } from "./slices/productConfig.type";
@@ -14,4 +15,5 @@ export type BoundBuilderStore = UiSlice
                                 & AddonSlice 
                                 & ValidationSlice 
                                 & SizeSlice
-                                & PartsSlice;
+                                & PartsSlice
+                                & ContentSlice;

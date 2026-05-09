@@ -10,6 +10,7 @@ import { createAddonSlice } from "./slices/addon.slice";
 import { createValidationSlice } from "./slices/validation.slice";
 import { createSizeSlice } from "./slices/size.slice";
 import { createPartsSlice } from "./slices/parts.slice";
+import { createContentSlice } from "./slices/content.slice";
 
 export const useBuilderStore = create<BoundBuilderStore>()(
   immer(devtools((...a) => ({
@@ -21,5 +22,6 @@ export const useBuilderStore = create<BoundBuilderStore>()(
     ...createValidationSlice(...a),
     ...createSizeSlice(...a),
     ...createPartsSlice(...a),
+    ...createContentSlice(...a),
   })))
 );
