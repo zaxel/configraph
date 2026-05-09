@@ -424,6 +424,7 @@ export const product_sample: Product = {
           options: [ 
             {
               id: "body left",
+              label: "body left label",
               optional: false,
               enabled: true,
               groups: [
@@ -445,6 +446,7 @@ export const product_sample: Product = {
             },
             {
               id: "body right",
+              label: "body right label",
               optional: false,
               enabled: true,
               groups: [
@@ -466,6 +468,7 @@ export const product_sample: Product = {
             },
             {
               id: "laces",
+              label: "laces label",
               type: "part",
               optional: true,
               enabled: false,
@@ -499,6 +502,7 @@ export const product_sample: Product = {
             },
             {
               id: "sole",
+              label: "sole label",
               type: "part",
               optional: true,
               enabled: true,

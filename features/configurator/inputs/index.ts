@@ -56,23 +56,32 @@ export const inputHandlers: InputHandlerMap = {
     },
 
 
-    updatePartsColorValue({raw, moduleId, optionId, groupId, variantId, update }){
+    updatePartsColorValue({ raw, moduleId, optionId, groupId, variantId, update }) {
         const value = raw.trim();
         // moduleId, optionId, groupId, variantId, patch 
-        update(moduleId, optionId, groupId, variantId, {value}); 
+        update(moduleId, optionId, groupId, variantId, { value });
     },
-    updatePartsColorLabel({raw, moduleId, optionId, groupId, variantId, update }){
+    updatePartsColorLabel({ raw, moduleId, optionId, groupId, variantId, update }) {
         const label = raw.trim();
         // moduleId, optionId, groupId, variantId, patch 
-        update(moduleId, optionId, groupId, variantId, {label}); 
+        update(moduleId, optionId, groupId, variantId, { label });
     },
-    updatePartsColorPrice({raw, moduleId, optionId, groupId, variantId, update }){
+    updatePartsColorPrice({ raw, moduleId, optionId, groupId, variantId, update }) {
         if (!/^\d*\.?\d*$/.test(raw)) return;
 
         if (raw === "") return;
         const parsed = Number(raw);
 
         if (parsed < 0) return;
-        update(moduleId, optionId, groupId, variantId, {price: parsed}); 
+        update(moduleId, optionId, groupId, variantId, { price: parsed });
+    },
+
+
+    partLabel: ({ raw, moduleId, optionId, update }) => {
+        update(moduleId, optionId, raw.trimStart());
+    },
+
+    variantLabel: ({ raw, moduleId, optionId, groupId, update }) => {
+        update(moduleId, optionId, groupId, raw.trimStart());
     },
 };

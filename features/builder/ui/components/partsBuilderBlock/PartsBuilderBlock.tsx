@@ -49,6 +49,9 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
     const addPartGroup = useBuilderStore(s => s.addPartGroup);
     const addPart = useBuilderStore(s => s.addPart);
 
+    const updatePartLabel = useBuilderStore(s => s.updatePartLabel);
+    const updateVariantLabel = useBuilderStore(s => s.updateVariantLabel);
+ 
 
 
 
@@ -70,7 +73,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
         addPartGroup(moduleId, optionId);
     }
 
-    return ( 
+    return (
         <div className="overflow-x-auto">
             {/* CONTAINER TITLE */}
             <div className="flex gap-6 items-center">
@@ -108,7 +111,46 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
             <div className="flex flex-col gap-2">
 
                 {data.options.map((opt) => {
-                    return <PartContainer key={opt.id} id={opt.id}>
+                    return <PartContainer key={opt.id} id={opt.label}>
+
+
+                        {/* PART TITLE */}
+                        <div className="flex gap-6 items-center">
+                            <p className="p-2 text-left">Part Title:</p>
+                            <div className="p-2">
+                                <Input
+                                    value={opt.label}
+                                    onChange={(e) => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
+                                        setFieldDirty(path);
+                                        // updatePartLabel(moduleId, opt.id, e.target.value); 
+                                        inputHandlers["partLabel"]({
+                                            raw: e.target.value,
+                                            moduleId,
+                                            optionId: opt.id,
+                                            update: updatePartLabel,
+                                        });
+                                    }}
+                                    onBlur={() => {
+                                        const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
+                                        setFieldTouched(path);
+                                        validateField(path);
+                                    }}
+                                />
+                                {(() => {
+                                    const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.label`;
+                                    const fieldErrors = errors[path];
+                                    const isTouched = touched[path];
+                                    return isTouched && fieldErrors && fieldErrors.length > 0 ? (
+                                        <span className="text-red-500 text-xs">
+                                            {fieldErrors[0].message}
+                                        </span>
+                                    ) : null;
+                                })()}
+                            </div>
+                        </div>
+
+
                         {/*DEFAULT SETTINGS*/}
                         {opt.groups.length > 0 && <div className="flex justify-end gap-4">
                             <p className="mr-auto">variants:</p>
@@ -143,6 +185,44 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                         </div>}
                         {opt.groups.map(group => {
                             return <GroupContainer key={group.id} label={group.label}>
+
+
+
+                                {/* VARIANT TITLE */}
+                                <div className="flex gap-6 items-center">
+                                    <p className="p-2 text-left">Variant Title:</p>
+                                    <div className="p-2">
+                                        <Input
+                                            value={group.label}
+                                            onChange={(e) => {
+                                                const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`;
+                                                setFieldDirty(path);
+                                                inputHandlers["variantLabel"]({
+                                                    raw: e.target.value,
+                                                    moduleId,
+                                                    optionId: opt.id,
+                                                    groupId: group.id,
+                                                    update: updateVariantLabel,
+                                                });
+                                            }}
+                                            onBlur={() => {
+                                                const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`;
+                                                setFieldTouched(path);
+                                                validateField(path);
+                                            }}
+                                        />
+                                        {(() => {
+                                            const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.groups.${group.id}.label`;
+                                            const fieldErrors = errors[path];
+                                            const isTouched = touched[path];
+                                            return isTouched && fieldErrors && fieldErrors.length > 0 ? (
+                                                <span className="text-red-500 text-xs">
+                                                    {fieldErrors[0].message}
+                                                </span>
+                                            ) : null;
+                                        })()}
+                                    </div>
+                                </div>
 
 
                                 {/*MESHES TABLE*/}
@@ -315,9 +395,9 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                                                     <td className="p-2 text-center">
                                                         <Checkbox
                                                             // checked={defaultOpt?.value === color.value || false}
-                                                            checked={defaultOpt?.selections[opt.id].color === color.value}
+                                                            checked={defaultOpt?.selections[opt.id]?.color === color.value}
                                                             onCheckedChange={() => {
-                                                                const isSelected = defaultOpt?.selections[opt.id].color === color.value || false;
+                                                                const isSelected = defaultOpt?.selections[opt.id]?.color === color.value || false;
                                                                 updateDefaultPartColor(moduleId, opt.id, color.value, isSelected)
                                                             }}
                                                         />
@@ -398,7 +478,7 @@ const PartsBuilderBlock = ({ data, moduleId, defaultOpt }: PartsBuilderBlock) =>
                 {/* LEFT */}
                 <div>
                     <Button
-                        onClick={()=>addPart(moduleId)}
+                        onClick={() => addPart(moduleId)}
                         variant="default" size="sm" className="cursor-pointer">
                         <Plus className="w-4 h-4 mr-1" />
                         Add part

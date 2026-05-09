@@ -25,6 +25,45 @@ export const createPartsSlice: StateCreator<
 
             component.label = value;
         }),
+    updatePartLabel: (moduleId, optionId, value) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+            option.label = value;
+        }),
+
+
+    updateVariantLabel: (moduleId, optionId, groupId, value) =>
+        set((state) => {
+            const draft = state.draft;
+            if (!draft) return;
+
+            const mod = draft.modules.find(m => m.instanceId === moduleId);
+            if (!mod) return;
+
+            const component = mod.components.find(c => isComponentType(c, "parts")) as PartsComponent | undefined;
+            if (!component) return;
+
+            const option = component.options.find(o => o.id === optionId);
+            if (!option) return;
+            
+            const group = option.groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            group.label = value;
+        }),
+
+
+
     setDefaultPart: (moduleId, optionId, isSelected) =>
         set((state) => {
             const draft = state.draft;
@@ -172,7 +211,7 @@ export const createPartsSlice: StateCreator<
             if (!isCustomAllowed) return;
             group.colors.variants = [];
         }),
-    addPartGroup: (moduleId, optionId) => 
+    addPartGroup: (moduleId, optionId) =>
         set((state) => {
             const draft = state.draft;
             if (!draft) return;
@@ -198,7 +237,7 @@ export const createPartsSlice: StateCreator<
                 id: `grp_${crypto.randomUUID()}`,
                 meshes: [],
                 label,
-                colors: { allowCustom: false, variants: [] } 
+                colors: { allowCustom: false, variants: [] }
             };
 
             option.groups.push(newGroup);
@@ -262,11 +301,12 @@ export const createPartsSlice: StateCreator<
             }
 
             const newOption = {
-                "id": label,
+                "id": `prt_${crypto.randomUUID()}`,
+                label,
                 "optional": false,
                 "enabled": true,
-                "groups": [] 
-              }
+                "groups": []
+            }
 
             component.options.push(newOption);
         }),
