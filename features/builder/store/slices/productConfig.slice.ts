@@ -5,6 +5,7 @@ import { Product } from "@/features/configurator/model";
 import { isComponentType, isModuleType } from "@/features/configurator/model/component.guards";
 import { canAddModule } from "@/features/configurator/model/module.rules";
 import { createModuleFactory } from "../../lib/factories/createModule";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export const initProductSample: Product = {
     id: `${crypto.randomUUID()}`,
@@ -15,7 +16,7 @@ export const initProductSample: Product = {
     },
 
     modules: [
-       
+
     ],
 };
 
@@ -118,7 +119,7 @@ export const createProductConfigSlice: StateCreator<
 
             if (!canAddModule(type, state.draft)) return;
 
-            
+
             const newModule = createModuleFactory(type, order);
             return {
                 draft: {
@@ -127,4 +128,27 @@ export const createProductConfigSlice: StateCreator<
                 },
             };
         }),
+
+    reorderModules: (activeId, overId) =>
+        set((state) => {
+            if (!state.draft) return;
+
+            const modules = state.draft.modules
+                .slice()
+                .sort((a, b) => a.order - b.order);
+
+            const oldIndex = modules.findIndex((m) => m.instanceId === activeId);
+            const newIndex = modules.findIndex((m) => m.instanceId === overId);
+
+            if (oldIndex === -1 || newIndex === -1) return;
+
+            const reordered = arrayMove(modules, oldIndex, newIndex);
+
+            // Re-assign order to match new positions
+            reordered.forEach((m, i) => {
+                m.order = i;
+            });
+
+            state.draft.modules = reordered;
+        }, false, "reorderModules"),
 });

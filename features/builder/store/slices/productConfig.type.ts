@@ -1,6 +1,6 @@
 ﻿import { ComponentType, Product } from "@/features/configurator/model";
 import { MeshLayout } from "@/lib/extractMeshes";
-
+import type { UniqueIdentifier } from "@dnd-kit/core";
 
 export type ProductConfigSlice = {
   product: Product | null;
@@ -15,7 +15,8 @@ export type ProductConfigSlice = {
   saveDraft: () => Promise<void>;
   deleteModule: (moduleId: string) => void;
   addModule: (type: ComponentType) => void;
-}
+  reorderModules: (activeId: UniqueIdentifier, overId: UniqueIdentifier) => void;
+} 
 
 export type BuilderConfig = {
   meshes: MeshLayout[];
