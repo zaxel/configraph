@@ -13,6 +13,7 @@ import { createPartsSlice } from "./slices/parts.slice";
 import { createContentSlice } from "./slices/content.slice";
 import { createSubmitSlice } from "./slices/submit.slice";
 import { createPriceSlice } from "./slices/price.slice";
+import { createCanvasSlice } from "./slices/canvas.slice";
 
 export const useBuilderStore = create<BoundBuilderStore>()(
   immer(devtools((...a) => ({
@@ -27,5 +28,6 @@ export const useBuilderStore = create<BoundBuilderStore>()(
     ...createContentSlice(...a),
     ...createSubmitSlice(...a),
     ...createPriceSlice(...a),
+    ...createCanvasSlice(...a),
   })))
 );

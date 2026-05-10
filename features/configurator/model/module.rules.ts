@@ -8,6 +8,7 @@ export const MODULE_RULES = {
   addon: { max: 1 },
   content: { max: 10 },
   submit: { max: 1 },
+  canvas: { max: 1 },
 } as const;
 
 export function canAddModule(type: ComponentType, draft: Product) {
