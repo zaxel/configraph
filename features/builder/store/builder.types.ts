@@ -2,6 +2,7 @@
 import { ContentSlice } from "./slices/content.types";
 import { ModelSlice } from "./slices/model.type";
 import { PartsSlice } from "./slices/parts.types";
+import { PriceSlice } from "./slices/price.types";
 import { ProductConfigSlice } from "./slices/productConfig.type";
 import { SceneSlice } from "./slices/scene.types";
 import { SizeSlice } from "./slices/size.types";
@@ -18,4 +19,5 @@ export type BoundBuilderStore = UiSlice
                                 & SizeSlice
                                 & PartsSlice
                                 & ContentSlice
+                                & PriceSlice
                                 & SubmitSlice;

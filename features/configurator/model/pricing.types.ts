@@ -2,5 +2,4 @@
   basePrice: number;
   oldPrice?: number;
   currency: string;
-  order: number;
 };

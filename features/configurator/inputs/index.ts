@@ -1,6 +1,8 @@
 ﻿import { UpdateAddonOption } from "@/features/builder/store/slices/addon.types";
 import { UpdateContentText } from "@/features/builder/store/slices/content.types";
 import { UpdateSizeOption } from "@/features/builder/store/slices/size.types";
+import { PriceConfig } from "../model";
+import { EditablePriceKeys } from "@/features/builder/store/slices/price.types";
 
 type InputHandlerFunc<TUpdate, TArgs extends object = object> = (args: {
     raw: string;
@@ -17,6 +19,8 @@ type UpdatePartLabel = (moduleId: string, optionId: string, value: string) => vo
 type UpdateVariantLabel = (moduleId: string, optionId: string, groupId: string, value: string) => void;
 
 type WithTextId = { textId: string; };
+type UpdatePrice = (moduleId: string, type: EditablePriceKeys, value: number) => void;
+type WithPriceType = { type: EditablePriceKeys; };
 
 type InputHandlerMap = {
     containerLabel: InputHandlerFunc<(moduleId: string, label: string) => void>;
@@ -26,7 +30,7 @@ type InputHandlerMap = {
     sizeOptionLabel: InputHandlerFunc<UpdateSizeOption, WithOptionId>;
     price: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
     color: InputHandlerFunc<UpdateAddonOption, WithOptionId>;
-
+    
     updatePartsColorValue: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
     updatePartsColorLabel: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
     updatePartsColorPrice: InputHandlerFunc<UpdatePartsColor, WithVariantId>;
@@ -36,6 +40,7 @@ type InputHandlerMap = {
 
 
     contentTextValue: InputHandlerFunc<UpdateContentText, WithTextId>;
+    productPrice: InputHandlerFunc<UpdatePrice, WithPriceType>;
 };
 
 const isValidHex = (value: string) =>
@@ -106,5 +111,15 @@ export const inputHandlers: InputHandlerMap = {
 
     contentTextValue: ({ raw, moduleId, textId, update }) => {
         update(moduleId, textId, { value: raw.trimStart() });   
+    },
+
+    productPrice: ({ raw, moduleId, type, update }) => { 
+        if (!/^\d*\.?\d*$/.test(raw)) return;
+
+        if (raw === "") return;
+        const parsed = Number(raw);
+
+        if (parsed < 0) return;
+        update(moduleId, type, parsed);
     },
 };

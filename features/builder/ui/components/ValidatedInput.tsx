@@ -10,8 +10,9 @@ type ValidatedInputProps = {
     setFieldDirty: (path: string) => void;
     setFieldTouched: (path: string) => void;
     validateField: (path: string) => void;
-    label?: string;        // optional
-    className?: string;    // let caller control wrapper styles
+    label?: string;       
+    className?: string;    
+    type?: "text" | "number" | "email";
 };
 
 export const ValidatedInput = ({
@@ -25,6 +26,7 @@ export const ValidatedInput = ({
     setFieldTouched,
     validateField,
     className,
+    type,
 }: ValidatedInputProps) => {
     const fieldErrors = errors[path];
     const isTouched = touched[path];
@@ -32,6 +34,7 @@ export const ValidatedInput = ({
     const input = (
         <>
             <Input
+                type={type ?? "text"}
                 value={value}
                 onChange={(e) => {
                     setFieldDirty(path);

@@ -1,15 +1,17 @@
-﻿import { AddonComponent, Component, ContentComponent, DefaultAddons, DefaultCanvas, DefaultContent, DefaultParts, DefaultPrice, DefaultSizes, DefaultSubmit, ModuleDefault, PartsComponent, SizeComponent, SubmitComponent } from "@/features/configurator/model";
+﻿import { AddonComponent, Component, ContentComponent, DefaultAddons, DefaultCanvas, DefaultContent, DefaultParts, DefaultPrice, DefaultSizes, DefaultSubmit, ModuleDefault, PartsComponent, PriceComponent, SizeComponent, SubmitComponent } from "@/features/configurator/model";
 export type BuilderAddonComponent = AddonComponent;
 export type BuilderSizeComponent = SizeComponent;
 export type BuilderPartsComponent = PartsComponent;
 export type BuilderContentComponent = ContentComponent;
 export type BuilderSubmitComponent = SubmitComponent;
+export type BuilderPriceComponent = PriceComponent;
 
 import AddonBuilderBlock from "./components/AddonBuilderBlock";
 import SizeBuilderBlock from "./components/SizeBuilderBlock";
 import PartsBuilderBlock from "./components/partsBuilderBlock/PartsBuilderBlock";
 import ContentBuilderBlock from "./components/ContentBuilderBlock";
 import SubmitBuilderBlock from "./components/SubmitBuilderBlock";
+import PriceBuilderBlock from "./components/PriceBuilderBlock";
 
 
 export type Renderer<T extends Component> = (props: { 
@@ -24,6 +26,7 @@ type ComponentMap = {
   parts: BuilderPartsComponent;
   content: BuilderContentComponent;
   submit: BuilderSubmitComponent;
+  price: BuilderPriceComponent;
 };
 
 type ComponentDefaultMap = {
@@ -51,4 +54,5 @@ export const componentRegistry: Registry = {
   parts: PartsBuilderBlock, 
   content: ContentBuilderBlock, 
   submit: SubmitBuilderBlock, 
+  price: PriceBuilderBlock, 
 };  

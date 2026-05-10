@@ -310,6 +310,7 @@ export const product_sample: Product = {
       id: "price",
       instanceId: "rand987",
       order: 1,
+      type: "price",
       default: {
         type: "price"
       },
@@ -321,7 +322,6 @@ export const product_sample: Product = {
             basePrice: 100.0,
             oldPrice: 115.0,
             currency: "USD",
-            order: 1,
           },
         }
       ],

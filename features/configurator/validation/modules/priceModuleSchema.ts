@@ -4,6 +4,10 @@ export const PriceModuleSchema = z.object({
     id: z.literal("price"),
     instanceId: z.string(),
     order: z.number(),
+    type: z.literal("price"),
+    default: z.object({
+        type: z.literal("price"),
+    }),
 
     components: z.array(
         z.object({
@@ -11,8 +15,8 @@ export const PriceModuleSchema = z.object({
             type: z.literal("price"),
 
             pricing: z.object({
-                basePrice: z.number().min(0),
-                oldPrice: z.number().min(0).optional(),
+                basePrice: z.number().min(0, "Price cannot be negative").max(5_000_000_000, "Price cannot exceed 5 000 000 000"),
+                oldPrice: z.number().min(0, "Price cannot be negative").max(5_000_000_000, "Price cannot exceed 5 000 000 000").optional(),
                 currency: z.string(),
                 order: z.number(),
             }),

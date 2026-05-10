@@ -125,5 +125,24 @@ function createSubmitModule(order: number): SubmitModule {
   }
 }
 function createPriceModule(order: number): PriceModule {
-
+  return {
+        id: "price",
+        instanceId: `mod_${crypto.randomUUID()}`,
+        order,
+        type: "price",
+        default: {
+          type: "price"
+        },
+        components: [
+          {
+             id: `cmp_${crypto.randomUUID()}`,
+            "type": "price",
+            "pricing": {
+              "basePrice": 0.0,
+              "oldPrice": 0.0,
+              "currency": "USD",
+            }
+          }
+        ]
+      }
 }
