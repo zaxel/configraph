@@ -1,6 +1,5 @@
 ﻿import React from 'react';
 import { BuilderContentComponent } from '../registry';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Save, Trash2 } from 'lucide-react';
 import { useBuilderStore } from '../../store/builder.store';
@@ -13,8 +12,6 @@ import { ValidatedInput } from './ValidatedInput';
 type ContentBuilderBlock = { data: BuilderContentComponent, moduleId: string };
 
 const ContentBuilderBlock = ({ data, moduleId }: ContentBuilderBlock) => {
-    console.log(data);
-
     const deleteModule = useBuilderStore(s => s.deleteModule);
     const setFieldDirty = useBuilderStore(s => s.setFieldDirty);
     const setFieldTouched = useBuilderStore(s => s.setFieldTouched);

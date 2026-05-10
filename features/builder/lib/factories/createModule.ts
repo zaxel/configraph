@@ -82,7 +82,6 @@ function createPartsModule(order: number): PartsModule {
     ],
   }
 }
-
 function createContentModule(order: number): ContentModule {
   return {
     id: "content",
@@ -107,7 +106,23 @@ function createCanvasModule(order: number): CanvasModule {
 
 }
 function createSubmitModule(order: number): SubmitModule {
-
+  return {
+    id: "submit",
+    instanceId: `mod_${crypto.randomUUID()}`,
+    order,
+    type: "submit",
+    default: {
+      type: "submit"
+    },
+    components: [
+      {
+        id: `cmp_${crypto.randomUUID()}`,
+        type: "submit",
+        label: "",
+        text: "Add To cart"
+      }
+    ]
+  }
 }
 function createPriceModule(order: number): PriceModule {
 

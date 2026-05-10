@@ -2,8 +2,7 @@
 import { BoundBuilderStore } from "../builder.types";
 import { isComponentType } from "@/features/configurator/model/component.guards";
 import { PartsSlice } from "./parts.types";
-import { current } from 'immer';
-import { DefaultParts, meshGroup, PartsComponent } from "@/features/configurator/model";
+import { DefaultParts, meshGroup } from "@/features/configurator/model";
 import { findPartsColorVariant, findPartsComponent, findPartsGroup, findPartsOption } from "../../lib/parts.traversal";
 
 

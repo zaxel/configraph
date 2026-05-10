@@ -100,6 +100,7 @@ export type PriceComponent = BaseComponent & {
 export type SubmitComponent = BaseComponent & {
   id: string;
   text: string;
+  type: "submit";
 };
 
 export type TextType = | "heading1" | "heading2" | "text-sm" | "text-md" | "text-md-gray" | "button";
