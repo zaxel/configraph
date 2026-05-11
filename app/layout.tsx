@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { Inter, Figtree } from "next/font/google";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Figtree } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
@@ -23,10 +21,8 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", "font-sans", figtree.variable)}
     >
-      <body className="font-sans min-h-full flex flex-col text-foreground">
-        <Header/>
+      <body className="font-sans min-h-full">
         {children}
-        <Footer/>
       </body>
     </html>
   );
