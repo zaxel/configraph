@@ -1,9 +1,9 @@
 ﻿import ProfileForm from "@/features/dashboard/profile/ProfileForm";
 
-const Profile = () => {
+const Configurators = () => {
     return (
         <ProfileForm />
-    );
+    )
 };
 
-export default Profile;
+export default Configurators;

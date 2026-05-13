@@ -1,16 +1,24 @@
-﻿import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+﻿import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
+import { DashboardSidebar } from "@/features/dashboard/components/DashboardSidebar";
 
-export default function SiteLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full min-h-screen flex flex-col text-foreground">
-      <Header />
-      {children}
-      <Footer />
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
+      <DashboardSidebar />
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <DashboardHeader />
+
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 md:p-8">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
