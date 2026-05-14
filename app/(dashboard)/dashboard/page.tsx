@@ -1,8 +1,8 @@
-﻿const Overview = () => {
+﻿import DashboardOverview from "@/features/dashboard/components/DashboardOverview";
+
+const Overview = () => {
     return (
-        <div className="grow p-4 md:p-8">
-            overview profile
-        </div>
+        <DashboardOverview />
     );
 };
 

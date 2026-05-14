@@ -1,8 +1,8 @@
-﻿import ProfileForm from "@/features/dashboard/profile/ProfileForm";
+﻿import ProfilePage from "@/features/dashboard/profile/Profile";
 
 const Profile = () => {
     return (
-        <ProfileForm />
+        <ProfilePage />
     );
 };
 

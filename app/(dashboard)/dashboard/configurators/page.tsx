@@ -1,8 +1,8 @@
-﻿import ProfileForm from "@/features/dashboard/profile/ProfileForm";
+﻿import ConfiguratorTable from "@/features/dashboard/configurators/ConfiguratorTable";
 
 const Configurators = () => {
     return (
-        <ProfileForm />
+        <ConfiguratorTable configurators={[]}/>
     )
 };
 

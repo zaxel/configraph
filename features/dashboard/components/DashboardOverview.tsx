@@ -1,0 +1,220 @@
+﻿import Link from "next/link";
+import {
+  ArrowUpRight,
+  Boxes,
+  HardDrive,
+  Layers3,
+  Sparkles,
+} from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+const metrics = [
+  {
+    label: "Configurators",
+    value: "3 / 5",
+    description: "Available on your current plan",
+    icon: Layers3,
+  },
+  {
+    label: "Published",
+    value: "2",
+    description: "Live embedded configurators",
+    icon: Boxes,
+  },
+  {
+    label: "Storage Used",
+    value: "18MB",
+    description: "Of 50MB available",
+    icon: HardDrive,
+  },
+];
+
+const recentConfigurators = [
+  {
+    id: "cfg-1",
+    name: "Nike Air Max Builder",
+    status: "Published",
+    updatedAt: "2 hours ago",
+  },
+  {
+    id: "cfg-2",
+    name: "Gaming Chair Configurator",
+    status: "Draft",
+    updatedAt: "Yesterday",
+  },
+  {
+    id: "cfg-3",
+    name: "Hoodie Studio",
+    status: "Published",
+    updatedAt: "3 days ago",
+  },
+];
+
+export default function DashboardOverview() {
+  return (
+    <div className="space-y-8">
+      {/* HERO */}
+      <section className="relative overflow-hidden rounded-3xl border bg-muted/30 p-6 md:p-8">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent" />
+
+        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-sm">
+              <Sparkles className="h-4 w-4 text-primary" />
+              Welcome back
+            </div>
+
+            <h1 className="mb-3 text-3xl font-semibold tracking-tight md:text-4xl">
+              Your configurator workspace
+            </h1>
+
+            <p className="text-muted-foreground md:text-lg">
+              Manage products, publish embeds, and build interactive 3D
+              experiences for your customers.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Button
+              asChild
+              size="lg"
+              className="rounded-2xl"
+            >
+              <Link href="/builder/new">
+                Create Configurator
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="rounded-2xl"
+            >
+              <Link href="/dashboard/configurators">
+                View Configurators
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* METRICS */}
+      <section className="grid gap-4 md:grid-cols-3">
+        {metrics.map((metric) => {
+          const Icon = metric.icon;
+
+          return (
+            <div
+              key={metric.label}
+              className="rounded-3xl border bg-background p-6"
+            >
+              <div className="mb-5 flex items-start justify-between">
+                <div className="rounded-2xl border bg-muted/40 p-3">
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-xl"
+                >
+                  <ArrowUpRight className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div>
+                <p className="mb-1 text-sm text-muted-foreground">
+                  {metric.label}
+                </p>
+
+                <h2 className="text-3xl font-semibold tracking-tight">
+                  {metric.value}
+                </h2>
+
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {metric.description}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </section>
+
+      {/* RECENT CONFIGURATORS */}
+      <section className="rounded-3xl border bg-background">
+        <div className="flex items-center justify-between border-b px-6 py-5">
+          <div>
+            <h2 className="text-lg font-semibold">
+              Recent Configurators
+            </h2>
+
+            <p className="text-sm text-muted-foreground">
+              Quickly continue where you left off.
+            </p>
+          </div>
+
+          <Button
+            asChild
+            variant="outline"
+            className="rounded-xl"
+          >
+            <Link href="/dashboard/configurators">
+              View All
+            </Link>
+          </Button>
+        </div>
+
+        <div className="divide-y">
+          {recentConfigurators.map((configurator) => (
+            <div
+              key={configurator.id}
+              className="flex flex-col gap-4 px-6 py-5 transition-colors hover:bg-muted/20 md:flex-row md:items-center md:justify-between"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border bg-muted/40">
+                  <Layers3 className="h-5 w-5 text-muted-foreground" />
+                </div>
+
+                <div>
+                  <h3 className="font-medium">
+                    {configurator.name}
+                  </h3>
+
+                  <p className="text-sm text-muted-foreground">
+                    Updated {configurator.updatedAt}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div
+                  className={
+                    configurator.status === "Published"
+                      ? "rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+                      : "rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
+                  }
+                >
+                  {configurator.status}
+                </div>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-xl"
+                >
+                  <Link
+                    href={`/builder/${configurator.id}`}
+                  >
+                    Edit
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,8 +1,8 @@
-﻿import UsageMeter from "@/features/dashboard/billing/UsageMeter";
+﻿import BillingPage from "@/features/dashboard/billing/Billing";
 
 const Billing = () => {
     return (
-        <UsageMeter /> 
+        <BillingPage /> 
     );
 };
 

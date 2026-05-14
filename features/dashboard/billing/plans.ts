@@ -1,4 +1,10 @@
-﻿export const PLANS = {
+﻿import {
+  Sparkles,
+  Crown,
+  Rocket,
+} from "lucide-react";
+
+export const PLANS = {
   FREE: {
     maxConfigurators: 5,
     maxUploadMb: 5,
@@ -32,3 +38,56 @@
     premium_support: true,
   },
 };
+
+
+export const plans = [
+  {
+    name: "Free",
+    price: "$0",
+    description:
+      "Perfect for experimenting and testing ideas.",
+    icon: Sparkles,
+    current: true,
+
+    features: [
+      "Up to 5 configurators",
+      "5MB upload limit",
+      "Watermarked embeds",
+      "Basic customization",
+    ],
+  },
+
+  {
+    name: "Pro",
+    price: "$49",
+    description:
+      "Best for creators, freelancers, and small studios.",
+    icon: Crown,
+    popular: true,
+
+    features: [
+      "Up to 25 configurators",
+      "50MB upload limit",
+      "Canvas customization",
+      "No watermark",
+      "Priority rendering",
+    ],
+  },
+
+  {
+    name: "Business",
+    price: "$149",
+    description:
+      "Advanced tools for teams and growing brands.",
+    icon: Rocket,
+
+    features: [
+      "Unlimited configurators",
+      "100MB upload limit",
+      "Team access",
+      "Advanced analytics",
+      "API access",
+      "Premium support",
+    ],
+  },
+];
