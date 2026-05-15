@@ -12,8 +12,88 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { Profile } from "@/features/account/types/profile.types";
+import { profileRepo } from "@/features/account/repositories/profile.repo";
+import { AvatarUploadButton } from "./AvatarUploadButton";
+import Image from "next/image";
+
+type ProfileForm = {
+  email: string;
+  username: string;
+  avatar_url: string;
+}
+
+const EMPTY_FORM: ProfileForm = {
+  username: "",
+  email: "",
+  avatar_url: "",
+};
 
 export default function ProfilePage() {
+  const { user } = useUser();
+
+  const [form, setForm] = useState<ProfileForm>(EMPTY_FORM);
+  const [initialForm, setInitialForm] = useState<ProfileForm>(EMPTY_FORM);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const load = async () => {
+      setLoading(true);
+
+      let data = await profileRepo.getByClerkId(user.id);
+
+      // optional: auto-create profile if missing
+      if (!data && user.emailAddresses[0]) {
+        data = await profileRepo.create({
+          clerk_user_id: user.id,
+          email: user.emailAddresses[0].emailAddress,
+          username: user.fullName ?? undefined,
+          avatar_url: user.imageUrl ?? undefined,
+        });
+      }
+
+      const profileForm: ProfileForm = {
+        username: data?.username ?? "",
+        email: data?.email ?? "",
+        avatar_url: data?.avatar_url ?? user.imageUrl ?? "",
+      };
+
+      setForm(profileForm);
+      setInitialForm(profileForm);
+
+
+      setLoading(false);
+    };
+
+    load();
+  }, [user?.id, user?.imageUrl]);
+
+
+
+
+
+  const handleSave = async () => {
+    if (!user?.id) return;
+
+    setSaving(true);
+
+    await profileRepo.update(user.id, form);
+
+    setInitialForm(form);
+
+    setSaving(false);
+  };
+
+  const isDirty = JSON.stringify(form) !== JSON.stringify(initialForm);
+  const displayAvatar = form.avatar_url || user?.imageUrl;
+
+  if (loading) return <div className="w-full h-[80vh] flex justify-center items-center text-gray-400">Loading...</div>;
+
   return (
     <div className="space-y-8">
       {/* HEADER */}
@@ -29,8 +109,8 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <Button className="rounded-2xl">
-          Save Changes
+        <Button onClick={handleSave} className="rounded-2xl" disabled={!isDirty || saving}>
+          {saving ? "Saving..." : "Save Changes"}
         </Button>
       </section>
 
@@ -43,22 +123,46 @@ export default function ProfilePage() {
             <div className="flex flex-col items-center text-center">
               {/* AVATAR */}
               <div className="relative mb-5">
-                <div className="flex h-28 w-28 items-center justify-center rounded-3xl border bg-muted/30 text-3xl font-semibold">
-                  AZ
+                <div className="flex h-28 w-28 items-center justify-center rounded-3xl border bg-muted/30 text-3xl font-semibold overflow-hidden">
+                   {displayAvatar ? (
+                    <Image
+                      width={112}
+                      height={112}
+                      loading={"eager"}
+                      src={displayAvatar}
+                      alt={`${form.username || "User"}'s avatar`}
+                      className="h-full w-full object-cover select-none"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  ) : form?.username?.trim() ? (
+                    form.username
+                      .trim()
+                      .split(/\s+/)
+                      .map((word) => word[0])
+                      .join("")
+                      .toUpperCase()
+                      .slice(0, 2)
+                  ) : (
+                    <span className="text-muted-foreground/60">??</span>
+                  )}
                 </div>
 
-                <button className="absolute bottom-0 right-0 flex h-10 w-10 items-center justify-center rounded-2xl border bg-background shadow-sm transition-colors hover:bg-muted">
-                  <Camera className="h-4 w-4" />
-                </button>
+
+                < AvatarUploadButton 
+                  userId={user?.id ?? null} 
+                  onUploadSuccess={(url) => setForm(prev => ({ ...prev, avatar_url: url }))}
+                  />
               </div>
 
               {/* USER INFO */}
               <h2 className="text-2xl font-semibold">
-                Alex Zaplavskyi
+                {form?.username}
               </h2>
 
               <p className="mt-1 text-muted-foreground">
-                alex@example.com
+                {form?.email}
               </p>
 
               <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
@@ -175,7 +279,10 @@ export default function ProfilePage() {
 
                   <Input
                     id="displayName"
-                    defaultValue="Alex Zaplavskyi"
+                    value={form.username}
+                    onChange={(e) =>
+                      setForm((p) => ({ ...p, username: e.target.value }))
+                    }
                     className="h-12 rounded-2xl pl-10"
                   />
                 </div>
@@ -193,7 +300,10 @@ export default function ProfilePage() {
                   <Input
                     id="email"
                     type="email"
-                    defaultValue="alex@example.com"
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm((p) => ({ ...p, email: e.target.value }))
+                    }
                     className="h-12 rounded-2xl pl-10"
                   />
                 </div>
@@ -215,7 +325,7 @@ export default function ProfilePage() {
                 </p>
               </div>
 
-              <Button className="rounded-2xl">
+              <Button className="rounded-2xl cursor-pointer">
                 Upgrade Plan
               </Button>
             </div>
