@@ -11,11 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { profileRepo } from "@/features/account/repositories/profile.repo";
 import { AvatarUploadButton } from "./AvatarUploadButton";
 import Image from "next/image";
+import { useProfile } from "@/features/account/hooks/useProfile";
+import { useUpdateProfile } from "@/features/account/hooks/useUpdateProfile";
 
 type ProfileForm = {
   email: string;
@@ -31,58 +32,59 @@ const EMPTY_FORM: ProfileForm = {
 
 export default function ProfilePage() {
   const { user } = useUser();
+  const {
+    data: profile,
+    isLoading,
+  } = useProfile();
+  const updateProfile = useUpdateProfile();
 
   const [form, setForm] = useState<ProfileForm>(EMPTY_FORM);
   const [initialForm, setInitialForm] = useState<ProfileForm>(EMPTY_FORM);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const initializedRef = useRef(false);
+
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!profile || initializedRef.current) return;
 
-    const load = async () => {
-      setLoading(true);
+    const init = async () => {
+      initializedRef.current = true;
 
-      let data = await profileRepo.getByClerkId(user.id);
-
-      // optional: auto-create profile if missing
-      if (!data && user.emailAddresses[0]) {
-        data = await profileRepo.create({
-          clerk_user_id: user.id,
-          email: user.emailAddresses[0].emailAddress,
-          username: user.fullName ?? undefined,
-          avatar_url: user.imageUrl ?? undefined,
-        });
-      }
-
-      const profileForm: ProfileForm = {
-        username: data?.username ?? "",
-        email: data?.email ?? "",
-        avatar_url: data?.avatar_url ?? user.imageUrl ?? "",
+      const next: ProfileForm = {
+        username: profile.username ?? "",
+        email: profile.email ?? "",
+        avatar_url: profile.avatar_url ?? user?.imageUrl ?? "",
       };
 
-      setForm(profileForm);
-      setInitialForm(profileForm);
-
-
-      setLoading(false);
+      setForm(next);
+      setInitialForm(next);
     };
 
-    load();
-  }, [user?.id, user?.imageUrl, user?.emailAddresses, user?.fullName]);
+    init();
+  }, [profile?.id]);
+
+  // const handleSave = async () => {
+  //   if (!user?.id) return;
+  //   setSaving(true);
+  //   await profileRepo.update(user.id, form);
+  //   setInitialForm(form);
+  //   setSaving(false);
+  // };
 
   const handleSave = async () => {
     if (!user?.id) return;
-    setSaving(true);
-    await profileRepo.update(user.id, form);
-    setInitialForm(form);
-    setSaving(false);
+
+    await updateProfile.mutateAsync({
+      clerkUserId: user.id,
+      values: form,
+    });
+
+    setInitialForm({ ...form });
   };
 
   const isDirty = JSON.stringify(form) !== JSON.stringify(initialForm);
   const displayAvatar = form.avatar_url || user?.imageUrl;
 
-  if (loading) return <div className="w-full h-[80vh] flex justify-center items-center text-gray-400">Loading...</div>;
+  if (isLoading) return <div className="w-full h-[80vh] flex justify-center items-center text-gray-400">isLoading...</div>;
 
   return (
     <div className="space-y-8">
@@ -99,8 +101,8 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <Button onClick={handleSave} className="rounded-2xl cursor-pointer" disabled={!isDirty || saving}>
-          {saving ? "Saving..." : "Save Changes"}
+        <Button onClick={handleSave} className="rounded-2xl cursor-pointer" disabled={!isDirty || updateProfile.isPending}>
+          {updateProfile.isPending ? "Saving..." : "Save Changes"}
         </Button>
       </section>
 
@@ -114,7 +116,7 @@ export default function ProfilePage() {
               {/* AVATAR */}
               <div className="relative mb-5">
                 <div className="flex h-28 w-28 items-center justify-center rounded-3xl border bg-muted/30 text-3xl font-semibold overflow-hidden">
-                   {displayAvatar ? (
+                  {displayAvatar ? (
                     <Image
                       width={112}
                       height={112}
@@ -140,10 +142,10 @@ export default function ProfilePage() {
                 </div>
 
 
-                < AvatarUploadButton 
-                  userId={user?.id ?? null} 
+                < AvatarUploadButton
+                  userId={user?.id ?? null}
                   onUploadSuccess={(url) => setForm(prev => ({ ...prev, avatar_url: url }))}
-                  />
+                />
               </div>
 
               {/* USER INFO */}

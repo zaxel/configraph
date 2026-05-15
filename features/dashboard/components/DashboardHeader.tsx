@@ -5,41 +5,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Input } from "@/components/ui/input";
 import { Bell, ChevronDown, Search } from "lucide-react";
 import { sidebarItems } from "./DashboardSidebar";
-import { Profile } from "@/features/account/types/profile.types";
-import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { profileRepo } from "@/features/account/repositories/profile.repo";
+import { useProfile } from "@/features/account/hooks/useProfile";
 
 export function DashboardHeader() {
     const { user } = useUser();
-
-    const [profile, setProfile] = useState<Profile | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-
-
-    useEffect(() => {
-        if (!user?.id) return;
-
-        const load = async () => {
-            setLoading(true);
-
-            let data = await profileRepo.getByClerkId(user.id);
-
-            if (!data && user.emailAddresses[0]) {
-                data = await profileRepo.create({
-                    clerk_user_id: user.id,
-                    email: user.emailAddresses[0].emailAddress,
-                    username: user.fullName ?? undefined,
-                    avatar_url: user.imageUrl ?? undefined,
-                });
-            }
-            setProfile(data);
-
-            setLoading(false);
-        };
-
-        load();
-    }, [user?.id, user?.emailAddresses, user?.fullName, user?.imageUrl]);
+    const {
+        data: profile,
+        isLoading,
+    } = useProfile();
 
 
     const displayAvatar = profile?.avatar_url || user?.imageUrl;

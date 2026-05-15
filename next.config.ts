@@ -16,9 +16,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: supabaseHostname, // <-- Injected dynamically here
+        hostname: supabaseHostname, 
         port: '',
         pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
