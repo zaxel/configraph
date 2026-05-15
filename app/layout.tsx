@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 
 import { Figtree } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Providers } from "@/lib/providers";
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -22,11 +22,11 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", "font-sans", figtree.variable)}
     >
-      <ClerkProvider >
+      <Providers >
         <body className="font-sans min-h-full">
           {children}
         </body>
-      </ClerkProvider>
+      </Providers>
     </html>
   );
 }
