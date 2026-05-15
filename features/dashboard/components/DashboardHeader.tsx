@@ -5,8 +5,49 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Input } from "@/components/ui/input";
 import { Bell, ChevronDown, Search } from "lucide-react";
 import { sidebarItems } from "./DashboardSidebar";
+import { Profile } from "@/features/account/types/profile.types";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { profileRepo } from "@/features/account/repositories/profile.repo";
 
 export function DashboardHeader() {
+    const { user } = useUser();
+
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const load = async () => {
+            setLoading(true);
+
+            let data = await profileRepo.getByClerkId(user.id);
+
+            if (!data && user.emailAddresses[0]) {
+                data = await profileRepo.create({
+                    clerk_user_id: user.id,
+                    email: user.emailAddresses[0].emailAddress,
+                    username: user.fullName ?? undefined,
+                    avatar_url: user.imageUrl ?? undefined,
+                });
+            }
+            setProfile(data);
+
+            setLoading(false);
+        };
+
+        load();
+    }, [user?.id, user?.emailAddresses, user?.fullName, user?.imageUrl]);
+
+
+    const displayAvatar = profile?.avatar_url || user?.imageUrl;
+
+    const formattedUsername = profile?.username
+        ? profile.username.trim().split(/\s+/)[0].replace(/^\w/, (c) => c.toUpperCase())
+        : null;
+
     return (
         <header className="sticky h-16 top-0 z-30 border-b bg-background/80 backdrop-blur-xl">
             <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
@@ -37,15 +78,29 @@ export function DashboardHeader() {
                                 className="h-11 gap-3 rounded-xl px-3"
                             >
                                 <Avatar className="h-7 w-7">
-                                    <AvatarImage src="" />
+                                    <AvatarImage src={displayAvatar} />
                                     <AvatarFallback>
-                                        AZ
+                                        {profile?.username
+                                            ? (
+                                                profile.username
+                                                    .trim()
+                                                    .split(/\s+/)
+                                                    .map((word) => word[0])
+                                                    .join("")
+                                                    .toUpperCase()
+                                                    .slice(0, 2)
+                                            ) : (
+                                                <span className="text-muted-foreground/60">??</span>
+                                            )}
                                     </AvatarFallback>
                                 </Avatar>
 
                                 <div className="hidden text-left md:block">
                                     <p className="text-sm font-medium leading-none">
-                                        Alex
+                                        {profile?.username
+                                            ? formattedUsername
+                                            : <span className="text-muted-foreground/60">??</span>
+                                        }
                                     </p>
                                     <p className="text-xs text-muted-foreground">
                                         Free Plan
@@ -60,7 +115,7 @@ export function DashboardHeader() {
                             align="end"
                             className="w-56 rounded-2xl"
                         >
-                            {sidebarItems.map(item=> {
+                            {sidebarItems.map(item => {
                                 return <DropdownMenuItem key={item.label}>
                                     {item.label}
                                 </DropdownMenuItem>

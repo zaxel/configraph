@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import {
-  Camera,
   Crown,
   Mail,
   Shield,
@@ -14,7 +13,6 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Profile } from "@/features/account/types/profile.types";
 import { profileRepo } from "@/features/account/repositories/profile.repo";
 import { AvatarUploadButton } from "./AvatarUploadButton";
 import Image from "next/image";
@@ -71,21 +69,13 @@ export default function ProfilePage() {
     };
 
     load();
-  }, [user?.id, user?.imageUrl]);
-
-
-
-
+  }, [user?.id, user?.imageUrl, user?.emailAddresses, user?.fullName]);
 
   const handleSave = async () => {
     if (!user?.id) return;
-
     setSaving(true);
-
     await profileRepo.update(user.id, form);
-
     setInitialForm(form);
-
     setSaving(false);
   };
 
@@ -109,7 +99,7 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        <Button onClick={handleSave} className="rounded-2xl" disabled={!isDirty || saving}>
+        <Button onClick={handleSave} className="rounded-2xl cursor-pointer" disabled={!isDirty || saving}>
           {saving ? "Saving..." : "Save Changes"}
         </Button>
       </section>
