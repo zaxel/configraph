@@ -13,6 +13,7 @@ import { supabase } from "@/lib/supabase/client";
 import { ConfiguratorData, ConfiguratorRecord } from "../types/configurators.types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { MeshLayout } from "@/lib/extractMeshes";
+import { Product } from "@/features/configurator/model";
 
 export type UpdateConfiguratorInput = Partial<
     Pick<
@@ -122,6 +123,19 @@ export const createConfiguratorRepo = (
             .eq("id", id)
             .select()
             .single();
+
+        if (error) throw error;
+
+        return data;
+    },
+    async updateDraft( 
+        id: string,
+        draft: Product
+    ) {
+        const { data, error } = await supabase.rpc("update_draft", {
+            config_id: id,
+            new_draft: draft,
+        });
 
         if (error) throw error;
 

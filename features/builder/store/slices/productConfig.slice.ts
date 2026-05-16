@@ -45,7 +45,7 @@ export const createProductConfigSlice: StateCreator<
         }, false, "setModelUrl"),
 
     setConfiguratorId: (id) =>
-        set({ configuratorId: id }, false, "setConfiguratorId"),
+        set({ configuratorId: id }, false, "setConfiguratorId"), 
 
     loadConfigurator: async (id) => {
         const { configuratorId, status } = get();

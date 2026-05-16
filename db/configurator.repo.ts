@@ -38,7 +38,7 @@ export async function createConfigurator(data: Omit<ConfiguratorRecord, "id" | "
     JSON.stringify(record, null, 2)
   );
 
-  return record;
+  return record; 
 
 }
 

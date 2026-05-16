@@ -2,7 +2,7 @@
 
 export async function GET(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> } 
 ) {
   const { id } = await context.params;
 

@@ -1,16 +1,13 @@
 ﻿import { updateConfiguratorDraft } from "@/db/configurator.repo";
+import { updateConfiguratorDraftAction } from "@/features/account/actions/createConfigurator.action";
 export async function PUT(
   req: Request, 
   { params }: { params: Promise<{ id: string }> } 
 ) {
   try {
     const body = await req.json();
-    
-    // 1. Unwrap params before accessing properties
     const { id } = await params;
-
-    // 2. Use the unwrapped id
-    const updated = await updateConfiguratorDraft(id, body);
+    const updated = await updateConfiguratorDraftAction(id, body);
 
     return Response.json(updated);
   } catch (err: unknown) {

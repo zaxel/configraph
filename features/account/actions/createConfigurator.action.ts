@@ -9,6 +9,7 @@ import { createConfiguratorRepo, UpdateConfiguratorInput }
     from "../repositories/configurator.repo";
 import { MeshLayout } from "@/lib/extractMeshes";
 import { ConfiguratorData } from "../types/configurators.types";
+import { Product } from "@/features/configurator/model";
 
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string
@@ -60,6 +61,20 @@ export async function updateConfiguratorAction(
     return repo.update(id, value);
 } 
 
+export async function updateConfiguratorDraftAction( 
+    id: string, 
+    draft: Product
+) {
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const repo = createConfiguratorRepo(supabase); 
+
+    return repo.updateDraft(id, draft);
+} 
 export async function updateConfiguratorMeshesAction( 
     id: string, 
     meshes: MeshLayout[]

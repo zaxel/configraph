@@ -5,7 +5,7 @@ export type BuilderConfig = {
   meshes: MeshLayout[];
 } | null;
 
-export type ConfiguratorData = {
+export type ConfiguratorData = { 
   id: string;
   draft: Product | null;
   published: Product | null;
