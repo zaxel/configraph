@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-type Configurator = {
+export type Configurator = {
   id: string;
   title: string;
   thumbnail?: string;
@@ -27,7 +27,7 @@ type Configurator = {
   updatedAt: string;
 };
 
-type ConfiguratorTableProps = {
+export type ConfiguratorTableProps = {
   configurators: Configurator[];
 };
 

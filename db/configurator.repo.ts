@@ -28,7 +28,8 @@ export async function createConfigurator(data: Omit<ConfiguratorRecord, "id" | "
   const record = {
     id,
     ...data,
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   };
 
   await fs.promises.mkdir(DATA_DIR, { recursive: true });

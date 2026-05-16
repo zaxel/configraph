@@ -2,7 +2,7 @@
 import { ModelSlice } from "./model.type";
 import { BoundBuilderStore } from "../builder.types";
 
-export const MAX_FILE_SIZE = 200 * 1024 * 1024;
+export const MAX_FILE_SIZE = 30 * 1024 * 1024;
 export const MAX_UNOPTIMIZED_SIZE = 2 * 1024 * 1024;
 
 export const createModelSlice: StateCreator<

@@ -1,6 +1,7 @@
 ﻿import { MAX_FILE_SIZE, MAX_UNOPTIMIZED_SIZE } from "@/features/builder/store/slices/model.slice";
 import fs from "fs";
 import path from "path";
+import os from 'os';
 
 import { NodeIO } from '@gltf-transform/core';
 import { textureCompress, draco, prune, dedup } from '@gltf-transform/functions';
@@ -9,6 +10,12 @@ import draco3d from 'draco3d';
 import type { DecoderModule, EncoderModule } from 'draco3d';
 import sharp from 'sharp';
 import { createConfigurator } from "@/db/configurator.repo";
+import { storageRepo } from "@/features/account/repositories/storage.repo";
+import { auth } from "@clerk/nextjs/server";
+import { configuratorRepo } from "@/features/account/repositories/configurator.repo";
+import { useCreateConfigurator } from "@/features/account/hooks/useCreateConfigurator";
+import { createConfiguratorAction } from "@/features/account/actions/createConfigurator.action";
+
 
 let encoderPromise: Promise<EncoderModule> | null = null;
 let decoderPromise: Promise<DecoderModule> | null = null;
@@ -54,6 +61,10 @@ export async function optimizeGLB(inputPath: string, outputPath: string) {
 }
 
 export async function POST(req: Request) {
+    const { userId } = await auth();
+    if (!userId) 
+        return new Response("Unauthorized", { status: 401 });
+    
     const formData = await req.formData();
     const file = formData.get("file") as File;
 
@@ -70,32 +81,25 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `${Date.now()}.glb`;
-
-    const rawDir = path.join(process.cwd(), "public/models/raw");
-    const optDir = path.join(process.cwd(), "public/models/optimized");
-
-    await fs.promises.mkdir(rawDir, { recursive: true });
-    await fs.promises.mkdir(optDir, { recursive: true });
-
-    const rawPath = path.join(rawDir, fileName);
-    const optimizedPath = path.join(optDir, fileName);
-
-    await fs.promises.writeFile(rawPath, buffer);
+    const tmpRaw = path.join(os.tmpdir(), `${Date.now()}.glb`);
+    const tmpOpt = path.join(os.tmpdir(), `${Date.now()}-opt.glb`);
+    await fs.promises.writeFile(tmpRaw, buffer);
 
     try {
+
         if (file.size > MAX_UNOPTIMIZED_SIZE) {
-            await optimizeGLB(rawPath, optimizedPath);
+            await optimizeGLB(tmpRaw, tmpOpt);
         } else {
-            await fs.promises.copyFile(rawPath, optimizedPath);
+            await fs.promises.copyFile(tmpRaw, tmpOpt);
         }
-
-        const url = `/models/optimized/${fileName}`;
-
-        const configurator = await createConfigurator({ 
+        const optimizedBuffer = await fs.promises.readFile(tmpOpt);
+        const optimizedFile = new File([optimizedBuffer], file.name, { type: file.type });
+        const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
+        
+        const configurator = await createConfigurator({
             draft: {
                 id: "dft_" + crypto.randomUUID(),
-                quantity: 1,             
+                quantity: 1,
                 model: { url },
                 modules: []
             },
@@ -105,15 +109,17 @@ export async function POST(req: Request) {
             }
         });
 
+        // await configuratorRepo.create(configurator, userId, optimizedFile.size, file.type, path);
+      const createdConfigurator = await createConfiguratorAction(configurator, optimizedFile.size, file.type, modelPath);
 
         return Response.json({
             configuratorId: configurator.id,
             url,
         });
     } catch (err) {
-        await fs.promises.unlink(optimizedPath).catch(() => { });
         throw err;
     } finally {
-        await fs.promises.unlink(rawPath).catch(() => { });
+        await fs.promises.unlink(tmpRaw).catch(() => { });
+        await fs.promises.unlink(tmpOpt).catch(() => { }); 
     }
 }

@@ -19,5 +19,27 @@ export const storageRepo = {
       .getPublicUrl(filePath);
 
     return data.publicUrl;
-  }
+  },
+
+  async upload3DModel(file: File, userId: string) {
+    const fileExt = file.name.split(".").pop();
+    const filePath = `${userId}/model-${crypto.randomUUID()}.${fileExt}`;
+
+    const { error } = await supabase.storage
+      .from("configurator-models")
+      .upload(filePath, file, {
+        upsert: true,
+      });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from("configurator-models")
+      .getPublicUrl(filePath);
+
+    return {
+      path: filePath,
+      url: data.publicUrl,
+    };
+  },
 };
