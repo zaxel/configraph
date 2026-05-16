@@ -3,31 +3,52 @@
 import { auth } from "@clerk/nextjs/server";
 
 import { createServerSupabaseClient }
-  from "@/lib/supabase/server";
+    from "@/lib/supabase/server";
 
 import { createConfiguratorRepo }
-  from "../repositories/configurator.repo";
+    from "../repositories/configurator.repo";
 
 export async function createConfiguratorAction(
-  configurator, size, type, path
+    configurator, size, type, path
 ) {
-  const { userId, getToken } = await auth();
+    const { userId, getToken } = await auth();
 
-  const token = await getToken({
-  template: "supabase",
-});
+    const token = await getToken({
+        template: "supabase",
+    });
 
-console.log(token);
+    console.log(token);
 
-  if (!userId) {
-    throw new Error("Unauthorized");
-  }
 
-  const supabase =
-    await createServerSupabaseClient();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
 
-  const repo =
-    createConfiguratorRepo(supabase);
+    const supabase =
+        await createServerSupabaseClient();
+
+    const repo =
+        createConfiguratorRepo(supabase);
 
     return repo.create(configurator, userId, size, type, path);
+} 
+
+export async function getConfiguratorAction(
+    id: string
+) {
+    const { userId } = await auth();
+
+    
+
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const supabase =
+        await createServerSupabaseClient();
+
+    const repo =
+        createConfiguratorRepo(supabase);
+
+    return repo.getById(id);
 } 

@@ -96,9 +96,20 @@ export async function POST(req: Request) {
         const optimizedFile = new File([optimizedBuffer], file.name, { type: file.type });
         const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
         
-        const configurator = await createConfigurator({
+        // const configurator = await createConfigurator({
+        //     draft: {
+        //         id: "dft_" + crypto.randomUUID(),
+        //         quantity: 1,
+        //         model: { url },
+        //         modules: []
+        //     },
+        //     published: null,
+        //     builderConfig: {
+        //         meshes: []
+        //     }
+        // });
+        const draftConfigurator = {
             draft: {
-                id: "dft_" + crypto.randomUUID(),
                 quantity: 1,
                 model: { url },
                 modules: []
@@ -107,10 +118,10 @@ export async function POST(req: Request) {
             builderConfig: {
                 meshes: []
             }
-        });
+        }
 
         // await configuratorRepo.create(configurator, userId, optimizedFile.size, file.type, path);
-      const createdConfigurator = await createConfiguratorAction(configurator, optimizedFile.size, file.type, modelPath);
+      const configurator = await createConfiguratorAction(draftConfigurator, optimizedFile.size, file.type, modelPath);
 
         return Response.json({
             configuratorId: configurator.id,

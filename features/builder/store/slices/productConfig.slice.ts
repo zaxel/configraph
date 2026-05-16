@@ -8,7 +8,6 @@ import { createModuleFactory } from "../../lib/factories/createModule";
 import { arrayMove } from "@dnd-kit/sortable";
 
 export const initProductSample: Product = {
-    id: `${crypto.randomUUID()}`,
     quantity: 1,
 
     model: {
@@ -50,6 +49,7 @@ export const createProductConfigSlice: StateCreator<
 
     loadConfigurator: async (id) => {
         const { configuratorId, status } = get();
+        console.log(id, configuratorId, status) 
         if (configuratorId === id && status === "ready") {
             return;
         }
@@ -57,22 +57,22 @@ export const createProductConfigSlice: StateCreator<
         set({ status: "loading", error: null });
 
         try {
-            const res = await fetch(`/api/configurator/${id}`);
+            const res = await fetch(`/api/configurator/${id}`); 
 
             if (!res.ok) {
                 const text = await res.text();
                 throw new Error(text || "Failed to load configurator");
             }
 
-            const data = await res.json();
-
+            const configurator = await res.json();
+            
             set(() => ({
                 configuratorId: id,
 
-                product: data.published ?? data.draft, // overwrite (authoritative)
-                draft: data.draft, // overwrite (authoritative)
-                builderConfig: data.builderConfig, // overwrite
-                meshesRegistered: data.builderConfig.meshes?.length > 0,
+                product: configurator.data?.published ?? configurator.data.draft, // overwrite (authoritative)
+                draft: configurator.data.draft, // overwrite (authoritative)
+                builderConfig: configurator.data.builder_config, // overwrite
+                meshesRegistered: configurator.data.builder_config.meshes?.length > 0,
                 status: "ready",
                 error: null,
             }));

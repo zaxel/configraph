@@ -3,7 +3,6 @@ import { Product } from "../../model";
 import { BoundStore } from "../store.types";
 
 export const product_decal: Product = {
-  id: "nike-basic",
   quantity: 1,
 
   model: {
@@ -298,7 +297,6 @@ export const product_decal: Product = {
   ],
 };
 export const product_sample: Product = {
-  id: "nike-basic-uv",
   quantity: 1,
 
   model: {

@@ -1,4 +1,4 @@
-﻿import { getConfigurator } from "@/db/configurator.repo";
+﻿import { getConfiguratorAction } from "@/features/account/actions/createConfigurator.action";
 
 export async function GET(
   req: Request,
@@ -6,7 +6,7 @@ export async function GET(
 ) {
   const { id } = await context.params;
 
-  const configurator = await getConfigurator(id);
+  const configurator = await getConfiguratorAction(id);
 
   if (!configurator) {
     return new Response("Not found", { status: 404 });

@@ -15,7 +15,8 @@ const UploadModel = () => {
 
        
         const configuratorId = await uploadModel(file, router);
-        router.replace(`/builder/${configuratorId}`);
+        if(configuratorId)
+            router.replace(`/builder/${configuratorId}`);
 
 
 
