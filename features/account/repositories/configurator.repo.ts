@@ -12,8 +12,9 @@
 import { supabase } from "@/lib/supabase/client";
 import { ConfiguratorData, ConfiguratorRecord } from "../types/configurators.types";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { MeshLayout } from "@/lib/extractMeshes";
 
-type UpdateConfiguratorInput = Partial<
+export type UpdateConfiguratorInput = Partial<
     Pick<
         ConfiguratorRecord,
         "name" | "data" | "thumbnail_url" | "is_public"
@@ -21,7 +22,7 @@ type UpdateConfiguratorInput = Partial<
 >;
 
 export const createConfiguratorRepo = (
-  supabase: SupabaseClient
+    supabase: SupabaseClient
 ) => ({
     async getById(
         id: string
@@ -121,6 +122,19 @@ export const createConfiguratorRepo = (
             .eq("id", id)
             .select()
             .single();
+
+        if (error) throw error;
+
+        return data;
+    },
+    async updateMeshes(
+        id: string,
+        meshes: MeshLayout[]
+    ) {
+        const { data, error } = await supabase.rpc("update_meshes", {
+            config_id: id,
+            new_meshes: meshes,
+        });
 
         if (error) throw error;
 

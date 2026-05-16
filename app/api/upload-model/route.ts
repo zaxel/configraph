@@ -9,11 +9,8 @@ import { KHRDracoMeshCompression } from '@gltf-transform/extensions';
 import draco3d from 'draco3d';
 import type { DecoderModule, EncoderModule } from 'draco3d';
 import sharp from 'sharp';
-import { createConfigurator } from "@/db/configurator.repo";
 import { storageRepo } from "@/features/account/repositories/storage.repo";
 import { auth } from "@clerk/nextjs/server";
-import { configuratorRepo } from "@/features/account/repositories/configurator.repo";
-import { useCreateConfigurator } from "@/features/account/hooks/useCreateConfigurator";
 import { createConfiguratorAction } from "@/features/account/actions/createConfigurator.action";
 
 
@@ -96,18 +93,6 @@ export async function POST(req: Request) {
         const optimizedFile = new File([optimizedBuffer], file.name, { type: file.type });
         const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
         
-        // const configurator = await createConfigurator({
-        //     draft: {
-        //         id: "dft_" + crypto.randomUUID(),
-        //         quantity: 1,
-        //         model: { url },
-        //         modules: []
-        //     },
-        //     published: null,
-        //     builderConfig: {
-        //         meshes: []
-        //     }
-        // });
         const draftConfigurator = {
             draft: {
                 quantity: 1,
@@ -120,7 +105,6 @@ export async function POST(req: Request) {
             }
         }
 
-        // await configuratorRepo.create(configurator, userId, optimizedFile.size, file.type, path);
       const configurator = await createConfiguratorAction(draftConfigurator, optimizedFile.size, file.type, modelPath);
 
         return Response.json({
