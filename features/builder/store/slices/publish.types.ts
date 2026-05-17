@@ -1,4 +1,4 @@
-﻿import { PublishIssue } from "../../validation/publish/types";
+﻿import { PublishIssue, ZodIssueRaw } from "../../validation/publish/types";
 
 
 export type PublishSlice = {

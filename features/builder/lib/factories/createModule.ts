@@ -19,6 +19,7 @@ export function createModuleFactory(type: ComponentType, order: number) {
 function createAddonModule(order: number): AddonModule {
   return {
     id: "addon",
+    type: "addon",
     instanceId: `mdl_${crypto.randomUUID()}`,
     order,
 
@@ -41,9 +42,12 @@ function createAddonModule(order: number): AddonModule {
 function createSizeModule(order: number): SizeModule {
   return {
     id: "size",
+    type: "size",
     instanceId: `mod_${crypto.randomUUID()}`,
     order,
-    default: undefined,
+    default: {
+      type: "size"
+    },
 
     components: [
       {
@@ -104,6 +108,7 @@ function createContentModule(order: number): ContentModule {
 function createCanvasModule(order: number): CanvasModule {
   return {
     id: "canvas",
+    type: "canvas",
     instanceId: `mod_${crypto.randomUUID()}`,
     order,
     default: {

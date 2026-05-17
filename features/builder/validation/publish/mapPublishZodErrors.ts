@@ -1,13 +1,15 @@
 ﻿import { ZodError } from "zod";
-import { PublishIssue } from "./types";
+import { ZodIssueRaw } from "./types";
 
 export function mapPublishZodErrors(
-  error: ZodError
-): PublishIssue[] {
-  return error.issues.map((issue) => ({
-    severity: "error",
-    message: issue.message,
-    path: issue.path.join("."),
-    code: issue.code,
-  }));
+    error: ZodError
+): ZodIssueRaw[] {
+    return error.issues.map((issue) => {
+        return {
+            severity: "error",
+            message: issue.message, 
+            path: issue.path as (string | number)[],
+            code: issue.code,
+        }
+    });
 }

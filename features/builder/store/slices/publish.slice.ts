@@ -3,8 +3,10 @@ import { PublishSlice } from "./publish.types";
 import { BoundBuilderStore } from "../builder.types";
 import { validateForPublish } from "../../validation/publish/validateForPublish";
 import { ProductSchema } from "../../validation/draft/product.schema";
-import { PublishIssue } from "../../validation/publish/types";
+import { PublishIssue, ZodIssueRaw } from "../../validation/publish/types";
 import { mapPublishZodErrors } from "../../validation/publish/mapPublishZodErrors";
+import { buildPathResolver } from "../../validation/draft/buildPathResolver";
+import { remapZodIssuePaths } from "../../validation/publish/remapZodIssuePaths";
 
 export const createPublishSlice: StateCreator<
   BoundBuilderStore,
@@ -14,22 +16,26 @@ export const createPublishSlice: StateCreator<
 > = (set, get) => ({
   publishIssues: [],
 
-  publishing: false, 
+  publishing: false,
 
   validateBeforePublish: () => {
     const { draft, builderConfig } = get();
 
     if (!draft) return [];
 
-    const issues: PublishIssue[] = [];
+    const zodIssues: ZodIssueRaw[] = [];
 
     // structural validation
     const parsed = ProductSchema.safeParse(draft);
 
+    const issues: PublishIssue[] = [];
+
     if (!parsed.success) {
-      issues.push(
+      zodIssues.push(
         ...mapPublishZodErrors(parsed.error)
       );
+      const remapped = remapZodIssuePaths(zodIssues, draft);
+      issues.push(...remapped);
     }
 
     // business validation
