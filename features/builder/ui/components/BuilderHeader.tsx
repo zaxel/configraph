@@ -2,14 +2,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Bell, ChevronDown, Search } from "lucide-react";
-import { sidebarItems } from "./DashboardSidebar";
+import { Bell, ChevronDown } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { useProfile } from "@/features/account/hooks/useProfile";
 import Link from "next/link";
+import { sidebarItems } from "@/features/dashboard/components/DashboardSidebar";
 
-export function DashboardHeader() {
+export function BuilderHeader() {
     const { user } = useUser();
     const {
         data: profile,
@@ -26,13 +25,24 @@ export function DashboardHeader() {
     return (
         <header className="sticky h-16 top-0 z-30 border-b bg-background/80 backdrop-blur-xl">
             <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
-                <div className="relative hidden w-full max-w-sm md:block">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <div className="border-b px-6 py-2 h-16">
+                    <Link
+                        href="/dashboard"
+                        className="flex items-center gap-3"
+                    >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border bg-muted font-semibold">
+                            C
+                        </div>
 
-                    <Input
-                        placeholder="Search configurators..."
-                        className="h-11 rounded-xl border bg-muted/40 pl-10"
-                    />
+                        <div>
+                            <p className="text-sm text-muted-foreground">
+                                Configraph
+                            </p>
+                            <h2 className="font-semibold tracking-tight">
+                                Dashboard
+                            </h2>
+                        </div>
+                    </Link>
                 </div>
 
                 <div className="ml-auto flex items-center gap-3">
@@ -101,7 +111,9 @@ export function DashboardHeader() {
                             <DropdownMenuSeparator />
 
                             <DropdownMenuItem>
-                                Sign out
+                                <Link href={"#"}>
+                                    Sign out
+                                </Link>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

@@ -1,4 +1,4 @@
-﻿export type ActiveBuilderTab = "mesh" | "builder";
+﻿export type ActiveBuilderTab = "mesh" | "builder" | "settings";
 
 export type UiSlice = {
     activeTab: ActiveBuilderTab; 

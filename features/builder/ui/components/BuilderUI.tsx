@@ -18,11 +18,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useBuilderStore } from '../../store/builder.store';
+import { Button } from '@/components/ui/button';
+import { ImagePlus, Rocket } from 'lucide-react';
 
 const BuilderUI = () => {
-    const reorderModules = useBuilderStore(s => s.reorderModules);
+  const reorderModules = useBuilderStore(s => s.reorderModules);
 
-  
+
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -30,8 +32,8 @@ const BuilderUI = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-    const product = useProduct();
-        if (!product) return null; 
+  const product = useProduct();
+  if (!product) return null;
   const sortedModules = product.modules.slice().sort((a, b) => a.order - b.order);
 
   function handleDragEnd(event: DragEndEvent) {
@@ -58,7 +60,30 @@ const BuilderUI = () => {
           ))}
         </SortableContext>
       </DndContext>
-      <ModuleSelect />
+
+      <div className="flex flex-col gap-6 sm:flex-row sm:gap-4">
+
+        <ModuleSelect />
+        <Button
+          className="cursor-pointer"
+          // onClick={() => generateThumbnail()}
+          variant="outline"
+          size="sm"
+        >
+          <ImagePlus className="w-4 h-4 mr-1" />
+          Generate Preview
+        </Button>
+
+        <Button
+          className="cursor-pointer"
+          // onClick={() => publishConfigurator()}
+          variant="default"
+          size="sm"
+        >
+          <Rocket className="w-4 h-4 mr-1" />
+          Publish
+        </Button>
+      </div>
     </div>
   );
 };
