@@ -1,4 +1,4 @@
-﻿import { getConfiguratorAction } from "@/features/account/actions/createConfigurator.action";
+﻿import { getConfiguratorAction } from "@/features/account/actions/configurator.action";
 
 export async function GET(
   req: Request,

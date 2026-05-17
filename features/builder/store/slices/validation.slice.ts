@@ -1,9 +1,9 @@
 ﻿import { StateCreator } from "zustand";
 import { BoundBuilderStore } from "../builder.types";
 import { ValidationSlice } from "./validation.type";
-import { mapZodErrors } from "@/features/configurator/validation/mapZodErrors";
-import { ProductSchema } from "@/features/configurator/validation/product.schema";
-import { buildPathResolver } from "@/features/configurator/validation/buildPathResolver";
+import { mapZodErrors } from "@/features/builder/validation/draft/mapZodErrors";
+import { ProductSchema } from "@/features/builder/validation/draft/product.schema";
+import { buildPathResolver } from "@/features/builder/validation/draft/buildPathResolver";
 
 export const createValidationSlice: StateCreator<
     BoundBuilderStore,

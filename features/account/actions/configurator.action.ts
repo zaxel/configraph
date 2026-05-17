@@ -89,3 +89,16 @@ export async function updateConfiguratorMeshesAction(
 
     return repo.updateMeshes(id, meshes);
 } 
+export async function publishConfiguratorAction( 
+    id: string, 
+) {
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const repo = createConfiguratorRepo(supabase); 
+    // return id;
+    return repo.publish(id); 
+} 

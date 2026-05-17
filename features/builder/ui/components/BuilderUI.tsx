@@ -23,6 +23,8 @@ import { ImagePlus, Rocket } from 'lucide-react';
 
 const BuilderUI = () => {
   const reorderModules = useBuilderStore(s => s.reorderModules);
+  const publishing = useBuilderStore(s => s.publishing);
+  const publishConfigurator = useBuilderStore(s => s.publishConfigurator);
 
 
 
@@ -76,7 +78,8 @@ const BuilderUI = () => {
 
         <Button
           className="cursor-pointer"
-          // onClick={() => publishConfigurator()}
+          disabled={publishing}
+          onClick={() => publishConfigurator()}
           variant="default"
           size="sm"
         >

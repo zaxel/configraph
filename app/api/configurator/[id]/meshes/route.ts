@@ -1,4 +1,4 @@
-﻿import { updateConfiguratorMeshesAction } from "@/features/account/actions/createConfigurator.action";
+﻿import { updateConfiguratorMeshesAction } from "@/features/account/actions/configurator.action";
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;

@@ -1,4 +1,4 @@
-﻿import { ColorVariant, meshGroup, OptionsComponent, PartsComponent, Product } from "../model";
+﻿import { ColorVariant, meshGroup, OptionsComponent, PartsComponent, Product } from "../../../configurator/model";
 import { PathResolver } from "./mapZodErrors";
 
 

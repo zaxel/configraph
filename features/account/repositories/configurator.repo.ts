@@ -14,6 +14,8 @@ import { ConfiguratorData, ConfiguratorRecord } from "../types/configurators.typ
 import { SupabaseClient } from "@supabase/supabase-js";
 import { MeshLayout } from "@/lib/extractMeshes";
 import { Product } from "@/features/configurator/model";
+import { ProductSchema } from "@/features/builder/validation/draft/product.schema";
+import { validateForPublish } from "@/features/builder/validation/publish/validateForPublish";
 
 export type UpdateConfiguratorInput = Partial<
     Pick<
@@ -87,11 +89,12 @@ export const createConfiguratorRepo = (
         const defaultName = "Untitled Configurator";
 
         const newConfigurator = {
+            id: configuratorId,
             clerk_user_id: clerkId,
             name: defaultName,
             slug: configuratorId.slice(0, 8),
             data: {
-                draft: configuratorData.draft,
+                draft: { ...configuratorData.draft, id: configuratorId, },
                 published: configuratorData.published,
                 builder_config: configuratorData.builderConfig,
             },
@@ -128,7 +131,7 @@ export const createConfiguratorRepo = (
 
         return data;
     },
-    async updateDraft( 
+    async updateDraft(
         id: string,
         draft: Product
     ) {
@@ -168,4 +171,68 @@ export const createConfiguratorRepo = (
 
         return data;
     },
+    async publish(id: string) {
+        // 1. get configurator
+        const { data, error } = await supabase
+            .from("configurators")
+            .select("*")
+            .eq("id", id)
+            .single();
+            
+        if (error) throw error;
+
+        const draft = data.data.draft;
+        const prevPublished = data.data.published;
+
+        // 2. validate zod
+        const parsed = ProductSchema.safeParse(draft);
+
+        if (!parsed.success) {
+            throw new Error("Draft invalid");
+        }
+
+        // 3. validate publish rules
+        const issues = validateForPublish(
+            draft,
+            data.data.builder_config
+        );
+
+        const hasErrors = issues.some(
+            (i) => i.severity === "error"
+        );
+
+        if (hasErrors) {
+            throw new Error(
+                "Configurator cannot be published"
+            );
+        }
+
+        // 4. create immutable snapshot
+        const publishedSnapshot = JSON.parse(
+            JSON.stringify({
+                schemaVersion: prevPublished ? prevPublished.schemaVersion+1 : 1,
+                publishedAt: Date.now(),
+                data: draft,
+            })
+        );
+
+        // 5. update row
+        const { error: updateError } = await supabase
+            .from("configurators")
+            .update({
+                data: {
+                    ...data.data,
+                    published: publishedSnapshot,
+                },
+
+                is_public: true,
+            })
+            .eq("id", id);
+
+        if (updateError) {
+            throw updateError;
+        }
+
+        return publishedSnapshot;
+    }
 });
