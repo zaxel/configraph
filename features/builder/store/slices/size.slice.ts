@@ -62,7 +62,7 @@ export const createSizeSlice: StateCreator<
             if (mod && isModuleType(mod, "size")) {
 
                 if (isSelected) {
-                    mod.default = undefined;
+                    mod.default = {type: "size"};
                 } else {
                     mod.default = { ...patch };
                 }

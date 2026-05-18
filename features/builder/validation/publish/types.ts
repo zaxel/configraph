@@ -13,4 +13,5 @@ export type PublishIssue = {
     componentId?: string;
     entityId?: string;
     code?: string;
+    field?: string;
 };

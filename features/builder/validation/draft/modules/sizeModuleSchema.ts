@@ -4,10 +4,13 @@ export const SizeModuleSchema = z.object({
   id: z.literal("size"),
   instanceId: z.string(),
   order: z.number(),
+  type: z.literal("size"),
 
   default: z.object({
     type: z.literal("size"),
     value: z.string().optional(),
+    label: z.string().optional(),
+    price: z.string().optional(),
   }),
 
   components: z.array(

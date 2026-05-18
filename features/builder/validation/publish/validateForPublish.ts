@@ -3,6 +3,7 @@ import { BuilderConfig, ProductConfigSlice } from "../../store/slices/productCon
 import { PublishIssue } from "./types";
 import { validateContentModules } from "./validators/validateContentModule";
 import { validatePartsModules } from "./validators/validatePartsModules";
+import { validateSizeModules } from "./validators/validateSizeModules";
 
 export function validateForPublish(
     draft: Product,
@@ -12,6 +13,7 @@ export function validateForPublish(
 
     validateContentModules(draft, issues);
     validatePartsModules(draft, builderConfig, issues);
+    validateSizeModules(draft, issues);
     // validateSubmitModules(draft, issues);
 
     return issues;

@@ -15,8 +15,8 @@ export type DefaultAddons = {
 
 export type DefaultSizes = {
   type: "size",
-  id: string,
-  value: string,
+  id?: string,
+  value?: string,
   label?: string,
   price?: number,
 }

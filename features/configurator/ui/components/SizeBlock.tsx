@@ -5,7 +5,6 @@ import { useConfiguratorStore } from '../../store/configurator.store';
 const SizeBlock = ({ data }: { data: SizeComponent }) => {
     const selected = useConfiguratorStore(s => s.selectedOptions["size"]);
     const setOption = useConfiguratorStore(s => s.setOption);
-    if (!selected) return null;
     return (
         <div>
             {data.label && <h3 className='font-medium text-xl mb-4'>{data.label}</h3>}
