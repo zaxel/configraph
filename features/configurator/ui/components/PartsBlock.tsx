@@ -15,13 +15,15 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
   const product = useProduct();
 
   const parts = data.options.map(part => {
+    if(!part.optional && !part.enabled)return null;
     const isSelected = part.id === selectedPartOption;
     return <li key={part.id}>
       <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setPart(product, part.id)}>
         {part.label}
       </Button>
     </li>
-  })
+  }).filter(p=>p!==null);
+  if(parts.length===0) return null;
 
   const selectedPart =
     data.options.find(el => el.id === selectedPartOption) ??
@@ -38,7 +40,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
     return <li key={group.id}>
       <Button
         variant={isSelected ? "active" : "primary"}
-        onClick={() => !isSelected && selectedPartOption && setGroup(product, selectedPartOption, group.id)
+        onClick={() => !isSelected && selectedPartOption && product && setGroup(product, selectedPartOption, group.id)
         }>
         {group.label}
       </Button>

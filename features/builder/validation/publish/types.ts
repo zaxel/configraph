@@ -11,5 +11,6 @@ export type PublishIssue = {
     path?: string;
     moduleId?: string;
     componentId?: string;
+    entityId?: string;
     code?: string;
 };

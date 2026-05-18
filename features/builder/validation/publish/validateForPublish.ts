@@ -2,6 +2,7 @@
 import { BuilderConfig, ProductConfigSlice } from "../../store/slices/productConfig.type";
 import { PublishIssue } from "./types";
 import { validateContentModules } from "./validators/validateContentModule";
+import { validatePartsModules } from "./validators/validatePartsModules";
 
 export function validateForPublish(
     draft: Product,
@@ -10,7 +11,7 @@ export function validateForPublish(
     const issues: PublishIssue[] = [];
 
     validateContentModules(draft, issues);
-    // validatePartsModules(draft, builderConfig, issues);
+    validatePartsModules(draft, builderConfig, issues);
     // validateSubmitModules(draft, issues);
 
     return issues;
