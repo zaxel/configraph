@@ -99,6 +99,5 @@ export async function publishConfiguratorAction(
 
     const supabase = await createServerSupabaseClient();
     const repo = createConfiguratorRepo(supabase); 
-    // return id;
     return repo.publish(id); 
 } 

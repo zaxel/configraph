@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 const MeshChecker = () => {
     const builderConfig = useBuilderStore((s) => s.builderConfig);
     const debuggerApi = useBuilderStore(s => s.debuggerApi);
-    console.log(builderConfig);
-
     const [disabledMeshes, setDisabledMeshes] = useState<Set<string>>(new Set());
 
     const toggleMesh = (name: string) => {
