@@ -53,8 +53,8 @@ export const PartsModuleSchema = z.object({
         groupId: z.string(),
         color: z.string(),
       })
-    ),
-    selectedPart: z.string(),
+    ).optional(),
+    selectedPart: z.string().optional(),
   }),
 
   components: z.array(

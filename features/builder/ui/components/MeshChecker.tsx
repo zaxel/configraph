@@ -11,7 +11,7 @@ const MeshChecker = () => {
 
     const toggleMesh = (name: string) => {
         setDisabledMeshes(prev => {
-            const next = new Set(prev);
+            const next = new Set(prev); 
             if (next.has(name)) {
                 next.delete(name);
             } else {

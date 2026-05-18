@@ -17,6 +17,10 @@ export const createSceneSlice: StateCreator<
     resetViewer: () =>
         set({
             registry: null,
-            debuggerApi: null, 
+            debuggerApi: null,  
         }), 
+    switchOn: () => 
+        set({
+            debuggerApi: null,  
+        })
 });

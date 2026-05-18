@@ -29,8 +29,8 @@ export function validatePartsModules(
 
 
     for (const partsModule of modules) {
-        const keysDefaultParts = partsModule.default?.selections;
-        if (keysDefaultParts && Object.keys(keysDefaultParts).length === 0) {
+        const selected = partsModule.default?.selectedPart;
+        if (!selected) {
             issues.push({
                 severity: "warning",
                 moduleId: partsModule.instanceId,

@@ -7,17 +7,26 @@ export const useMeshDebugger = (registry: MeshRegistry | null) => {
          if (!registry) return null;
          return {
              toggleVisibility: (name: string) => {
+                if (!registry) return;
                  const obj = registry.byName.get(name);
                  if (!obj || !(obj as THREE.Mesh).isMesh) return;
- 
+  
                  obj.visible = !obj.visible;
              },
+             allMeshesOn: () => {
+                if (!registry) return;
+                const meshes = registry.byName;
+                if(!meshes.size)return;
+                meshes.forEach(obj => {
+                    if (!obj || !(obj as THREE.Mesh).isMesh) return;
+                    obj.visible = true;
+                })
+             },
              highlight: (name: string, enabled: boolean) => {
-                 if (!enabled) return;
- 
+                 if (!enabled || !registry) return;
                  const obj = registry.byName.get(name);
                  if (!obj || !(obj as THREE.Mesh).isMesh) return;
- 
+                 
                  const mesh = obj as THREE.Mesh;
                  mesh.userData.originalMaterial = mesh.material;
                  mesh.material = new THREE.MeshBasicMaterial({
@@ -25,7 +34,7 @@ export const useMeshDebugger = (registry: MeshRegistry | null) => {
                  });
              },
              resetHighlight: (name: string, enabled: boolean) => {
-                 if (!enabled) return;
+                 if (!enabled || !registry) return;
  
                  const obj = registry.byName.get(name);
                  if (!obj || !(obj as THREE.Mesh).isMesh) return;

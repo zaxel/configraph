@@ -7,7 +7,7 @@ export const SizeModuleSchema = z.object({
 
   default: z.object({
     type: z.literal("size"),
-    value: z.string(),
+    value: z.string().optional(),
   }),
 
   components: z.array(
