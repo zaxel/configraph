@@ -7,6 +7,7 @@ import { validateSizeModules } from "./validators/validateSizeModules";
 import { validateSubmitModules } from "./validators/validateSubmitModules";
 import { validateAddonModules } from "./validators/validateAddonModules";
 import { validateCanvasModules } from "./validators/validateCanvasModules";
+import { validatePriceModules } from "./validators/validatePriceModules";
 
 export function validateForPublish(
     draft: Product,
@@ -20,6 +21,7 @@ export function validateForPublish(
     validateSubmitModules(draft, issues);
     validateAddonModules(draft, issues);
     validateCanvasModules(draft, issues);
+    validatePriceModules(draft, issues);
 
     return issues;
 }

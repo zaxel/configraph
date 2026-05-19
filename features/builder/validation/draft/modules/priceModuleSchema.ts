@@ -18,7 +18,6 @@ export const PriceModuleSchema = z.object({
                 basePrice: z.number().min(0, "Price cannot be negative").max(5_000_000_000, "Price cannot exceed 5 000 000 000"),
                 oldPrice: z.number().min(0, "Price cannot be negative").max(5_000_000_000, "Price cannot exceed 5 000 000 000").optional(),
                 currency: z.string(),
-                order: z.number(),
             }),
         })
     ),
