@@ -1,12 +1,15 @@
-﻿import { PublishIssue, ZodIssueRaw } from "../../validation/publish/types";
+﻿import { PublishIssue } from "../../validation/publish/types";
 
 
 export type PublishSlice = {
     publishIssues: PublishIssue[];
     publishing: boolean;
+    publishModalOpen: boolean;
 
     validateBeforePublish: () => PublishIssue[];
-    publishConfigurator: () => Promise<void>;
+    publishConfigurator: () => void;
+    executePublish: () => Promise<void>;
 
     clearPublishIssues: () => void;
+    setPublishModalOpen: (open: boolean) => void;
 };

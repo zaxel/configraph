@@ -17,6 +17,7 @@ export const createPublishSlice: StateCreator<
   publishIssues: [],
 
   publishing: false,
+  publishModalOpen: false,
 
   validateBeforePublish: () => {
     const { draft, builderConfig } = get();
@@ -60,52 +61,51 @@ export const createPublishSlice: StateCreator<
 
     if (!draft?.id) return;
 
-    set(
-      { publishing: true },
-      false,
-      "publishingStart"
-    );
+
+    const issues =
+      get().validateBeforePublish();
+
+    if (issues.length > 0) {
+      set({
+        publishModalOpen: true,
+      }, false, "publishModalOpen");
+
+      return;
+    }
+
+    await get().executePublish();
+  },
+
+  clearPublishIssues: () =>
+    set({ publishIssues: [] }, false, "clearPublishIssues"),
+
+  executePublish: async () => {
+    const { draft } = get();
+
+    if (!draft?.id) return;
+
+    set({ publishing: true }, false, "publishingStart");
 
     try {
-      const issues =
-        get().validateBeforePublish();
-
-      const hasErrors = issues.some(
-        (i) => i.severity === "error"
-      );
-
-      if (hasErrors) {
-        console.log(issues);
-        alert(issues);
-        return;
-      }
-
       await fetch(
         `/api/configurator/${draft.id}/publish`,
         {
           method: "POST",
         }
       );
+
+      set({
+        publishModalOpen: false,
+      }, false, "publishModalClose");
+
     } catch (e) {
-      console.error(
-        "Failed to publish",
-        e
-      );
+      console.error(e);
     } finally {
-      set(
-        { publishing: false },
-        false,
-        "publishingEnd"
-      );
+      set({ publishing: false }, false, "publishingEnd");
     }
   },
-
-  clearPublishIssues: () =>
-    set({ publishIssues: [] }, false, "clearPublishIssues"),
-
-
-
-
-
+  setPublishModalOpen: (open) => {
+    set({ publishModalOpen: open }, false, "toggleModal");
+  },
 
 });
