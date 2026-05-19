@@ -130,7 +130,7 @@ function createCanvasModule(order: number): CanvasModule {
 function createSubmitModule(order: number): SubmitModule {
   return {
     id: "submit",
-    instanceId: `mod_${crypto.randomUUID()}`,
+    instanceId: `mod_${crypto.randomUUID()}`, 
     order,
     type: "submit",
     default: {
@@ -141,7 +141,7 @@ function createSubmitModule(order: number): SubmitModule {
         id: `cmp_${crypto.randomUUID()}`,
         type: "submit",
         label: "",
-        text: "Add To cart"
+        text: "Add To Cart"
       }
     ]
   }
