@@ -178,7 +178,7 @@ export const createConfiguratorRepo = (
             .select("*")
             .eq("id", id)
             .single();
-            
+
         if (error) throw error;
 
         const draft = data.data.draft;
@@ -210,7 +210,7 @@ export const createConfiguratorRepo = (
         // 4. create immutable snapshot
         const publishedSnapshot = JSON.parse(
             JSON.stringify({
-                schemaVersion: prevPublished ? prevPublished.schemaVersion+1 : 1,
+                schemaVersion: prevPublished ? prevPublished.schemaVersion + 1 : 1,
                 publishedAt: Date.now(),
                 data: draft,
             })
@@ -234,5 +234,15 @@ export const createConfiguratorRepo = (
         }
 
         return publishedSnapshot;
-    }
+    },
+    async getAllUserConfiturators(userId: string) {
+        // 1. get configurator
+        const { data, error } = await supabase
+            .from("configurators")
+            .select("*")
+            .eq("clerk_user_id", userId);
+
+        if (error) throw error;
+        return data;
+    },
 });

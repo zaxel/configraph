@@ -20,11 +20,11 @@ import {
 
 export type Configurator = {
   id: string;
-  title: string;
-  thumbnail?: string;
+  name: string; 
+  thumbnail_url?: string;
   status: "draft" | "published";
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string; 
 };
 
 export type ConfiguratorTableProps = {
@@ -95,10 +95,10 @@ export default function ConfiguratorTable({
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-4">
                     <div className="h-16 w-16 overflow-hidden rounded-2xl border bg-muted/30">
-                      {configurator.thumbnail ? (
+                      {configurator.thumbnail_url ? (
                         <img
-                          src={configurator.thumbnail}
-                          alt={configurator.title}
+                          src={configurator.thumbnail_url}
+                          alt={configurator.name}
                           className="h-full w-full object-cover"
                         />
                       ) : (
@@ -110,7 +110,7 @@ export default function ConfiguratorTable({
 
                     <div>
                       <h3 className="font-medium">
-                        {configurator.title}
+                        {configurator.name}
                       </h3>
 
                       <p className="mt-1 text-sm text-muted-foreground">
@@ -137,12 +137,12 @@ export default function ConfiguratorTable({
 
                 {/* CREATED */}
                 <td className="px-6 py-5 text-sm text-muted-foreground">
-                  {configurator.createdAt}
+                  {configurator.created_at}
                 </td>
 
                 {/* UPDATED */}
                 <td className="px-6 py-5 text-sm text-muted-foreground">
-                  {configurator.updatedAt}
+                  {configurator.updated_at}
                 </td>
 
                 {/* ACTIONS */}
