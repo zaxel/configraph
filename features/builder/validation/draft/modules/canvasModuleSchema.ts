@@ -4,9 +4,9 @@ export const CanvasModuleSchema = z.object({
   id: z.literal("canvas"),
   instanceId: z.string(),
   order: z.number(),
-  type: z.literal("price"),
+  type: z.literal("canvas"),
   default: z.object({
-    type: z.literal("price"),
+    type: z.literal("canvas"),
   }),
 
   components: z.array(
