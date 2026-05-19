@@ -5,6 +5,7 @@ import { validateContentModules } from "./validators/validateContentModule";
 import { validatePartsModules } from "./validators/validatePartsModules";
 import { validateSizeModules } from "./validators/validateSizeModules";
 import { validateSubmitModules } from "./validators/validateSubmitModules";
+import { validateAddonModules } from "./validators/validateAddonModules";
 
 export function validateForPublish(
     draft: Product,
@@ -16,6 +17,7 @@ export function validateForPublish(
     validatePartsModules(draft, builderConfig, issues);
     validateSizeModules(draft, issues);
     validateSubmitModules(draft, issues);
+    validateAddonModules(draft, issues);
 
     return issues;
 }
