@@ -5,11 +5,11 @@ import { auth } from "@clerk/nextjs/server";
 import { createServerSupabaseClient }
     from "@/lib/supabase/server";
 
-import { createConfiguratorRepo, UpdateConfiguratorInput }
-    from "../repositories/configurator.repo";
+
 import { MeshLayout } from "@/lib/extractMeshes";
-import { ConfiguratorData } from "../types/configurators.types";
 import { Product } from "@/features/configurator/model";
+import { ConfiguratorData } from "../types/configurators.types";
+import { createConfiguratorRepo, UpdateConfiguratorInput } from "../repositories/configurator.repo";
 
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string

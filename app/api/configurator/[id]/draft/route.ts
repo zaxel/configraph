@@ -1,5 +1,5 @@
-﻿import { updateConfiguratorDraft } from "@/db/configurator.repo";
-import { updateConfiguratorDraftAction } from "@/features/account/actions/configurator.action";
+﻿import { updateConfiguratorDraftAction } from "@/features/configurators/actions/editor.actions";
+
 export async function PUT(
   req: Request, 
   { params }: { params: Promise<{ id: string }> } 

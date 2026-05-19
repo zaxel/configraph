@@ -1,4 +1,4 @@
-﻿import { publishConfiguratorAction } from "@/features/account/actions/configurator.action";
+﻿import { publishConfiguratorAction } from "@/features/configurators/actions/editor.actions";
 
 export async function POST(
   req: Request,
