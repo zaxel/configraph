@@ -15,6 +15,7 @@ import { createSubmitSlice } from "./slices/submit.slice";
 import { createPriceSlice } from "./slices/price.slice";
 import { createCanvasSlice } from "./slices/canvas.slice";
 import { createPublishSlice } from "./slices/publish.slice";
+import { createThumbnailSlice } from "./slices/thumbnail.slice";
 
 export const useBuilderStore = create<BoundBuilderStore>()(
   immer(devtools((...a) => ({
@@ -31,5 +32,6 @@ export const useBuilderStore = create<BoundBuilderStore>()(
     ...createPriceSlice(...a),
     ...createCanvasSlice(...a),
     ...createPublishSlice(...a),
+    ...createThumbnailSlice(...a),
   })))
 );

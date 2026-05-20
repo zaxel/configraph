@@ -3,11 +3,13 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import Model from '../Model';
 import Loader from './Loader';
 import { ViewerProps } from '../Viewer';
+import { GlCaptureBridge } from './GlCaptureBridge';
 
 
 const Scene = ({ modelUrl, product, selectedOptions, mode}: ViewerProps) => {
     return (
         <>
+            <GlCaptureBridge />
             <OrbitControls />
             <Environment preset="city" />
 

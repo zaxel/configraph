@@ -11,6 +11,7 @@ import { SizeSlice } from "./slices/size.types";
 import { SubmitSlice } from "./slices/submit.types";
 import { UiSlice } from "./slices/ui.type";
 import { ValidationSlice } from "./slices/validation.type";
+import { ThumbnailSlice } from "./slices/thumbnail.type";
 
 export type BoundBuilderStore = UiSlice 
                                 & ModelSlice 
@@ -24,4 +25,5 @@ export type BoundBuilderStore = UiSlice
                                 & PriceSlice
                                 & SubmitSlice
                                 & CanvasSlice
-                                & PublishSlice;
+                                & PublishSlice
+                                & ThumbnailSlice;

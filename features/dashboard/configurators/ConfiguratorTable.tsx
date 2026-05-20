@@ -17,14 +17,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 export type Configurator = {
   id: string;
-  name: string; 
+  name: string;
   thumbnail_url?: string;
   status: "draft" | "published";
   created_at: string;
-  updated_at: string; 
+  updated_at: string;
 };
 
 export type ConfiguratorTableProps = {
@@ -94,18 +95,13 @@ export default function ConfiguratorTable({
                 {/* CONFIGURATOR */}
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-4">
-                    <div className="h-16 w-16 overflow-hidden rounded-2xl border bg-muted/30">
-                      {configurator.thumbnail_url ? (
-                        <img
-                          src={configurator.thumbnail_url}
-                          alt={configurator.name}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                          No Preview
-                        </div>
-                      )}
+                    <div className="relative w-16 h-16">
+                      <Image
+                        src={configurator.thumbnail_url || "/placeholders/configurator-preview.webp"}
+                        alt={configurator.name}
+                        fill
+                        className="object-contain"
+                      />
                     </div>
 
                     <div>

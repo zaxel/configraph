@@ -12,5 +12,5 @@ export async function GET(
     return new Response("Not found", { status: 404 });
   }
 
-  return Response.json(configurator);
+  return Response.json(configurator); 
 }

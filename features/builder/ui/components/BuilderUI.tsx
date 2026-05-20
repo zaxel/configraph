@@ -25,7 +25,14 @@ const BuilderUI = () => {
   const reorderModules = useBuilderStore(s => s.reorderModules);
   const publishing = useBuilderStore(s => s.publishing);
   const publishConfigurator = useBuilderStore(s => s.publishConfigurator);
+  const captureThumbnail = useBuilderStore(s => s.captureThumbnail);
 
+  const thumbnailUploading = useBuilderStore(s => s.thumbnailUploading);
+  const thumbnailCreating = useBuilderStore(s => s.thumbnailCreating);
+
+  const handleCaptureThumbnail = async() => {
+    await captureThumbnail();
+  }
 
 
   const sensors = useSensors(
@@ -68,12 +75,17 @@ const BuilderUI = () => {
         <ModuleSelect />
         <Button
           className="cursor-pointer"
-          // onClick={() => generateThumbnail()}
+          disabled={thumbnailUploading || thumbnailCreating}
+          onClick={() => handleCaptureThumbnail()}
           variant="outline"
           size="sm"
         >
           <ImagePlus className="w-4 h-4 mr-1" />
-          Generate Preview
+          {thumbnailUploading 
+          ? "Uploading..."
+          : thumbnailCreating
+            ? "Creating..."
+            : "Generate Preview"}
         </Button>
 
         <Button

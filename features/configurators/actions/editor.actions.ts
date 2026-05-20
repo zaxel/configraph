@@ -89,6 +89,7 @@ export async function updateConfiguratorMeshesAction(
 
     return repo.updateMeshes(id, meshes);
 } 
+
 export async function publishConfiguratorAction( 
     id: string, 
 ) {
@@ -100,4 +101,18 @@ export async function publishConfiguratorAction(
     const supabase = await createServerSupabaseClient();
     const repo = createConfiguratorRepo(supabase); 
     return repo.publish(id); 
+} 
+
+export async function updateConfiguratorThumbnail( 
+    configuratorId: string, 
+    thumbnail_url: string
+) {
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const repo = createConfiguratorRepo(supabase); 
+    return repo.update(configuratorId, {thumbnail_url});
 } 

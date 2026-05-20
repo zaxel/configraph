@@ -11,7 +11,7 @@ import type { DecoderModule, EncoderModule } from 'draco3d';
 import sharp from 'sharp';
 import { storageRepo } from "@/features/account/repositories/storage.repo";
 import { auth } from "@clerk/nextjs/server";
-import { createConfiguratorAction } from "@/features/account/actions/configurator.action";
+import { createConfiguratorAction } from "@/features/configurators/actions/editor.actions";
 
 
 let encoderPromise: Promise<EncoderModule> | null = null;
@@ -94,6 +94,7 @@ export async function POST(req: Request) {
         const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
         
         const draftConfigurator = {
+            id: "moke-id",
             draft: {
                 quantity: 1,
                 model: { url },

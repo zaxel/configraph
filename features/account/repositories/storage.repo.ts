@@ -2,6 +2,27 @@
 
 export const storageRepo = {
 
+  async uploadThumbnail(file: File, userId: string, configuratorId: string) {
+    const fileExt = file.name.split(".").pop();
+    const filePath = `${userId}/thumbnail-${configuratorId}.${fileExt}`;
+
+    const { error } = await supabase.storage
+      .from("configurator-thumbnails")
+      .upload(filePath, file, {
+        upsert: true,
+      });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from("configurator-thumbnails")
+      .getPublicUrl(filePath);
+
+    return {
+      path: filePath,
+      url: data.publicUrl,
+    }; 
+  },
   async uploadAvatar(file: File, userId: string) {
     const fileExt = file.name.split(".").pop();
     const filePath = `${userId}/avatar-${crypto.randomUUID()}.${fileExt}`;
