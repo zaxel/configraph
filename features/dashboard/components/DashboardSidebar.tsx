@@ -59,7 +59,7 @@ export function DashboardSidebar() {
                         asChild
                         className="mb-6 h-9 justify-start rounded-xl"
                     >
-                        <Link href="/builder/new">
+                        <Link href="/builder">
                             <Plus className="mr-2 h-4 w-4" />
                             New Configurator
                         </Link>

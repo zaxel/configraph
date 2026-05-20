@@ -29,8 +29,15 @@ export const createProductConfigSlice: StateCreator<
     draft: null,
     configuratorId: null,
     builderConfig: null,
+    configuratorName: "",
+    configuratorStatus: "idle",
+    configuratorError: null,
+    meshesRegistered: false,
 
 
+    setConfiguratorName: name => {
+        set({configuratorName: name})
+    },
     initProduct: product => {
         set({ product: product }, false, "initProduct");
         set({ draft: product }, false, "initDraft");
@@ -48,13 +55,12 @@ export const createProductConfigSlice: StateCreator<
         set({ configuratorId: id }, false, "setConfiguratorId"), 
 
     loadConfigurator: async (id) => {
-        const { configuratorId, status } = get();
-        console.log(id, configuratorId, status) 
-        if (configuratorId === id && status === "ready") {
+        const { configuratorId, configuratorStatus } = get();
+        if (configuratorId === id && configuratorStatus === "ready") {
             return;
         }
 
-        set({ status: "loading", error: null });
+        set({ configuratorStatus: "loading", configuratorError: null });
 
         try {
             const res = await fetch(`/api/configurator/${id}`); 
@@ -73,14 +79,16 @@ export const createProductConfigSlice: StateCreator<
                 draft: configurator.data.draft, // overwrite (authoritative)
                 builderConfig: configurator.data.builder_config, // overwrite
                 meshesRegistered: configurator.data.builder_config.meshes?.length > 0,
+                configuratorStatus: "ready",
                 status: "ready",
                 error: null,
             }));
-
+            console.log(get().meshesRegistered);
+            console.log(get().configuratorStatus);
         } catch (err) {
             set({
-                status: "error",
-                error: err instanceof Error ? err.message : "Failed to load",
+                configuratorStatus: "error",
+                configuratorError: err instanceof Error ? err.message : "Failed to load",
             });
         }
     },

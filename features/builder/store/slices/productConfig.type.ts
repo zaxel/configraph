@@ -7,6 +7,11 @@ export type ProductConfigSlice = {
   draft: Product | null;
   configuratorId: string | null;
   builderConfig: BuilderConfig;
+  configuratorStatus: "idle" | "loading" | "ready" | "error";
+  configuratorError: string | null;
+  meshesRegistered: boolean;
+  configuratorName: string;
+  setConfiguratorName: (name: string) => void;
   initProduct: (product: Product) => void;
   setModelUrl: (url: string) => void;
   setConfiguratorId: (id: string) => void;

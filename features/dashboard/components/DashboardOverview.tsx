@@ -81,7 +81,7 @@ export default function DashboardOverview() {
               size="lg"
               className="rounded-2xl"
             >
-              <Link href="/builder/new">
+              <Link href="/builder">
                 Create Configurator
               </Link>
             </Button>

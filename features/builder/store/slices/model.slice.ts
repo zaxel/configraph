@@ -73,7 +73,7 @@ export const createModelSlice: StateCreator<
             get().setConfiguratorId(configuratorId);
 
             set({
-                status: "idle",
+                status: "ready",
                 error: null,
             });
 
