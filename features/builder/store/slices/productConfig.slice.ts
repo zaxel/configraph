@@ -27,16 +27,21 @@ export const createProductConfigSlice: StateCreator<
 > = (set, get) => ({
     product: null,
     draft: null,
-    configuratorId: null,
     builderConfig: null,
-    configuratorName: "",
-    configuratorStatus: "idle",
-    configuratorError: null,
     meshesRegistered: false,
 
+    configurator: {
+        id: null,
+        name: "",
+        status: "idle",
+        error: null,
+    },
 
-    setConfiguratorName: name => {
-        set({configuratorName: name})
+
+    setConfiguratorName: (name) => {
+        set((state) => {
+            state.configurator.name = name;
+        });
     },
     initProduct: product => {
         set({ product: product }, false, "initProduct");
@@ -51,56 +56,62 @@ export const createProductConfigSlice: StateCreator<
             }
         }, false, "setModelUrl"),
 
-    setConfiguratorId: (id) =>
-        set({ configuratorId: id }, false, "setConfiguratorId"), 
+    setConfiguratorId: (id) => {
+        set((state) => {
+            state.configurator.id = id;
+        });
+    },
 
     loadConfigurator: async (id) => {
-        const { configuratorId, configuratorStatus } = get();
-        if (configuratorId === id && configuratorStatus === "ready") {
+        const { configurator } = get();
+        if (configurator.id === id && configurator.status === "ready") {
             return;
         }
 
-        set({ configuratorStatus: "loading", configuratorError: null });
+        set((state) => {
+            state.configurator.status = "loading";
+        });
 
         try {
-            const res = await fetch(`/api/configurator/${id}`); 
+            const res = await fetch(`/api/configurator/${id}`);
 
             if (!res.ok) {
                 const text = await res.text();
                 throw new Error(text || "Failed to load configurator");
             }
 
-            const configurator = await res.json();
-            
+            const configuratorResp = await res.json();
+            console.log(configuratorResp)
             set(() => ({
-                configuratorId: id,
+                product: configuratorResp.data?.published ?? configuratorResp.data.draft, // overwrite (authoritative)
+                draft: configuratorResp.data.draft, // overwrite (authoritative)
+                builderConfig: configuratorResp.data.builder_config, // overwrite
+                meshesRegistered: configuratorResp.data.builder_config.meshes?.length > 0,
 
-                product: configurator.data?.published ?? configurator.data.draft, // overwrite (authoritative)
-                draft: configurator.data.draft, // overwrite (authoritative)
-                builderConfig: configurator.data.builder_config, // overwrite
-                meshesRegistered: configurator.data.builder_config.meshes?.length > 0,
-                configuratorStatus: "ready",
+                configurator: {
+                    id,
+                    name,
+                    status: "ready",
+                    error: null
+                },
                 status: "ready",
-                error: null,
             }));
-            console.log(get().meshesRegistered);
-            console.log(get().configuratorStatus);
         } catch (err) {
-            set({
-                configuratorStatus: "error",
-                configuratorError: err instanceof Error ? err.message : "Failed to load",
+            set((state) => {
+                state.configurator.status = "error";
+                state.configurator.error = err instanceof Error ? err.message : "Failed to load";
             });
         }
     },
     setBuilderConfig: (config) => set({ builderConfig: config }),
     saveDraft: async () => {
-        const { draft, configuratorId, setSaving } = get();
-        if (!draft || !configuratorId) return;
+        const { draft, configurator, setSaving } = get();
+        if (!draft || !configurator.id) return;
 
         setSaving(true);
 
         try {
-            await fetch(`/api/configurator/${configuratorId}/draft`, {
+            await fetch(`/api/configurator/${configurator.id}/draft`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(draft),

@@ -5,12 +5,11 @@ import type { UniqueIdentifier } from "@dnd-kit/core";
 export type ProductConfigSlice = {
   product: Product | null;
   draft: Product | null;
-  configuratorId: string | null;
   builderConfig: BuilderConfig;
-  configuratorStatus: "idle" | "loading" | "ready" | "error";
-  configuratorError: string | null;
+  
+  configurator: ConfiguratorState;
+
   meshesRegistered: boolean;
-  configuratorName: string;
   setConfiguratorName: (name: string) => void;
   initProduct: (product: Product) => void;
   setModelUrl: (url: string) => void;
@@ -26,3 +25,10 @@ export type ProductConfigSlice = {
 export type BuilderConfig = {
   meshes: MeshLayout[];
 } | null;
+
+export type ConfiguratorState = {
+    id: string | null;
+    name: string;
+    status: "idle" | "loading" | "ready" | "error";
+    error: string | null;
+};

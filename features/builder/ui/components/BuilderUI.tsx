@@ -30,7 +30,7 @@ const BuilderUI = () => {
   const thumbnailUploading = useBuilderStore(s => s.thumbnailUploading);
   const thumbnailCreating = useBuilderStore(s => s.thumbnailCreating);
 
-  const handleCaptureThumbnail = async() => {
+  const handleCaptureThumbnail = async () => {
     await captureThumbnail();
   }
 
@@ -55,6 +55,7 @@ const BuilderUI = () => {
 
   return (
     <div className="w-full flex flex-col gap-6">
+      
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -81,11 +82,11 @@ const BuilderUI = () => {
           size="sm"
         >
           <ImagePlus className="w-4 h-4 mr-1" />
-          {thumbnailUploading 
-          ? "Uploading..."
-          : thumbnailCreating
-            ? "Creating..."
-            : "Generate Preview"}
+          {thumbnailUploading
+            ? "Uploading..."
+            : thumbnailCreating
+              ? "Creating..."
+              : "Generate Preview"}
         </Button>
 
         <Button
