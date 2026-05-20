@@ -20,6 +20,7 @@ import {
 import { useBuilderStore } from '../../store/builder.store';
 import { Button } from '@/components/ui/button';
 import { ImagePlus, Rocket } from 'lucide-react';
+import TitleUpdate from './TitleUpdate';
 
 const BuilderUI = () => {
   const reorderModules = useBuilderStore(s => s.reorderModules);
@@ -55,7 +56,7 @@ const BuilderUI = () => {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      
+      <TitleUpdate />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

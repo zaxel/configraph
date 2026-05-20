@@ -17,6 +17,7 @@ export type ProductConfigSlice = {
   loadConfigurator: (id: string) => void;
   setBuilderConfig: (config: BuilderConfig) => void;
   saveDraft: () => Promise<void>;
+  updateConfiguratorMeta: () => Promise<void>;
   deleteModule: (moduleId: string) => void;
   addModule: (type: ComponentType) => void;
   reorderModules: (activeId: UniqueIdentifier, overId: UniqueIdentifier) => void;

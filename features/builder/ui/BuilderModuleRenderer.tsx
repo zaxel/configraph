@@ -3,7 +3,6 @@ import { componentRegistry } from "./registry";
 import BlockContainer from "./components/BlockContainer";
 
 export const BuilderModuleRenderer = ({ module }: { module: Module }) => {
-    console.log(module)
     return (
         <div className="flex flex-col gap-4">
             {module.components.map((comp: Component) => {

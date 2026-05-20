@@ -10,6 +10,7 @@ import { MeshLayout } from "@/lib/extractMeshes";
 import { Product } from "@/features/configurator/model";
 import { ConfiguratorData } from "../types/configurators.types";
 import { createConfiguratorRepo, UpdateConfiguratorInput } from "../repositories/configurator.repo";
+import { ConfiguratorState } from "@/features/builder/store/slices/productConfig.type";
 
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string
@@ -115,4 +116,19 @@ export async function updateConfiguratorThumbnail(
     const supabase = await createServerSupabaseClient();
     const repo = createConfiguratorRepo(supabase); 
     return repo.update(configuratorId, {thumbnail_url});
+} 
+
+export async function updateConfiguratorMetaAction( 
+    id: string, 
+    name: string
+) {
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const repo = createConfiguratorRepo(supabase); 
+
+    return repo.update(id, {name});
 } 

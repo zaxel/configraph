@@ -40,7 +40,7 @@ export const createProductConfigSlice: StateCreator<
 
     setConfiguratorName: (name) => {
         set((state) => {
-            state.configurator.name = name;
+            state.configurator.name = name.trimStart();
         });
     },
     initProduct: product => {
@@ -81,7 +81,6 @@ export const createProductConfigSlice: StateCreator<
             }
 
             const configuratorResp = await res.json();
-            console.log(configuratorResp)
             set(() => ({
                 product: configuratorResp.data?.published ?? configuratorResp.data.draft, // overwrite (authoritative)
                 draft: configuratorResp.data.draft, // overwrite (authoritative)
@@ -90,11 +89,11 @@ export const createProductConfigSlice: StateCreator<
 
                 configurator: {
                     id,
-                    name,
+                    name: configuratorResp.name,
                     status: "ready",
                     error: null
                 },
-                status: "ready",
+                status: "ready", //update modele status
             }));
         } catch (err) {
             set((state) => {
@@ -118,6 +117,24 @@ export const createProductConfigSlice: StateCreator<
             });
         } catch (e) {
             console.error("Failed to save draft", e);
+        } finally {
+            setSaving(false);
+        }
+    },
+    updateConfiguratorMeta: async () => {
+        const { configurator, setSaving } = get();
+        if (!configurator || !configurator.id) return;
+
+        setSaving(true);
+
+        try {
+            await fetch(`/api/configurator/${configurator.id}/meta`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(configurator.name),
+            });
+        } catch (e) {
+            console.error("Failed to update configurator meta data", e);
         } finally {
             setSaving(false);
         }
