@@ -7,9 +7,9 @@ import { Save } from 'lucide-react';
 export const MAX_NAME = 50;
 
 const TitleUpdate = () => {
-    const { name } = useBuilderStore(s => s.configurator);
+    const { name, status } = useBuilderStore(s => s.configurator);
     const setConfiguratorName = useBuilderStore(s => s.setConfiguratorName);
-    const saving = useBuilderStore(s => s.saving);
+    // const saving = useBuilderStore(s => s.saving);
     const updateConfiguratorMeta = useBuilderStore(s => s.updateConfiguratorMeta);
 
     const error =
@@ -43,13 +43,13 @@ const TitleUpdate = () => {
             </div>
             <Button
                 className="cursor-pointer"
-                disabled={saving}
+                disabled={status === "updating"}
                 onClick={() => updateNameHandler()}
                 variant="default"
                 size="sm"
             >
                 <Save className="w-4 h-4 mr-1" />
-                {saving ? "Updating..." : "Update Name"}
+                {status === "updating" ? "Updating..." : "Update Name"}
             </Button>
         </div>
     );

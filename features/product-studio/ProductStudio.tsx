@@ -20,7 +20,7 @@ const ProductStudio = () => {
     const mode = useProductStudioStore(s => s.mode);
     const initProduct = useBuilderStore(s => s.initProduct);
     const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
-    const { status, configurator, draft } = useBuilderStore();
+    const { status, draft } = useBuilderStore();
     const activeBuilderTab = useBuilderStore(s => s.activeTab);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const ProductStudio = () => {
             {/* RIGHT — changes */}
             <ProductContext.Provider value={draft ?? null}>
                 {mode === "builder" ? (
-                    configurator.status !== "ready"
+                    status !== "ready"
                         ? <BuilderDisabled />
                         : <BuilderPanel />
                         

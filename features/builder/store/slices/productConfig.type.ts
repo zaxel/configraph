@@ -30,6 +30,7 @@ export type BuilderConfig = {
 export type ConfiguratorState = {
     id: string | null;
     name: string;
-    status: "idle" | "loading" | "ready" | "error";
+    status: "idle" | "loading" | "updating" | "ready" | "error";
     error: string | null;
 };
+

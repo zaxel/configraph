@@ -17,7 +17,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     const activeTab = useBuilderStore(s => s.activeTab);
     const setDebuggerApi = useBuilderStore(s => s.setDebuggerApi);
     const setRegistry = useBuilderStore(s => s.setRegistry);
-    const configuratorId = useBuilderStore(s => s.configuratorId);
+    const {id: configuratorId} = useBuilderStore(s => s.configurator);
     const meshesRegistered = useBuilderStore(s => (s.builderConfig?.meshes?.length ?? 0) > 0);
     const setBuilderConfig = useBuilderStore(s => s.setBuilderConfig);
 

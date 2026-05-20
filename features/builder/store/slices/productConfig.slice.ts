@@ -125,7 +125,10 @@ export const createProductConfigSlice: StateCreator<
         const { configurator, setSaving } = get();
         if (!configurator || !configurator.id) return;
 
-        setSaving(true);
+        set((state) => {
+            state.configurator.status = "updating";
+        });
+
 
         try {
             await fetch(`/api/configurator/${configurator.id}/meta`, {
@@ -136,7 +139,10 @@ export const createProductConfigSlice: StateCreator<
         } catch (e) {
             console.error("Failed to update configurator meta data", e);
         } finally {
-            setSaving(false);
+            set((state) => {
+                state.configurator.status = "ready";
+            });
+
         }
     },
     deleteModule: (moduleId) =>
