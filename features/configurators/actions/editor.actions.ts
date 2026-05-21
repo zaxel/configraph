@@ -1,16 +1,11 @@
 ﻿"use server";
 
 import { auth } from "@clerk/nextjs/server";
-
-import { createServerSupabaseClient }
-    from "@/lib/supabase/server";
-
-
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { MeshLayout } from "@/lib/extractMeshes";
 import { Product } from "@/features/configurator/model";
 import { ConfiguratorData } from "../types/configurators.types";
 import { createConfiguratorRepo, UpdateConfiguratorInput } from "../repositories/configurator.repo";
-import { ConfiguratorState } from "@/features/builder/store/slices/productConfig.type";
 import { storageRepo } from "../repositories/storage.repo";
 
 export async function createConfiguratorAction(
@@ -105,7 +100,6 @@ export async function publishConfiguratorAction(
     const repo = createConfiguratorRepo(supabase); 
     return repo.publish(id); 
 } 
-
 
 export async function updateConfiguratorMetaAction( 
     id: string, 

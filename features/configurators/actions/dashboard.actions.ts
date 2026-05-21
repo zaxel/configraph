@@ -57,3 +57,43 @@ export async function deleteConfiguratorAction(
   const deleted = repo.delete(id);
   return deleted;
 }
+
+export async function duplicateConfiguratorAction(
+  configuratorId: string
+) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const repo = createConfiguratorRepo(supabase);
+
+  const storage = storageRepo(supabase);
+
+  const configurator = await repo.getById(configuratorId);
+  if (!configurator) return new Response("Not found", { status: 404 });
+
+  const newModelPath = `${userId}/model-${crypto.randomUUID()}.glb`;
+  
+  const {path, url } = await storage.duplicateFiles(configurator.model_path, newModelPath);
+
+  const draftCopy = structuredClone(configurator.data.draft);
+  if(draftCopy)
+    draftCopy.model.url = url;
+  
+  const publishedCopy = structuredClone(configurator.data.published);
+  if(publishedCopy)
+    publishedCopy.data.model.url = url;
+
+  const newConfigurator = {
+    id: crypto.randomUUID(),
+    draft: draftCopy,
+    published: publishedCopy,
+    builder_config: configurator.data.builder_config,
+    name: configurator.name,
+  }
+
+  const created = await repo.create(newConfigurator, userId, configurator.model_size_bytes, configurator.model_format, newModelPath);
+  return created;
+}

@@ -105,3 +105,9 @@ export type Product = {
 
   modules: Module[];
 };
+
+export type Published = {
+  publishedAt: string,
+  schemaVersion: number,
+  data: Product,
+};

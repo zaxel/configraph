@@ -39,7 +39,7 @@ export const storageRepo = (supabase: SupabaseClient) => ({
             url: `${data.publicUrl}?bust=${Date.now()}`,
         };
     },
-    
+
 
     async upload3DModel(file: File, userId: string) {
         const fileExt = file.name.split(".").pop();
@@ -67,5 +67,21 @@ export const storageRepo = (supabase: SupabaseClient) => ({
         if (error) throw error;
 
         return data;
+    },
+    async duplicateFiles(path: string, newPath: string) {
+        const { error } = await supabase.storage
+            .from('configurator-models')
+            .copy(path, newPath);
+
+        if (error) throw error;
+
+        const { data } = supabase.storage
+            .from('configurator-models')
+            .getPublicUrl(newPath);
+
+        return {
+            path: newPath,
+            url: data.publicUrl,
+        };
     }
 });

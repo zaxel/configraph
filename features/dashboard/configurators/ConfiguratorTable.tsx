@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 import { useBuilderStore } from "@/features/builder/store/builder.store";
 import { useRouter } from "next/navigation";
+import { duplicateConfiguratorAction } from "@/features/configurators/actions/dashboard.actions";
 
 export type Configurator = {
   id: string;
@@ -38,6 +39,7 @@ export default function ConfiguratorTable({
   configurators,
 }: ConfiguratorTableProps) {
   const deleteConfigurator = useBuilderStore((s) => s.deleteConfigurator);
+
   const router = useRouter();
 
   return (
@@ -193,8 +195,18 @@ export default function ConfiguratorTable({
                         align="end"
                         className="w-52 rounded-2xl"
                       >
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                        onClick={async () => { 
+                            try {
+                              await duplicateConfiguratorAction(configurator.id); 
+                              router.refresh();
+                            } catch (error) {
+                              console.error("Failed to delete item:", error);
+                            }
+                          }}
+                        >
                           <Copy className="mr-2 h-4 w-4" />
+                          
                           Duplicate
                         </DropdownMenuItem>
 

@@ -82,6 +82,7 @@ export const createConfiguratorRepo = (
         size: number,
         type: string,
         path: string,
+        name?: string 
     ) {
         const configuratorId = crypto.randomUUID();
 
@@ -90,15 +91,15 @@ export const createConfiguratorRepo = (
         const newConfigurator = {
             id: configuratorId,
             clerk_user_id: clerkId,
-            name: defaultName,
+            name: name ?? defaultName,
             slug: configuratorId.slice(0, 8),
             data: {
                 draft: { ...configuratorData.draft, id: configuratorId, },
                 published: configuratorData.published,
-                builder_config: configuratorData.builderConfig,
+                builder_config: configuratorData.builder_config,
             },
             thumbnail_url: null,
-            is_public: false,
+            is_public: Boolean(configuratorData.published),
             model_path: path ?? null,
             model_format: type,
             model_size_bytes: size,

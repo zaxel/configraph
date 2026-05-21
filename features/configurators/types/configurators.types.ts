@@ -1,4 +1,4 @@
-﻿import { Product } from "@/features/configurator/model";
+﻿import { Product, Published } from "@/features/configurator/model";
 import { MeshLayout } from "@/lib/extractMeshes";
 
 export type BuilderConfig = {
@@ -8,8 +8,8 @@ export type BuilderConfig = {
 export type ConfiguratorData = { 
   id: string;
   draft: Product | null;
-  published: Product | null;
-  builderConfig: BuilderConfig;
+  published: Published | null;
+  builder_config: BuilderConfig;
 };
 
 export interface ConfiguratorRecord {
