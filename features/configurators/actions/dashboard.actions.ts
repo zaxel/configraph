@@ -3,8 +3,22 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 import { createConfiguratorRepo } from "../repositories/configurator.repo";
-import { revalidatePath } from "next/cache";
 import { storageRepo } from "../repositories/storage.repo";
+
+export async function updateConfiguratorThumbAction(file: File, id: string) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const repo = createConfiguratorRepo(supabase);
+  const storRepo = storageRepo(supabase);
+
+  const { url } = await storRepo.uploadThumbnail(file, userId, id);
+  return repo.update(id, { thumbnail_url: url });
+}
 
 export async function getUserConfiguratorsAction() {
   const { userId } = await auth();
@@ -14,11 +28,9 @@ export async function getUserConfiguratorsAction() {
   }
 
   const supabase = await createServerSupabaseClient();
-
   const repo = createConfiguratorRepo(supabase);
 
   return await repo.getAllUserConfiturators(userId);
-
 }
 
 export async function deleteConfiguratorAction(
@@ -38,8 +50,8 @@ export async function deleteConfiguratorAction(
 
   // 2. delete storage assets
   await Promise.all([
-    configurator.thumbnail_url && storageRep.deleteByUrl(configurator.thumbnail_url),
-    configurator.model_path && storageRep.deleteByPath('configurator-models', configurator.model_path),
+    configurator.thumbnail_url && storageRep.deleteThumbnailByUrl(configurator.thumbnail_url),
+    configurator.model_path && storageRep.deleteThumbnailByPath('configurator-models', configurator.model_path),
   ]);
 
   const deleted = repo.delete(id);

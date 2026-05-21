@@ -103,6 +103,9 @@ export default function ConfiguratorTable({
                     <div className="relative w-16 h-16">
                       <Image
                         src={configurator.thumbnail_url || "/placeholders/configurator-preview.webp"}
+                        // src={configurator.thumbnail_url 
+                        //   ? `${configurator.thumbnail_url}?t=${configurator.updated_at}`
+                        //   : "/placeholders/configurator-preview.webp"}
                         alt={configurator.name}
                         fill
                         className="object-contain"

@@ -9,9 +9,9 @@ import { KHRDracoMeshCompression } from '@gltf-transform/extensions';
 import draco3d from 'draco3d';
 import type { DecoderModule, EncoderModule } from 'draco3d';
 import sharp from 'sharp';
-import { storageRepo } from "@/features/account/repositories/storage.repo";
 import { auth } from "@clerk/nextjs/server";
-import { createConfiguratorAction } from "@/features/configurators/actions/editor.actions";
+import { createConfiguratorAction, updateModelAction } from "@/features/configurators/actions/editor.actions";
+import { storageRepo } from "@/features/configurators/repositories/storage.repo";
 
 
 let encoderPromise: Promise<EncoderModule> | null = null;
@@ -91,7 +91,8 @@ export async function POST(req: Request) {
         }
         const optimizedBuffer = await fs.promises.readFile(tmpOpt);
         const optimizedFile = new File([optimizedBuffer], file.name, { type: file.type });
-        const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
+        // const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
+        const {path: modelPath, url} = await updateModelAction(optimizedFile);
         
         const draftConfigurator = {
             id: "moke-id",

@@ -1,19 +1,5 @@
-﻿import { MAX_FILE_SIZE, MAX_UNOPTIMIZED_SIZE } from "@/features/builder/store/slices/model.slice";
-import fs from "fs";
-import path from "path";
-import os from 'os';
-
-import { NodeIO } from '@gltf-transform/core';
-import { textureCompress, draco, prune, dedup } from '@gltf-transform/functions';
-import { KHRDracoMeshCompression } from '@gltf-transform/extensions';
-import draco3d from 'draco3d';
-import type { DecoderModule, EncoderModule } from 'draco3d';
-import sharp from 'sharp';
-import { storageRepo } from "@/features/account/repositories/storage.repo";
-import { auth } from "@clerk/nextjs/server";
-import { createConfiguratorAction, updateConfiguratorThumbnail } from "@/features/configurators/actions/editor.actions";
-
-
+﻿import { auth } from "@clerk/nextjs/server";
+import { updateConfiguratorThumbAction } from "@/features/configurators/actions/dashboard.actions";
 
 export async function POST(
     req: Request,
@@ -44,10 +30,7 @@ export async function POST(
     }
 
     try {
-
-        const { url } = await storageRepo.uploadThumbnail(file, userId, id);
-     
-        await updateConfiguratorThumbnail(id, url);
+        await updateConfiguratorThumbAction(file, id);
 
         return Response.json({ status: "ok" });
     } catch (err) {

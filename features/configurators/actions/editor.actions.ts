@@ -11,6 +11,7 @@ import { Product } from "@/features/configurator/model";
 import { ConfiguratorData } from "../types/configurators.types";
 import { createConfiguratorRepo, UpdateConfiguratorInput } from "../repositories/configurator.repo";
 import { ConfiguratorState } from "@/features/builder/store/slices/productConfig.type";
+import { storageRepo } from "../repositories/storage.repo";
 
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string
@@ -105,19 +106,6 @@ export async function publishConfiguratorAction(
     return repo.publish(id); 
 } 
 
-export async function updateConfiguratorThumbnail( 
-    configuratorId: string, 
-    thumbnail_url: string
-) {
-    const { userId } = await auth();
-    if (!userId) {
-        throw new Error("Unauthorized");
-    }
-
-    const supabase = await createServerSupabaseClient();
-    const repo = createConfiguratorRepo(supabase); 
-    return repo.update(configuratorId, {thumbnail_url});
-} 
 
 export async function updateConfiguratorMetaAction( 
     id: string, 
@@ -132,4 +120,18 @@ export async function updateConfiguratorMetaAction(
     const repo = createConfiguratorRepo(supabase); 
 
     return repo.update(id, {name});
+} 
+
+export async function updateModelAction( 
+    file: File, 
+) {
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const supabase = await createServerSupabaseClient();
+    const repo = storageRepo(supabase); 
+
+    return repo.upload3DModel(file, userId);
 } 
