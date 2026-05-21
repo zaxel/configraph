@@ -9,7 +9,6 @@
 // getPublicConfigurator()
 // getEditableConfigurator()
 
-import { supabase } from "@/lib/supabase/client";
 import { ConfiguratorData, ConfiguratorRecord } from "../types/configurators.types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { MeshLayout } from "@/lib/extractMeshes";
@@ -235,7 +234,7 @@ export const createConfiguratorRepo = (
 
         return publishedSnapshot;
     },
-    async getAllUserConfiturators(userId: string) {
+    async getAllUserConfigurators(userId: string) {
         // 1. get configurator
         const { data, error } = await supabase
             .from("configurators")

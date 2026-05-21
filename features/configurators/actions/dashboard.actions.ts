@@ -30,7 +30,7 @@ export async function getUserConfiguratorsAction() {
   const supabase = await createServerSupabaseClient();
   const repo = createConfiguratorRepo(supabase);
 
-  return await repo.getAllUserConfiturators(userId);
+  return await repo.getAllUserConfigurators(userId);
 }
 
 export async function deleteConfiguratorAction(

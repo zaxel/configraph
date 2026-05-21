@@ -9,3 +9,10 @@
   created_at: string;
   updated_at: string;
 }
+
+export interface CreateProfileProps {
+  clerk_user_id: string;
+  email: string;
+  username ?: string;
+  avatar_url ?: string;
+}

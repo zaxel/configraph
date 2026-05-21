@@ -1,7 +1,9 @@
-﻿import { supabase } from "@/lib/supabase/client";
+﻿import { SupabaseClient } from "@supabase/supabase-js";
 
-export const storageRepo = {
-  async uploadAvatar(file: File, userId: string) {
+export const createStorageRepo = (
+    supabase: SupabaseClient
+) => ({
+    async uploadAvatar(file: File, userId: string) {
         const fileExt = file.name.split(".").pop();
         const filePath = `${userId}/avatar-${crypto.randomUUID()}.${fileExt}`;
 
@@ -19,4 +21,4 @@ export const storageRepo = {
 
         return data.publicUrl;
     },
-};
+});

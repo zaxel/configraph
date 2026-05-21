@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 
-import { profileRepo } from "../repositories/profile.repo";
+import { createProfileAction, getProfileByClerkIdAction } from "../actions/profileAction";
 
 export function useProfile() {
   const { user } = useUser();
@@ -16,11 +16,10 @@ export function useProfile() {
     queryFn: async () => {
       if (!user) return null;
 
-      let profile =
-        await profileRepo.getByClerkId(user.id);
+      const profile = await getProfileByClerkIdAction();
 
       if (!profile && user.emailAddresses[0]) {
-        profile = await profileRepo.create({
+        await createProfileAction({
           clerk_user_id: user.id,
           email:
             user.emailAddresses[0].emailAddress,

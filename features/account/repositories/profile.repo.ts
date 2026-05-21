@@ -1,7 +1,9 @@
-﻿import { supabase } from "@/lib/supabase/client";
-import { Profile } from "../types/profile.types";
+﻿import { CreateProfileProps, Profile } from "../types/profile.types";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-export const profileRepo = {
+export const createProfileRepo = (
+    supabase: SupabaseClient
+) => ({
   async getByClerkId(
     clerkUserId: string
   ): Promise<Profile | null> {
@@ -19,12 +21,7 @@ export const profileRepo = {
     return data;
   },
 
-  async create(profile: {
-    clerk_user_id: string;
-    email: string;
-    username?: string;
-    avatar_url?: string;
-  }) {
+  async create(profile: CreateProfileProps) {
     const { data, error } = await supabase
       .from("profiles")
       .insert(profile)
@@ -51,4 +48,4 @@ export const profileRepo = {
 
     return data;
   },
-};
+});

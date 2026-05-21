@@ -5,14 +5,13 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-import { profileRepo } from "../repositories/profile.repo";
+import { updateProfileAction } from "../actions/profileAction";
 
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      clerkUserId,
       values,
     }: {
       clerkUserId: string;
@@ -22,10 +21,7 @@ export function useUpdateProfile() {
         avatar_url: string;
       };
     }) => {
-      return profileRepo.update(
-        clerkUserId,
-        values
-      );
+      return await updateProfileAction(values);
     },
 
     onSuccess: (_, variables) => {

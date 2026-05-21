@@ -1,16 +1,16 @@
 ﻿import { currentUser } from "@clerk/nextjs/server";
-import { profileRepo } from "../repositories/profile.repo";
+import { createProfileAction, getProfileByClerkIdAction } from "../actions/profileAction";
 
 export async function ensureProfile() {
   const user = await currentUser();
 
   if (!user) return null;
 
-  let profile = await profileRepo.getByClerkId(user.id);
+  let profile = await getProfileByClerkIdAction();
 
   if (profile) return profile;
 
-  profile = await profileRepo.create({
+  profile = await createProfileAction({
     clerk_user_id: user.id,
     email: user.emailAddresses[0].emailAddress,
     username: user.username ?? "",
