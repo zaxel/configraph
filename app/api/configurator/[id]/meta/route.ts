@@ -1,11 +1,11 @@
 ﻿import { updateConfiguratorMetaAction } from "@/features/configurators/actions/editor.actions";
 
-export async function PUT(
+export async function PATCH(
   req: Request, 
   { params }: { params: Promise<{ id: string }> } 
 ) {
   try {
-    const name = await req.json();
+    const { name } = await req.json();
     const { id } = await params;
     const updated = await updateConfiguratorMetaAction(id, name);
 

@@ -132,9 +132,9 @@ export const createProductConfigSlice: StateCreator<
 
         try {
             await fetch(`/api/configurator/${configurator.id}/meta`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(configurator.name),
+                body: JSON.stringify({ name: configurator.name }),
             });
         } catch (e) {
             console.error("Failed to update configurator meta data", e);
@@ -193,4 +193,25 @@ export const createProductConfigSlice: StateCreator<
 
             state.draft.modules = reordered;
         }, false, "reorderModules"),
+
+
+    deleteConfigurator: async (id) => {
+        if(!id) return;
+        set((state) => {
+            state.configurator.status = "deleting";
+        });
+
+        try {
+            await fetch(`/api/configurator/${id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            });
+        } catch (e) {
+            console.error("Failed to save draft", e);
+        } finally {
+            set((state) => {
+                state.configurator.status = "ready";
+            });
+        }
+    },
 });

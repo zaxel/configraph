@@ -3,6 +3,8 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 import { createConfiguratorRepo } from "../repositories/configurator.repo";
+import { revalidatePath } from "next/cache";
+import { storageRepo } from "../repositories/storage.repo";
 
 export async function getUserConfiguratorsAction() {
   const { userId } = await auth();
@@ -18,21 +20,28 @@ export async function getUserConfiguratorsAction() {
   return await repo.getAllUserConfiturators(userId);
 
 }
-// export async function deleteConfiguratorAction(
-//   id: string
-// ) {
-//   const { userId } = await auth();
 
-//   if (!userId) {
-//     throw new Error("Unauthorized");
-//   }
+export async function deleteConfiguratorAction(
+  id: string
+) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
 
-//   const supabase =
-//     await createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
+  const repo = createConfiguratorRepo(supabase);
+  const storageRep = storageRepo(supabase);
 
-//   const repo = createConfiguratorRepo(supabase);
+  const configurator = await repo.getById(id);
+  if (!configurator) return new Response("Not found", { status: 404 });
 
-//   await repo.delete(id, userId);
+  // 2. delete storage assets
+  await Promise.all([
+    configurator.thumbnail_url && storageRep.deleteByUrl(configurator.thumbnail_url),
+    configurator.model_path && storageRep.deleteByPath('configurator-models', configurator.model_path),
+  ]);
 
-//   revalidatePath("/dashboard");
-// }
+  const deleted = repo.delete(id);
+  return deleted;
+}

@@ -43,7 +43,7 @@ export const createThumbnailSlice: StateCreator<
         try {
             const formData = new FormData();
             formData.append("file", thumbnail, "thumbnail.webp");
-            const configuratorId = get().configuratorId;
+            const configuratorId = get().configurator.id;
             if(!configuratorId) throw "no configurator id";
             const res = await fetch(`/api/upload-thumbnail/${configuratorId}`, {
                 method: "POST",

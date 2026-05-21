@@ -18,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
+import { useBuilderStore } from "@/features/builder/store/builder.store";
+import { useRouter } from "next/navigation";
 
 export type Configurator = {
   id: string;
@@ -35,6 +37,9 @@ export type ConfiguratorTableProps = {
 export default function ConfiguratorTable({
   configurators,
 }: ConfiguratorTableProps) {
+  const deleteConfigurator = useBuilderStore((s) => s.deleteConfigurator);
+  const router = useRouter();
+
   return (
     <div className="overflow-hidden rounded-3xl border bg-background">
       {/* HEADER */}
@@ -200,7 +205,16 @@ export default function ConfiguratorTable({
 
                         <DropdownMenuSeparator />
 
-                        <DropdownMenuItem className="text-red-500 focus:text-red-500">
+                        <DropdownMenuItem
+                          onClick={async () => { 
+                            try {
+                              await deleteConfigurator(configurator.id); 
+                              router.refresh();
+                            } catch (error) {
+                              console.error("Failed to delete item:", error);
+                            }
+                          }}
+                          className="text-red-500 focus:text-red-500">
                           <Trash2 className="mr-2 h-4 w-4" />
                           Delete
                         </DropdownMenuItem>

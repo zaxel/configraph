@@ -21,7 +21,7 @@ export const storageRepo = {
     return {
       path: filePath,
       url: data.publicUrl,
-    }; 
+    };
   },
   async uploadAvatar(file: File, userId: string) {
     const fileExt = file.name.split(".").pop();
@@ -63,4 +63,10 @@ export const storageRepo = {
       url: data.publicUrl,
     };
   },
+  async deleteFiles(bucket: string, filePath: string[]) {
+    const { error, data } = await supabase.storage.from(bucket).remove(filePath);
+    if(error) throw error;
+
+    return data;
+  }
 };

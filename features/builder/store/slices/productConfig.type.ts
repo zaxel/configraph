@@ -21,6 +21,7 @@ export type ProductConfigSlice = {
   deleteModule: (moduleId: string) => void;
   addModule: (type: ComponentType) => void;
   reorderModules: (activeId: UniqueIdentifier, overId: UniqueIdentifier) => void;
+  deleteConfigurator: (id: string) => Promise<void>;
 } 
 
 export type BuilderConfig = {
@@ -30,7 +31,7 @@ export type BuilderConfig = {
 export type ConfiguratorState = {
     id: string | null;
     name: string;
-    status: "idle" | "loading" | "updating" | "ready" | "error";
+    status: "idle" | "loading" | "updating"| "deleting" | "ready" | "error";
     error: string | null;
 };
 
