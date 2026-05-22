@@ -84,7 +84,7 @@ export const createConfiguratorRepo = (
         path: string,
         name?: string 
     ) {
-        const configuratorId = crypto.randomUUID();
+        const configuratorId = configuratorData.id ?? crypto.randomUUID();
 
         const defaultName = "Untitled Configurator";
 

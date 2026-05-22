@@ -95,14 +95,14 @@ export async function POST(req: Request) {
         const {path: modelPath, url} = await updateModelAction(optimizedFile);
         
         const draftConfigurator = {
-            id: "moke-id",
+            id: crypto.randomUUID(),
             draft: {
                 quantity: 1,
                 model: { url },
                 modules: []
             },
             published: null,
-            builderConfig: {
+            builder_config: {
                 meshes: []
             }
         }

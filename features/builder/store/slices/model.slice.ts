@@ -1,6 +1,7 @@
 ﻿import { StateCreator } from "zustand";
 import { ModelSlice } from "./model.type";
 import { BoundBuilderStore } from "../builder.types";
+import { getToken } from "@clerk/nextjs";
 
 export const MAX_FILE_SIZE = 300 * 1024 * 1024;
 export const MAX_UNOPTIMIZED_SIZE = 2 * 1024 * 1024;
@@ -52,11 +53,20 @@ export const createModelSlice: StateCreator<
             const formData = new FormData();
             formData.append("file", file);
 
+            ////-----------------
 
-            const res = await fetch("/api/upload-model", {
+            const token = await getToken(); // Clerk's useAuth() hook
+
+            const res = await fetch(`${process.env.UPLOAD_SERVER_URL}/upload-model`, {
                 method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
                 body: formData,
-            });  
+            });
+
+            // const res = await fetch("/api/upload-model", {
+            //     method: "POST",
+            //     body: formData,
+            // });
 
             // 2. distinguish processing stage
             set({ status: "processing" });
@@ -68,16 +78,16 @@ export const createModelSlice: StateCreator<
 
 
 
-            const { configuratorId } = await res.json();
+            // const { configuratorId } = await res.json();
 
-            get().setConfiguratorId(configuratorId);
+            // get().setConfiguratorId(configuratorId);
 
-            set({
-                status: "ready",
-                error: null,
-            });
+            // set({
+            //     status: "ready",
+            //     error: null,
+            // });
 
-            return configuratorId;
+            // return configuratorId;
 
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : "Something went wrong";

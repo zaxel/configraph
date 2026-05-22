@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:upload": "pnpm --filter upload-server dev",
+    "dev:all": "concurrently \"pnpm dev\" \"pnpm dev:upload\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

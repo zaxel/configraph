@@ -50,3 +50,10 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+#upload server
+upload-server/node_modules
+upload-server/dist
+upload-server/uploads
+upload-server/tmp
+upload-server/.env
