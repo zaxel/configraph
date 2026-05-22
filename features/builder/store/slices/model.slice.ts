@@ -22,8 +22,8 @@ export const createModelSlice: StateCreator<
         }),
 
     uploadModel: async (file) => {
-        const product = get().product;
-        if (product?.model.url) {
+        const draft = get().draft;
+        if (draft?.model.url) {
             set({
                 status: "error",
                 error: "Model already set. Create a new configurator.",
@@ -53,41 +53,40 @@ export const createModelSlice: StateCreator<
             const formData = new FormData();
             formData.append("file", file);
 
-            ////-----------------
-
             const token = await getToken(); // Clerk's useAuth() hook
 
-            const res = await fetch(`${process.env.UPLOAD_SERVER_URL}/upload-model`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_UPLOAD_SERVER_URL}/upload-model`, {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData,
             });
-
-            // const res = await fetch("/api/upload-model", {
-            //     method: "POST",
-            //     body: formData,
-            // });
-
-            // 2. distinguish processing stage
             set({ status: "processing" });
 
             if (!res.ok) {
-                const text = await res.text();
-                throw new Error(text || "Upload failed");
+                let message = 'Upload failed';
+                try {
+                    const contentType = res.headers.get('content-type');
+                    if (contentType?.includes('application/json')) {
+                        const json = await res.json();
+                        message = json.error ?? message;
+                    } else {
+                        // don't expose raw HTML stack traces to UI
+                        message = `Upload failed (${res.status})`;
+                    }
+                } catch { }
+                throw new Error(message);
             }
 
+            const { configuratorId } = await res.json();
 
+            get().setConfiguratorId(configuratorId);
 
-            // const { configuratorId } = await res.json();
+            set({
+                status: "ready",
+                error: null,
+            });
 
-            // get().setConfiguratorId(configuratorId);
-
-            // set({
-            //     status: "ready",
-            //     error: null,
-            // });
-
-            // return configuratorId;
+            return configuratorId;
 
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : "Something went wrong";

@@ -1,5 +1,19 @@
 ﻿import { NodeIO } from "@gltf-transform/core";
-import { KHRDracoMeshCompression } from "@gltf-transform/extensions";
+import {
+    KHRDracoMeshCompression,
+    KHRMaterialsPBRSpecularGlossiness,
+    KHRMaterialsUnlit,
+    KHRMaterialsTransmission,
+    KHRMaterialsVolume,
+    KHRMaterialsIOR,
+    KHRMaterialsSpecular,
+    KHRMaterialsClearcoat,
+    KHRMaterialsSheen,
+    KHRTextureTransform,
+    KHRTextureBasisu,
+    KHRMeshQuantization,
+    EXTMeshoptCompression,
+} from "@gltf-transform/extensions";
 import { dedup, draco, prune, textureCompress } from "@gltf-transform/functions";
 import { DecoderModule, EncoderModule } from "draco3d";
 import draco3d from 'draco3d';
@@ -22,7 +36,21 @@ async function createIO() {
     const { encoder, decoder } = await getDraco();
 
     return new NodeIO()
-        .registerExtensions([KHRDracoMeshCompression])
+        .registerExtensions([
+            KHRDracoMeshCompression,
+            KHRMaterialsPBRSpecularGlossiness,
+            KHRMaterialsUnlit,
+            KHRMaterialsTransmission,
+            KHRMaterialsVolume,
+            KHRMaterialsIOR,
+            KHRMaterialsSpecular,
+            KHRMaterialsClearcoat,
+            KHRMaterialsSheen,
+            KHRTextureTransform,
+            KHRTextureBasisu,
+            KHRMeshQuantization,
+            EXTMeshoptCompression,
+        ])
         .registerDependencies({
             'draco3d.encoder': encoder,
             'draco3d.decoder': decoder,

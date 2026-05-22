@@ -2,7 +2,7 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import { upload } from '../index';
+import { upload } from '../lib/multer'; 
 import { optimizeGLB } from '../lib/optimizeGLB';
 import { uploadModel } from '../lib/storage';
 import { MAX_UNOPTIMIZED_SIZE } from '@/features/builder/store/slices/model.slice';
@@ -28,13 +28,13 @@ uploadRoute.post('/', upload.single('file'), async (req, res) => {
 
         const optimizedBuffer = await fs.promises.readFile(tmpOpt);
         const optimizedFile = new File([optimizedBuffer], file.originalname, { type: 'model/gltf-binary' });
-
+        if (!optimizedFile) return res.status(400).send('Optimization failed');
+        if (optimizedFile.size > 1024 * 1024 *10) return res.status(400).send('Optimized file exceed allowed size');
         // upload to storage, then tell Vercel to create the configurator
         const { url, path: modelPath } = await uploadModel(optimizedFile, req.userId!);
 
-        const configurator = await notifyVercel({ userId: req.userId!, url, modelPath, fileSize: optimizedFile.size });
-
-        res.json({ configuratorId: configurator.id, url });
+        const configurator = await notifyVercel({ userId: req.userId!, url, modelPath, fileSize: optimizedFile.size, fileType: optimizedFile.type});
+        res.json({ configuratorId: configurator.configuratorId, url });
 
     } finally {
         await fs.promises.unlink(file.path).catch(() => {});
@@ -42,8 +42,8 @@ uploadRoute.post('/', upload.single('file'), async (req, res) => {
     }
 });
 
-async function notifyVercel({ userId, url, modelPath, fileSize }: {
-    userId: string, url: string, modelPath: string, fileSize: number
+async function notifyVercel({ userId, url, modelPath, fileSize, fileType }: {
+    userId: string, url: string, modelPath: string, fileSize: number, fileType: string
 }) {
     const res = await fetch(`${process.env.VERCEL_APP_URL}/api/create-configurator`, {
         method: 'POST',
@@ -51,8 +51,8 @@ async function notifyVercel({ userId, url, modelPath, fileSize }: {
             'Content-Type': 'application/json',
             'x-internal-secret': process.env.INTERNAL_SECRET!
         },
-        body: JSON.stringify({ userId, url, modelPath, fileSize })
+        body: JSON.stringify({ userId, url, modelPath, fileSize, fileType })
     });
     if (!res.ok) throw new Error('Failed to create configurator');
-    return res.json();
+    return res.json(); 
 }

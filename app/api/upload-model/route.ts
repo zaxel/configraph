@@ -11,7 +11,6 @@ import type { DecoderModule, EncoderModule } from 'draco3d';
 import sharp from 'sharp';
 import { auth } from "@clerk/nextjs/server";
 import { createConfiguratorAction, updateModelAction } from "@/features/configurators/actions/editor.actions";
-import { storageRepo } from "@/features/configurators/repositories/storage.repo";
 
 
 let encoderPromise: Promise<EncoderModule> | null = null;

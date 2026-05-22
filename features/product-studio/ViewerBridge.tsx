@@ -8,7 +8,7 @@ const ViewerBridge = () => {
 
   const product = useBuilderStore(s => s.product);
   const draft = useBuilderStore(s => s.draft);
-  const productUrl = mode==="embed" ? product?.model.url : draft?.model.url;
+  const productUrl = mode==="embed" ? product?.data.model.url : draft?.model.url;
 
   const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
   if (!productUrl) return null;
@@ -16,7 +16,7 @@ const ViewerBridge = () => {
   return (
     <Viewer
       modelUrl={productUrl}
-      product={mode==="embed" ? product : draft}
+      product={mode==="embed" ? product?.data : draft}
       selectedOptions={mode === "preview" ? selectedOptions : undefined}
       mode={mode}
     />

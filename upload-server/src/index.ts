@@ -1,40 +1,40 @@
-﻿import express from 'express';
-import multer from 'multer';
+﻿import 'dotenv/config';
+import express from 'express';
 import cors from 'cors';
-import os from 'os';
 import { verifyClerkToken } from './lib/auth';
 import { uploadRoute } from './routes/upload';
-import { MAX_UNOPTIMIZED_SIZE } from '@/features/builder/store/slices/model.slice';
-
-const storage = multer.diskStorage({
-    destination: os.tmpdir(),
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
-});
-
-export const upload = multer({
-    storage,
-    limits: { fileSize: MAX_UNOPTIMIZED_SIZE }
-});
 
 const app = express();
 app.use(cors({ origin: process.env.ALLOWED_ORIGIN }));
 app.use(express.json());
 
-// auth middleware — runs before every route
 app.use(async (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) return res.status(401).send('Unauthorized');
-    
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).send('Unauthorized: Missing header');
+
+    const parts = authHeader.split(' ');
+    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+        return res.status(401).send('Unauthorized: Invalid header format');
+    }
+
+    const token = parts[1];
+
     try {
         req.userId = await verifyClerkToken(token);
         next();
-    } catch {
+    } catch(error: any) {
+        console.error("🔴 Validation error details:", error?.message || error);
         res.status(401).send('Invalid token');
     }
 });
 
 app.use('/upload-model', uploadRoute);
+app.use((req, res) => {
+    res.status(404).json({ error: `Route ${req.method} ${req.path} not found` });
+});
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error(err);
+    res.status(500).json({ error: err.message ?? 'Something went wrong' });
+});
 
 app.listen(3001, () => console.log('Upload server running on :3001'));

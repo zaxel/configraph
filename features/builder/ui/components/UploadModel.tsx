@@ -14,11 +14,9 @@ const UploadModel = () => {
         if (!file) return;
 
        
-        const configuratorId = await uploadModel(file, router);
+        const configuratorId = await uploadModel(file);
         if(configuratorId)
             router.replace(`/builder/${configuratorId}`);
-
-
 
         // reset input so same file works again
         e.target.value = '';

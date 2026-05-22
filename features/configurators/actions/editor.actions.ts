@@ -7,6 +7,7 @@ import { Product } from "@/features/configurator/model";
 import { ConfiguratorData } from "../types/configurators.types";
 import { createConfiguratorRepo, UpdateConfiguratorInput } from "../repositories/configurator.repo";
 import { storageRepo } from "../repositories/storage.repo";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string
@@ -24,6 +25,19 @@ export async function createConfiguratorAction(
     }
 
     const supabase = await createServerSupabaseClient();
+    const repo = createConfiguratorRepo(supabase);
+
+    return repo.create(configurator, userId, size, type, path);
+} 
+export async function createServerConfiguratorAction(
+    configurator: ConfiguratorData, size: number, type: string, path: string, userId: string
+) {
+    if (!userId) {
+        throw new Error("No user id");
+    }
+
+
+    const supabase = await createServiceSupabaseClient();
     const repo = createConfiguratorRepo(supabase);
 
     return repo.create(configurator, userId, size, type, path);
