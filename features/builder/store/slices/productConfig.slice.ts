@@ -44,7 +44,6 @@ export const createProductConfigSlice: StateCreator<
         });
     },
     initProduct: product => {
-        set({ product: product }, false, "initProduct");
         set({ draft: product }, false, "initDraft");
         get().initModel(product.model.url);
     },
@@ -52,7 +51,10 @@ export const createProductConfigSlice: StateCreator<
     setModelUrl: (url) =>
         set((state) => {
             if (state.product) {
-                state.product.model.url = url;
+                state.product.data.model.url = url;
+            }
+            if (state.draft) {
+                state.draft.model.url = url;
             }
         }, false, "setModelUrl"),
 
@@ -82,7 +84,7 @@ export const createProductConfigSlice: StateCreator<
 
             const configuratorResp = await res.json();
             set(() => ({
-                product: configuratorResp.data?.published ?? configuratorResp.data.draft, // overwrite (authoritative)
+                product: configuratorResp.data?.published, // overwrite (authoritative)
                 draft: configuratorResp.data.draft, // overwrite (authoritative)
                 builderConfig: configuratorResp.data.builder_config, // overwrite
                 meshesRegistered: configuratorResp.data.builder_config.meshes?.length > 0,

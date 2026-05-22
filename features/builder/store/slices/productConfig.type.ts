@@ -1,9 +1,9 @@
-﻿import { ComponentType, Product } from "@/features/configurator/model";
+﻿import { ComponentType, Product, Published } from "@/features/configurator/model";
 import { MeshLayout } from "@/lib/extractMeshes";
 import type { UniqueIdentifier } from "@dnd-kit/core";
 
 export type ProductConfigSlice = {
-  product: Product | null;
+  product: Published | null;
   draft: Product | null;
   builderConfig: BuilderConfig;
   
