@@ -7,14 +7,12 @@
 // canUseTeamAccess()
 
 import { PLANS } from "../config/plans";
+import { PlanName, UsageSnapshot } from "../types/billing.types";
 
 
-export type PlanName = keyof typeof PLANS;
 
-export type UsageSnapshot = {
-  configuratorsCount: number;
-  storageUsedMb: number;
-};
+
+
 
 function getPlan(plan: PlanName) {
   return PLANS[plan] ?? PLANS.free;
