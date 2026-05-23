@@ -186,6 +186,9 @@ importers:
       multer:
         specifier: ^2.1.1
         version: 2.1.1
+      sharp:
+        specifier: ^0.34.5
+        version: 0.34.5
     devDependencies:
       '@types/cors':
         specifier: ^2.8.19
@@ -202,6 +205,9 @@ importers:
       '@types/node':
         specifier: ^20.19.39
         version: 20.19.39
+      '@types/sharp':
+        specifier: ^0.32.0
+        version: 0.32.0
       tsx:
         specifier: ^4.22.3
         version: 4.22.3

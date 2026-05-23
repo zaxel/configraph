@@ -15,14 +15,16 @@ import {
     EXTMeshoptCompression,
 } from "@gltf-transform/extensions";
 import { dedup, draco, prune, textureCompress } from "@gltf-transform/functions";
-import { DecoderModule, EncoderModule } from "draco3d";
 import draco3d from 'draco3d';
 import sharp from "sharp";
 
-let encoderPromise: Promise<EncoderModule> | null = null;
-let decoderPromise: Promise<DecoderModule> | null = null;
+type DracoEncoder = Awaited<ReturnType<typeof draco3d.createEncoderModule>>;
+type DracoDecoder = Awaited<ReturnType<typeof draco3d.createDecoderModule>>;
 
-async function getDraco() {
+let encoderPromise: Promise<DracoEncoder> | null = null;
+let decoderPromise: Promise<DracoDecoder> | null = null;
+
+async function getDraco(): Promise<{ encoder: DracoEncoder; decoder: DracoDecoder }> {
     if (!encoderPromise) encoderPromise = draco3d.createEncoderModule();
     if (!decoderPromise) decoderPromise = draco3d.createDecoderModule();
 
@@ -32,7 +34,7 @@ async function getDraco() {
     };
 }
 
-async function createIO() {
+async function createIO(): Promise<NodeIO> {
     const { encoder, decoder } = await getDraco();
 
     return new NodeIO()
@@ -57,7 +59,7 @@ async function createIO() {
         });
 }
 
-export async function optimizeGLB(inputPath: string, outputPath: string) {
+export async function optimizeGLB(inputPath: string, outputPath: string): Promise<void> {
     const io = await createIO();
     const document = await io.read(inputPath);
 

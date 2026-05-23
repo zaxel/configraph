@@ -1,6 +1,6 @@
-﻿import { MAX_FILE_SIZE } from '@/features/builder/store/slices/model.slice';
-import multer from 'multer';
+﻿import multer from 'multer';
 import os from 'os';
+import { MAX_FILE_SIZE } from './consts';
 
 const storage = multer.diskStorage({
     destination: os.tmpdir(),
