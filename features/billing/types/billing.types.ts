@@ -7,8 +7,8 @@ export type StripeStatus = "active" | "trialing" | "past_due" | "canceled" | "in
 export type Plan = "free" | "pro" | "business";
 
 export type UsageSnapshot = {
-  configuratorsCount: number;
-  storageUsedMb: number;
+    configuratorsCount: number;
+    storageUsedMb: number;
 };
 
 export type SubscriptionRecord = {
@@ -23,3 +23,17 @@ export type SubscriptionRecord = {
     crater_at: string,
     updated_at: string,
 }
+
+export type Entitlements = {
+    plan: Plan;
+    usage: UsageSnapshot;
+    permissions: {
+        canCreateConfigurator: boolean;
+        canUseCanvasEditor: boolean;
+        canUseApi: boolean;
+        canUploadFile: boolean;
+        canExportWithoutWatermark: boolean;
+        canUsePrioritySupport: boolean;
+        canUseTeamAccess: boolean;
+    };
+};

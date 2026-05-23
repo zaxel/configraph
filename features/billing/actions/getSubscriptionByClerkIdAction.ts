@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createSubscriptionsRepo } from "../repositories/subscriptions.repo";
 
-export async function getSubscriptionActionByClerkId() {
+export async function getSubscriptionByClerkIdAction() {
   const { userId } = await auth();
 
   if (!userId)

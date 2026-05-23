@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+﻿"use client"
+import Link from "next/link";
 import {
   ArrowUpRight,
   Boxes,
@@ -8,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useEntitlements } from "@/features/billing/context/entitlements.context";
 
 const metrics = [
   {
@@ -52,6 +54,10 @@ const recentConfigurators = [
 ];
 
 export default function DashboardOverview() {
+  const { plan, permissions, refresh, isPending } = useEntitlements();
+  console.log(permissions);
+  console.log(plan);
+   
   return (
     <div className="space-y-8">
       {/* HERO */}
