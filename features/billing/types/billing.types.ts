@@ -9,6 +9,7 @@ export type Plan = "free" | "pro" | "business";
 export type UsageSnapshot = {
     configuratorsCount: number;
     storageUsedMb: number;
+    publishedNumber: number;
 };
 
 export type SubscriptionRecord = {

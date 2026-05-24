@@ -1,15 +1,13 @@
-﻿export function getConfiguratorUsage(clerkUserId: string) {
-    return 4;
-}
+﻿import { getConfiguratorUsageAction } from "../actions/getConfiguratorUsageAction";
+import { getPublishedNumberAction } from "../actions/getPublishedNumberAction";
+import { getStorageUsageMbAction } from "../actions/getStorageUsageMbAction";
 
-export function getStorageUsage(clerkUserId: string) {
-    return 3;
-}
 
-export function getUsageSnapshot(clerkUserId: string) {
+export async function getUsageSnapshot() {
     return {
-        configuratorsCount: getStorageUsage(clerkUserId),
-        storageUsedMb: getConfiguratorUsage(clerkUserId)
+        configuratorsCount: await getConfiguratorUsageAction() ?? 0,
+        storageUsedMb: await getStorageUsageMbAction() ?? 0,
+        publishedNumber: await getPublishedNumberAction() ?? 0
     }
 }
 

@@ -9,7 +9,7 @@ export async function getUserEntitlements(
 
     const plan = subscription?.plan ?? "free";
 
-    const usage = await getUsageSnapshot(clerkUserId);
+    const usage = await getUsageSnapshot();
 
     return {
         plan,
