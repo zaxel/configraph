@@ -120,7 +120,8 @@ export default function BillingPage() {
                                 </span>
 
                                 <span className="text-sm text-muted-foreground">
-                                    {usage.storageUsedMb}MB / {limits.uploadMb}MB
+
+                                    {usage.storageUsedMb}MB / {plan === "business" ? "∞" : limits.uploadMb * (limits.configurators ?? 1)}MB
                                 </span>
                             </div>
 
@@ -128,7 +129,7 @@ export default function BillingPage() {
                                 <div
                                     className="h-full rounded-full bg-primary"
                                     style={{
-                                        width: `${usage.storageUsedMb / limits.uploadMb * 100}%`
+                                        width: plan === "business" ?  "5%" : `${(usage.storageUsedMb /(limits.uploadMb * (limits.configurators ?? 1)) * 100)}%`
                                     }}
                                 />
                             </div>

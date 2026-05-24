@@ -157,7 +157,7 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
               {usage.storageUsedMb}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              {`Of ${limits.uploadMb}MB available`}
+              {`Of ${plan === "business" ? "∞" : limits.uploadMb * (limits.configurators ?? 1)}MB available`}
             </p>
           </div>
         </div>

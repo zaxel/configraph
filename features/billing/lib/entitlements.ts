@@ -8,7 +8,7 @@ export async function getUserEntitlements(
 ) {
     const subscription = await getSubscriptionByClerkIdAction();
 
-    const plan = subscription?.plan ?? "free";
+    const plan = subscription?.plan ?? "pro";
 
     const usage = await getUsageSnapshot();
     const limits = getLimits(plan);
