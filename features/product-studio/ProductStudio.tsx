@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import Toggle from "./Toggle";
 import { ProductContext } from "./context/ProductContext";
+import { Watermark } from "../viewer/Watermark";
+import { useEntitlements } from "../billing/context/entitlements.context";
 
 const ProductStudio = () => {
     const params = useParams();
@@ -22,6 +24,7 @@ const ProductStudio = () => {
     const loadConfigurator = useBuilderStore(s => s.loadConfigurator);
     const { status, draft } = useBuilderStore();
     const activeBuilderTab = useBuilderStore(s => s.activeTab);
+    const { plan, usage, limits, permissions } = useEntitlements();
 
     useEffect(() => {
         if (!id) {
@@ -39,6 +42,9 @@ const ProductStudio = () => {
             {/* LEFT — always visible */}
             <div className={`w-full ${(mode === "builder" && activeBuilderTab === "builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab === "builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2`}>
                 <ViewerBridge />
+                <Watermark
+                    visible={!permissions.canExportWithoutWatermark}
+                />
                 {mode === "builder" && <BuilderOverlay />}
             </div>
 
