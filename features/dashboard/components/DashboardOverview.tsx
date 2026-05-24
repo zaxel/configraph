@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEntitlements } from "@/features/billing/context/entitlements.context";
 import Image from "next/image";
+import AddConfigurator from "../AddConfigurator";
 
 
 export type Configurator = {
@@ -55,15 +56,14 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="rounded-2xl"
-            >
-              <Link href="/builder">
-                Create Configurator
-              </Link>
-            </Button>
+            <AddConfigurator>
+              <Button
+                size="lg"
+                className="rounded-2xl"
+              >
+                  Create Configurator
+              </Button>
+            </AddConfigurator>
 
             <Button
               asChild
@@ -81,7 +81,7 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
 
       {/* METRICS */}
       <section className="grid gap-4 md:grid-cols-3">
-        
+
         <div className="rounded-3xl border bg-background p-6">
           <div className="mb-5 flex items-start justify-between">
             <div className="rounded-2xl border bg-muted/40 p-3">
@@ -109,7 +109,7 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
         </div>
 
 
-         <div className="rounded-3xl border bg-background p-6">
+        <div className="rounded-3xl border bg-background p-6">
           <div className="mb-5 flex items-start justify-between">
             <div className="rounded-2xl border bg-muted/40 p-3">
               <HardDrive className="h-5 w-5" />
@@ -163,7 +163,7 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
         </div>
 
 
-       
+
       </section>
 
       {/* RECENT CONFIGURATORS */}

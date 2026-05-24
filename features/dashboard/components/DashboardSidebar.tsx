@@ -5,6 +5,7 @@ import { cn } from "@/lib/cn";
 import { CreditCard, LayoutDashboard, Plus, Shapes, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import AddConfigurator from "../AddConfigurator";
 
 export const sidebarItems = [
     {
@@ -58,15 +59,14 @@ export function DashboardSidebar() {
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-3 py-5">
-                    <Button
-                        asChild
-                        className="mb-6 h-9 justify-start rounded-xl"
-                    >
-                        <Link href="/builder">
+                    <AddConfigurator>
+                        <Button
+                            className="mb-6 h-9 justify-start rounded-xl cursor-pointer"
+                        >
                             <Plus className="mr-2 h-4 w-4" />
                             New Configurator
-                        </Link>
-                    </Button>
+                        </Button>
+                    </AddConfigurator>
 
                     <nav className="space-y-1">
                         {sidebarItems.map((item) => {
@@ -112,16 +112,16 @@ export function DashboardSidebar() {
                         </div>
 
                         <div className="mb-3 h-2 overflow-hidden rounded-full bg-muted">
-                            <div className="h-full rounded-full bg-primary" 
+                            <div className="h-full rounded-full bg-primary"
                                 style={{
-                                        width: limits.configurators===null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
-                                    }}
+                                    width: limits.configurators === null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
+                                }}
                             />
                         </div>
 
                         <Button
                             size="sm"
-                            className="w-full rounded-xl"
+                            className="w-full rounded-xl cursor-pointer"
                             onClick={() => router.push("/dashboard/billing#plans")}
                         >
                             Upgrade Plan

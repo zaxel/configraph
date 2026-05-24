@@ -21,6 +21,8 @@ import Image from "next/image";
 import { useBuilderStore } from "@/features/builder/store/builder.store";
 import { useRouter } from "next/navigation";
 import { duplicateConfiguratorAction } from "@/features/configurators/actions/dashboard.actions";
+import AddConfigurator from "../AddConfigurator";
+import { useEntitlements } from "@/features/billing/context/entitlements.context";
 
 export type Configurator = {
   id: string;
@@ -39,6 +41,7 @@ export default function ConfiguratorTable({
   configurators,
 }: ConfiguratorTableProps) {
   const deleteConfigurator = useBuilderStore((s) => s.deleteConfigurator);
+  const { refresh } = useEntitlements();
 
   const router = useRouter();
 
@@ -56,14 +59,13 @@ export default function ConfiguratorTable({
           </p>
         </div>
 
-        <Button
-          asChild
-          className="rounded-2xl"
-        >
-          <Link href="/builder">
+        <AddConfigurator>
+          <Button
+            className="rounded-2xl cursor-pointer"
+          >
             Create Configurator
-          </Link>
-        </Button>
+          </Button>
+        </AddConfigurator>
       </div>
 
       {/* TABLE */}
@@ -196,9 +198,10 @@ export default function ConfiguratorTable({
                         className="w-52 rounded-2xl"
                       >
                         <DropdownMenuItem
-                        onClick={async () => { 
+                          onClick={async () => {
                             try {
-                              await duplicateConfiguratorAction(configurator.id); 
+                              await duplicateConfiguratorAction(configurator.id);
+                              refresh();
                               router.refresh();
                             } catch (error) {
                               console.error("Failed to delete item:", error);
@@ -206,7 +209,7 @@ export default function ConfiguratorTable({
                           }}
                         >
                           <Copy className="mr-2 h-4 w-4" />
-                          
+
                           Duplicate
                         </DropdownMenuItem>
 
@@ -218,9 +221,10 @@ export default function ConfiguratorTable({
                         <DropdownMenuSeparator />
 
                         <DropdownMenuItem
-                          onClick={async () => { 
+                          onClick={async () => {
                             try {
-                              await deleteConfigurator(configurator.id); 
+                              await deleteConfigurator(configurator.id);
+                              refresh();
                               router.refresh();
                             } catch (error) {
                               console.error("Failed to delete item:", error);
