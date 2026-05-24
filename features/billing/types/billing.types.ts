@@ -25,9 +25,15 @@ export type SubscriptionRecord = {
     updated_at: string,
 }
 
+export type PlanLimits = {
+    configurators: number | null,
+    uploadMb: number,
+}
+
 export type Entitlements = {
     plan: Plan;
     usage: UsageSnapshot;
+    limits: PlanLimits,
     permissions: {
         canCreateConfigurator: boolean;
         canUseCanvasEditor: boolean;

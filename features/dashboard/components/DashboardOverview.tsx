@@ -10,55 +10,27 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useEntitlements } from "@/features/billing/context/entitlements.context";
+import Image from "next/image";
 
-const metrics = [
-  {
-    label: "Configurators",
-    value: "3 / 5",
-    description: "Available on your current plan",
-    icon: Layers3,
-  },
-  {
-    label: "Published",
-    value: "2",
-    description: "Live embedded configurators",
-    icon: Boxes,
-  },
-  {
-    label: "Storage Used",
-    value: "18MB",
-    description: "Of 50MB available",
-    icon: HardDrive,
-  },
-];
 
-const recentConfigurators = [
-  {
-    id: "cfg-1",
-    name: "Nike Air Max Builder",
-    status: "Published",
-    updatedAt: "2 hours ago",
-  },
-  {
-    id: "cfg-2",
-    name: "Gaming Chair Configurator",
-    status: "Draft",
-    updatedAt: "Yesterday",
-  },
-  {
-    id: "cfg-3",
-    name: "Hoodie Studio",
-    status: "Published",
-    updatedAt: "3 days ago",
-  },
-];
+export type Configurator = {
+  id: string;
+  name: string;
+  thumbnail_url?: string;
+  status: "Draft" | "Published";
+  updated_at: string;
+};
 
-export default function DashboardOverview() {
-  const { plan, permissions, usage, refresh, isPending } = useEntitlements();
+export type DashboardOverviewProps = {
+  configurators: Configurator[];
+};
+
+export default function DashboardOverview({ configurators }: DashboardOverviewProps) {
+  const { plan, permissions, usage, limits, refresh, isPending } = useEntitlements();
   console.log(permissions);
   console.log(plan);
   console.log(usage);
-   
+
   return (
     <div className="space-y-8">
       {/* HERO */}
@@ -109,44 +81,89 @@ export default function DashboardOverview() {
 
       {/* METRICS */}
       <section className="grid gap-4 md:grid-cols-3">
-        {metrics.map((metric) => {
-          const Icon = metric.icon;
-
-          return (
-            <div
-              key={metric.label}
-              className="rounded-3xl border bg-background p-6"
-            >
-              <div className="mb-5 flex items-start justify-between">
-                <div className="rounded-2xl border bg-muted/40 p-3">
-                  <Icon className="h-5 w-5" />
-                </div>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-xl"
-                >
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div>
-                <p className="mb-1 text-sm text-muted-foreground">
-                  {metric.label}
-                </p>
-
-                <h2 className="text-3xl font-semibold tracking-tight">
-                  {metric.value}
-                </h2>
-
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {metric.description}
-                </p>
-              </div>
+        
+        <div className="rounded-3xl border bg-background p-6">
+          <div className="mb-5 flex items-start justify-between">
+            <div className="rounded-2xl border bg-muted/40 p-3">
+              <Layers3 className="h-5 w-5" />
             </div>
-          );
-        })}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-xl"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div>
+            <p className="mb-1 text-sm text-muted-foreground">
+              Configurators
+            </p>
+            <h2 className="text-3xl font-semibold tracking-tight">
+              {usage.configuratorsCount} / {limits.configurators}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Available on your current plan
+            </p>
+          </div>
+        </div>
+
+
+         <div className="rounded-3xl border bg-background p-6">
+          <div className="mb-5 flex items-start justify-between">
+            <div className="rounded-2xl border bg-muted/40 p-3">
+              <HardDrive className="h-5 w-5" />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-xl"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div>
+            <p className="mb-1 text-sm text-muted-foreground">
+              Published
+            </p>
+            <h2 className="text-3xl font-semibold tracking-tight">
+              {usage.publishedNumber}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Live embedded configurators
+            </p>
+          </div>
+        </div>
+
+
+        <div className="rounded-3xl border bg-background p-6">
+          <div className="mb-5 flex items-start justify-between">
+            <div className="rounded-2xl border bg-muted/40 p-3">
+              <Boxes className="h-5 w-5" />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-xl"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div>
+            <p className="mb-1 text-sm text-muted-foreground">
+              Storage Used
+            </p>
+            <h2 className="text-3xl font-semibold tracking-tight">
+              {usage.storageUsedMb}
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {`Of ${limits.uploadMb}MB available`}
+            </p>
+          </div>
+        </div>
+
+
+       
       </section>
 
       {/* RECENT CONFIGURATORS */}
@@ -174,14 +191,22 @@ export default function DashboardOverview() {
         </div>
 
         <div className="divide-y">
-          {recentConfigurators.map((configurator) => (
+          {configurators.map((configurator) => (
             <div
               key={configurator.id}
               className="flex flex-col gap-4 px-6 py-5 transition-colors hover:bg-muted/20 md:flex-row md:items-center md:justify-between"
             >
               <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border bg-muted/40">
+                {/* <div className="flex h-14 w-14 items-center justify-center rounded-2xl border bg-muted/40">
                   <Layers3 className="h-5 w-5 text-muted-foreground" />
+                </div> */}
+                <div className="relative w-16 h-16">
+                  <Image
+                    src={configurator.thumbnail_url || "/placeholders/configurator-preview.webp"}
+                    alt={configurator.name}
+                    fill
+                    className="object-contain"
+                  />
                 </div>
 
                 <div>
@@ -190,7 +215,7 @@ export default function DashboardOverview() {
                   </h3>
 
                   <p className="text-sm text-muted-foreground">
-                    Updated {configurator.updatedAt}
+                    Updated {configurator.updated_at}
                   </p>
                 </div>
               </div>

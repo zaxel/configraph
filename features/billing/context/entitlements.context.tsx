@@ -15,6 +15,7 @@ type BillingContextType = {
     isPending: boolean;
     plan: Entitlements['plan'];
     usage: Entitlements['usage'];
+    limits: Entitlements['limits'];
     permissions: Entitlements['permissions'];
 } | null;
 
