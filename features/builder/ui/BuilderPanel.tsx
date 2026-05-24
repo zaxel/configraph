@@ -4,8 +4,9 @@ import { useBuilderStore } from '../store/builder.store';
 import MeshChecker from './components/MeshChecker';
 import BuilderUI from './components/BuilderUI';
 import Link from 'next/link';
+import { PermissionValues } from '@/features/billing/types/billing.types';
 
-const BuilderPanel = () => {
+const BuilderPanel = ({permissions}: {permissions: PermissionValues}) => {
     const activeTab = useBuilderStore(s => s.activeTab);
     const setActiveTab = useBuilderStore(s => s.setActiveTab);
 
@@ -53,7 +54,7 @@ const BuilderPanel = () => {
                 </Button>
             </div>
             <div>
-                {isMeshSelected ? <MeshChecker /> : <BuilderUI />}
+                {isMeshSelected ? <MeshChecker /> : <BuilderUI permissions={permissions}/>}
             </div>
         </div>
     );

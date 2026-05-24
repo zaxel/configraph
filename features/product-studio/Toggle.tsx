@@ -7,7 +7,7 @@ const Toggle = () => {
     const setMode = useProductStudioStore(s=>s.setMode);
 
     return (
-        <Button className='absolute top-2 left-2 z-1000' variant={mode==="builder" ? "active" : "primary"} onClick={() =>
+        <Button className='absolute top-2 left-2 z-11' variant={mode==="builder" ? "active" : "primary"} onClick={() =>
             setMode((mode==="builder") ? "preview" : "builder")
         }>
             {mode==="builder" ? "preview" : "builder"}

@@ -40,7 +40,7 @@ const ProductStudio = () => {
             {/* TOGGLE MODE BTN */}
             {status === "ready" && <Toggle />}
             {/* LEFT — always visible */}
-            <div className={`w-full ${(mode === "builder" && activeBuilderTab === "builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab === "builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2`}>
+            <div className={`w-full ${(mode === "builder" && activeBuilderTab === "builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab === "builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-10 -mx-3 md:mx-2`}>
                 <ViewerBridge />
                 <Watermark
                     visible={!permissions.canExportWithoutWatermark}
@@ -53,7 +53,7 @@ const ProductStudio = () => {
                 {mode === "builder" ? (
                     status !== "ready"
                         ? <BuilderDisabled />
-                        : <BuilderPanel />
+                        : <BuilderPanel permissions={permissions}/>
 
                 ) : (
                     <>

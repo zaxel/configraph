@@ -21,8 +21,9 @@ import { useBuilderStore } from '../../store/builder.store';
 import { Button } from '@/components/ui/button';
 import { ImagePlus, Rocket } from 'lucide-react';
 import TitleUpdate from './TitleUpdate';
+import { PermissionValues } from '@/features/billing/types/billing.types';
 
-const BuilderUI = () => {
+const BuilderUI = ({permissions}: {permissions: PermissionValues}) => {
   const reorderModules = useBuilderStore(s => s.reorderModules);
   const publishing = useBuilderStore(s => s.publishing);
   const publishConfigurator = useBuilderStore(s => s.publishConfigurator);
@@ -74,7 +75,7 @@ const BuilderUI = () => {
 
       <div className="flex flex-col gap-6 sm:flex-row sm:gap-4">
 
-        <ModuleSelect />
+        <ModuleSelect permissions={permissions}/>
         <Button
           className="cursor-pointer"
           disabled={thumbnailUploading || thumbnailCreating}
