@@ -58,7 +58,7 @@ const ProductStudio = () => {
                 ) : (
                     <>
                         <ConfiguratorRuntime active />
-                        <ConfiguratorPanel />
+                        <ConfiguratorPanel permissions={permissions}/>
                     </>
                 )}
             </ProductContext.Provider>

@@ -197,9 +197,6 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
               className="flex flex-col gap-4 px-6 py-5 transition-colors hover:bg-muted/20 md:flex-row md:items-center md:justify-between"
             >
               <div className="flex items-center gap-4">
-                {/* <div className="flex h-14 w-14 items-center justify-center rounded-2xl border bg-muted/40">
-                  <Layers3 className="h-5 w-5 text-muted-foreground" />
-                </div> */}
                 <div className="relative w-16 h-16">
                   <Image
                     src={configurator.thumbnail_url || "/placeholders/configurator-preview.webp"}

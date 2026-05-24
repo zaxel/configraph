@@ -45,6 +45,7 @@ export type Entitlements = {
         canUseTeamAccess: boolean;
     };
 };
+export type PermissionKey = keyof Entitlements["permissions"];
 
 export interface PlanFeatures {
   watermark: boolean;
