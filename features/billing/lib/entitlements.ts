@@ -1,4 +1,5 @@
 ﻿import { getSubscriptionByClerkIdAction } from "../actions/getSubscriptionByClerkIdAction";
+import { getPlanIcon } from "./getIcon";
 import { getLimits } from "./getLimits";
 import { canCreateConfigurator, canExportWithoutWatermark, canUploadFile, canUseApi, canUseCanvasEditor, canUsePrioritySupport, canUseTeamAccess } from "./permissions";
 import { getUsageSnapshot } from "./usage";
@@ -8,7 +9,7 @@ export async function getUserEntitlements(
 ) {
     const subscription = await getSubscriptionByClerkIdAction();
 
-    const plan = subscription?.plan ?? "pro";
+    const plan = subscription?.plan ?? "free";
 
     const usage = await getUsageSnapshot();
     const limits = getLimits(plan);

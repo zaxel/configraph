@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import {
-  Crown,
   Mail,
   Shield,
   User2,
@@ -17,6 +16,9 @@ import { AvatarUploadButton } from "./AvatarUploadButton";
 import Image from "next/image";
 import { useProfile } from "@/features/account/hooks/useProfile";
 import { useUpdateProfile } from "@/features/account/hooks/useUpdateProfile";
+import { useEntitlements } from "@/features/billing/context/entitlements.context";
+import { PLANS } from "@/features/billing/config/plans";
+import Link from "next/link";
 
 type ProfileForm = {
   email: string;
@@ -42,6 +44,8 @@ export default function ProfilePage() {
   const [initialForm, setInitialForm] = useState<ProfileForm>(EMPTY_FORM);
   const initializedRef = useRef(false);
 
+  const { plan, usage, limits } = useEntitlements();
+  const Icon = PLANS[plan].icon;
 
   useEffect(() => {
     if (!profile || initializedRef.current) return;
@@ -62,13 +66,6 @@ export default function ProfilePage() {
     init();
   }, [profile?.id]);
 
-  // const handleSave = async () => {
-  //   if (!user?.id) return;
-  //   setSaving(true);
-  //   await profileRepo.update(user.id, form);
-  //   setInitialForm(form);
-  //   setSaving(false);
-  // };
 
   const handleSave = async () => {
     if (!user?.id) return;
@@ -84,7 +81,7 @@ export default function ProfilePage() {
   const isDirty = JSON.stringify(form) !== JSON.stringify(initialForm);
   const displayAvatar = form.avatar_url || user?.imageUrl;
 
-  if (isLoading) return <div className="w-full h-[80vh] flex justify-center items-center text-gray-400">isLoading...</div>;
+  if (isLoading) return <div className="w-full h-[80vh] flex justify-center items-center text-gray-400">Loading...</div>;
 
   return (
     <div className="space-y-8">
@@ -158,8 +155,10 @@ export default function ProfilePage() {
               </p>
 
               <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                <Crown className="h-4 w-4" />
-                Pro Plan
+                <Icon className="h-4 w-4" />
+                <span className="first-letter:uppercase">
+                  {plan} Plan
+                </span>
               </div>
             </div>
 
@@ -174,12 +173,16 @@ export default function ProfilePage() {
                   </span>
 
                   <span className="text-sm text-muted-foreground">
-                    3 / 25
+                    {usage.configuratorsCount} / {limits.configurators ?? "∞"}
                   </span>
                 </div>
 
                 <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full w-[12%] rounded-full bg-primary" />
+                  <div className="h-full rounded-full bg-primary"
+                    style={{
+                      width: limits.configurators === null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
+                    }}
+                  />
                 </div>
               </div>
 
@@ -190,12 +193,16 @@ export default function ProfilePage() {
                   </span>
 
                   <span className="text-sm text-muted-foreground">
-                    18MB / 50MB
+                    {usage.storageUsedMb}MB / {plan === "business" ? "∞" : limits.uploadMb * (limits.configurators ?? 1)}MB
                   </span>
                 </div>
 
                 <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full w-[36%] rounded-full bg-primary" />
+                  <div className="h-full rounded-full bg-primary"
+                    style={{
+                      width: plan === "business" ? "5%" : `${(usage.storageUsedMb / (limits.uploadMb * (limits.configurators ?? 1)) * 100)}%`
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -317,9 +324,11 @@ export default function ProfilePage() {
                 </p>
               </div>
 
-              <Button className="rounded-2xl cursor-pointer">
-                Upgrade Plan
-              </Button>
+              <Link href="/dashboard/billing#plans">
+                <Button className="rounded-2xl cursor-pointer">
+                  Upgrade Plan
+                </Button>
+              </Link>
             </div>
 
             <div className="rounded-3xl border bg-muted/20 p-6">
@@ -329,8 +338,8 @@ export default function ProfilePage() {
                     Active Subscription
                   </p>
 
-                  <h3 className="mt-2 text-3xl font-semibold tracking-tight">
-                    Pro Plan
+                  <h3 className="first-letter:uppercase mt-2 text-3xl font-semibold tracking-tight">
+                    {plan} Plan
                   </h3>
                 </div>
 
@@ -346,7 +355,7 @@ export default function ProfilePage() {
                   </p>
 
                   <h4 className="mt-2 text-2xl font-semibold">
-                    25
+                    {limits.configurators ?? "∞"}
                   </h4>
                 </div>
 
@@ -356,7 +365,7 @@ export default function ProfilePage() {
                   </p>
 
                   <h4 className="mt-2 text-2xl font-semibold">
-                    50MB
+                    {plan === "business" ? "∞" : limits.uploadMb * (limits.configurators ?? 1)}MB
                   </h4>
                 </div>
               </div>
