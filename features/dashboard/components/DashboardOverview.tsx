@@ -100,7 +100,7 @@ export default function DashboardOverview({ configurators }: DashboardOverviewPr
               Configurators
             </p>
             <h2 className="text-3xl font-semibold tracking-tight">
-              {usage.configuratorsCount} / {limits.configurators}
+              {usage.configuratorsCount} / {limits.configurators ?? "∞"}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Available on your current plan

@@ -1,13 +1,17 @@
-﻿import {
+﻿"use client"
+import {
     Check,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { usage } from "./usage";
-import { plans } from "./plans";
 import Link from "next/link";
+import { useEntitlements } from "@/features/billing/context/entitlements.context";
+import { PLANS } from "@/features/billing/config/plans";
+import { PlansConfig } from "@/features/billing/types/billing.types";
 
 export default function BillingPage() {
+    const { plan, usage, limits } = useEntitlements();
+
     return (
         <div className="space-y-8">
             {/* HEADER */}
@@ -54,8 +58,8 @@ export default function BillingPage() {
                                     Active Plan
                                 </p>
 
-                                <h3 className="mt-2 text-3xl font-semibold tracking-tight">
-                                    Free
+                                <h3 className="mt-2 text-3xl font-semibold tracking-tight first-letter:uppercase">
+                                    {plan}
                                 </h3>
                             </div>
 
@@ -69,10 +73,11 @@ export default function BillingPage() {
                             remove watermarks, and access advanced
                             customization tools.
                         </p>
-
-                        <Button className="rounded-2xl">
-                            Upgrade Plan
-                        </Button>
+                        <Link href="/dashboard/billing#plans">
+                            <Button className="rounded-2xl cursor-pointer">
+                                Upgrade Plan
+                            </Button>
+                        </Link>
                     </div>
 
                     {/* USAGE */}
@@ -87,29 +92,46 @@ export default function BillingPage() {
                             </p>
                         </div>
 
+                        <div className="space-y-5 mb-4">
+                            <div className="mb-2 flex items-center justify-between">
+                                <span className="text-sm font-medium">
+                                    Configurators
+                                </span>
+
+                                <span className="text-sm text-muted-foreground">
+                                    {usage.configuratorsCount} / {limits.configurators ?? "∞"}
+                                </span>
+                            </div>
+
+                            <div className="h-2 overflow-hidden rounded-full bg-muted">
+                                <div
+                                    className="h-full rounded-full bg-primary"
+                                    style={{
+                                        width: limits.configurators===null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
+                                    }}
+                                />
+                            </div>
+                        </div>
+
                         <div className="space-y-5">
-                            {usage.map((item) => (
-                                <div key={item.label}>
-                                    <div className="mb-2 flex items-center justify-between">
-                                        <span className="text-sm font-medium">
-                                            {item.label}
-                                        </span>
+                            <div className="mb-2 flex items-center justify-between">
+                                <span className="text-sm font-medium">
+                                    Storage
+                                </span>
 
-                                        <span className="text-sm text-muted-foreground">
-                                            {item.value}
-                                        </span>
-                                    </div>
+                                <span className="text-sm text-muted-foreground">
+                                    {usage.storageUsedMb}MB / {limits.uploadMb}MB
+                                </span>
+                            </div>
 
-                                    <div className="h-2 overflow-hidden rounded-full bg-muted">
-                                        <div
-                                            className="h-full rounded-full bg-primary"
-                                            style={{
-                                                width: item.progress,
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                            <div className="h-2 overflow-hidden rounded-full bg-muted">
+                                <div
+                                    className="h-full rounded-full bg-primary"
+                                    style={{
+                                        width: `${usage.storageUsedMb / limits.uploadMb * 100}%`
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,20 +150,20 @@ export default function BillingPage() {
                 </div>
 
                 <div className="grid gap-6 xl:grid-cols-3">
-                    {plans.map((plan) => {
-                        const Icon = plan.icon;
+                    {Object.entries((PLANS as PlansConfig)). map(([planName, data]) => {
+                        const Icon = data.icon;
 
                         return (
                             <div
-                                key={plan.name}
+                                key={planName}
                                 className={
-                                    plan.popular
+                                    data.popular
                                         ? "flex flex-col justify-start relative overflow-hidden rounded-3xl border-2 border-primary bg-background p-6 shadow-lg"
                                         : "flex flex-col justify-start overflow-hidden rounded-3xl border bg-background p-6"
                                 }
                             >
                                 {/* POPULAR BADGE */}
-                                {plan.popular && (
+                                {data.popular && (
                                     <div className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
                                         Most Popular
                                     </div>
@@ -154,13 +176,13 @@ export default function BillingPage() {
 
                                 {/* PLAN INFO */}
                                 <div className="mb-6">
-                                    <h3 className="text-2xl font-semibold">
-                                        {plan.name}
+                                    <h3 className="text-2xl font-semibold first-letter:uppercase">
+                                        {planName}
                                     </h3>
 
                                     <div className="mt-3 flex items-end gap-1">
                                         <span className="text-4xl font-bold tracking-tight">
-                                            {plan.price}
+                                            {data.price}
                                         </span>
 
                                         <span className="pb-1 text-muted-foreground">
@@ -169,13 +191,13 @@ export default function BillingPage() {
                                     </div>
 
                                     <p className="mt-3 text-muted-foreground">
-                                        {plan.description}
+                                        {data.description}
                                     </p>
                                 </div>
 
                                 {/* FEATURES */}
                                 <div className="mb-8 space-y-3">
-                                    {plan.features.map((feature) => (
+                                    {data.featuresDescription.map((feature) => (
                                         <div
                                             key={feature}
                                             className="flex items-start gap-3"
@@ -192,21 +214,21 @@ export default function BillingPage() {
                                 </div>
 
                                 {/* CTA */}
-                                {plan.current ? (
+                                {(planName === plan) ? (
                                     <Button
                                         disabled
-                                        className="w-full rounded-2xl mt-auto"
+                                        className="w-full rounded-2xl mt-auto cursor-pointer"
                                     >
-                                        Current Plan
+                                        Current Plan 
                                     </Button>
                                 ) : (
                                     <Button
                                         variant={
-                                            plan.popular
+                                            data.popular
                                                 ? "default"
                                                 : "outline"
                                         }
-                                        className="w-full rounded-2xl mt-auto"
+                                        className="w-full rounded-2xl mt-auto cursor-pointer"
                                     >
                                         Upgrade
                                     </Button>

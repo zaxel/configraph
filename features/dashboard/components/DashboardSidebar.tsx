@@ -4,8 +4,7 @@ import { useEntitlements } from "@/features/billing/context/entitlements.context
 import { cn } from "@/lib/cn";
 import { CreditCard, LayoutDashboard, Plus, Shapes, User } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export const sidebarItems = [
     {
@@ -108,12 +107,16 @@ export function DashboardSidebar() {
                             </div>
 
                             <div className="rounded-full border px-2 py-1 text-xs font-medium">
-                                {usage.configuratorsCount} / {limits.configurators}
+                                {usage.configuratorsCount} / {limits.configurators ?? "∞"}
                             </div>
                         </div>
 
                         <div className="mb-3 h-2 overflow-hidden rounded-full bg-muted">
-                            <div className="h-full w-[60%] rounded-full bg-primary" />
+                            <div className="h-full rounded-full bg-primary" 
+                                style={{
+                                        width: limits.configurators===null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
+                                    }}
+                            />
                         </div>
 
                         <Button

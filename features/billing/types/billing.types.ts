@@ -1,4 +1,5 @@
 ﻿import { PLANS } from "../config/plans";
+import { ComponentType } from "react";
 
 export type PlanName = keyof typeof PLANS;
 
@@ -44,3 +45,24 @@ export type Entitlements = {
         canUseTeamAccess: boolean;
     };
 };
+
+export interface PlanFeatures {
+  watermark: boolean;
+  canvasEditor: boolean;
+  prioritySupport: boolean;
+  apiAccess: boolean;
+  teamAccess: boolean;
+  analytics: boolean;
+}
+
+export interface PlanDetails {
+    price: number;
+    popular: boolean;
+    description: string;
+    icon: ComponentType<{ className?: string }>; // Lucide icon type definition
+    limits: PlanLimits;
+    featuresDescription: readonly string[];
+    features: PlanFeatures;
+}
+
+export type PlansConfig = Record<Plan, PlanDetails>;
