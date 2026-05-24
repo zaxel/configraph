@@ -1,9 +1,11 @@
 ﻿"use client"
 import { Button } from "@/components/ui/button";
+import { useEntitlements } from "@/features/billing/context/entitlements.context";
 import { cn } from "@/lib/cn";
 import { CreditCard, LayoutDashboard, Plus, Shapes, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export const sidebarItems = [
     {
@@ -30,6 +32,8 @@ export const sidebarItems = [
 
 export function DashboardSidebar() {
     const pathname = usePathname();
+    const router = useRouter();
+    const { plan, usage, limits } = useEntitlements();
 
     return (
         <aside className="hidden md:flex w-72 shrink-0 border-r bg-background/80 backdrop-blur-xl">
@@ -100,11 +104,11 @@ export function DashboardSidebar() {
                                 <p className="text-xs text-muted-foreground">
                                     Current Plan
                                 </p>
-                                <p className="font-semibold">Free</p>
+                                <p className="font-semibold first-letter:uppercase">{plan}</p>
                             </div>
 
                             <div className="rounded-full border px-2 py-1 text-xs font-medium">
-                                3 / 5 used
+                                {usage.configuratorsCount} / {limits.configurators}
                             </div>
                         </div>
 
@@ -115,6 +119,7 @@ export function DashboardSidebar() {
                         <Button
                             size="sm"
                             className="w-full rounded-xl"
+                            onClick={() => router.push("/dashboard/billing#plans")}
                         >
                             Upgrade Plan
                         </Button>

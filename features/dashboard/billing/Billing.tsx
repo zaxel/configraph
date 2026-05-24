@@ -116,7 +116,7 @@ export default function BillingPage() {
             </section>
 
             {/* PLANS */}
-            <section>
+            <section id="plans">
                 <div className="mb-6">
                     <h2 className="text-2xl font-semibold tracking-tight">
                         Available Plans
