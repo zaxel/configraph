@@ -3,7 +3,7 @@ import { useProductStudioStore } from "@/features/product-studio/product-studio.
 import Viewer from "@/features/viewer/Viewer";
 import { useBuilderStore } from "../builder/store/builder.store";
 
-const ViewerBridge = () => {
+const ViewerBridge = ({canExportWithoutWatermark}:{canExportWithoutWatermark: boolean}) => {
   const mode = useProductStudioStore(s => s.mode);
 
   const product = useBuilderStore(s => s.product);
@@ -19,6 +19,7 @@ const ViewerBridge = () => {
       product={mode==="embed" ? product?.data : draft}
       selectedOptions={mode === "preview" ? selectedOptions : undefined}
       mode={mode}
+      canExportWithoutWatermark={canExportWithoutWatermark}
     />
   );
 };

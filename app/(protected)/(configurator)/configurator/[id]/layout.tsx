@@ -1,6 +1,6 @@
-﻿import { BuilderHeader } from "@/features/builder/ui/components/BuilderHeader";
+import { BuilderHeader } from "@/features/builder/ui/components/BuilderHeader";
 
-export default function DashboardLayout({
+export default function ConfiguratorLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -9,6 +9,7 @@ export default function DashboardLayout({
     <div className="flex min-w-0 flex-1 flex-col">
       <BuilderHeader />
 
+      {/* <main className="flex-1 overflow-y-auto"> */}
       <main className="flex-1">
         <div className="p-4 md:p-8">
           {children}

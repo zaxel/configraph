@@ -37,4 +37,4 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
     res.status(500).json({ error: err.message ?? 'Something went wrong' });
 });
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Upload server running on :${PORT}`));
+app.listen(PORT, () => console.log(`Upload server running on http://localhost:${PORT}`));
