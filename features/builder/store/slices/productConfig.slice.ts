@@ -76,7 +76,6 @@ export const createProductConfigSlice: StateCreator<
 
         try {
             const res = await fetch(`/api/configurator/${id}`);
-
             if (!res.ok) {
                 const text = await res.text();
                 throw new Error(text || "Failed to load configurator");
@@ -101,6 +100,7 @@ export const createProductConfigSlice: StateCreator<
             set((state) => {
                 state.configurator.status = "error";
                 state.configurator.error = err instanceof Error ? err.message : "Failed to load";
+                state.status = "error" 
             });
         }
     },

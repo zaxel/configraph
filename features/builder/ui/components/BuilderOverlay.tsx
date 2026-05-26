@@ -4,7 +4,7 @@ import Button from "@/components/common/Button";
 
 const BuilderOverlay = () => {
   const { status, error, resetModel } = useBuilderStore();
-  console.log(status)
+  
   if (status === "ready") return null;
 
   return (

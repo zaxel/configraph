@@ -8,12 +8,13 @@ import BuilderOverlay from "../builder/ui/components/BuilderOverlay";
 import { useBuilderStore } from "../builder/store/builder.store";
 import BuilderDisabled from "../builder/ui/components/BuilderDisabled";
 import { initProductSample } from "../builder/store/slices/productConfig.slice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Toggle from "./Toggle";
 import { ProductContext } from "./context/ProductContext";
 import { Watermark } from "../viewer/Watermark";
 import { useEntitlements } from "../billing/context/entitlements.context";
+import ConfiguratorLoader from "@/components/common/ConfiguratorLoader";
 
 const ProductStudio = () => {
     const params = useParams();
@@ -25,6 +26,7 @@ const ProductStudio = () => {
     const { status, draft } = useBuilderStore();
     const activeBuilderTab = useBuilderStore(s => s.activeTab);
     const { plan, usage, limits, permissions } = useEntitlements();
+    let loading = !!id;
 
     useEffect(() => {
         if (!id) {
@@ -34,6 +36,11 @@ const ProductStudio = () => {
             loadConfigurator(configuratorId); // fetch from server
         }
     }, [id, initProduct, loadConfigurator]);
+
+    if(loading===true && (status==="ready" || status==="error") )
+        loading = false;
+
+    if(loading) return <ConfiguratorLoader spacingTopVh={15}/>
 
     return (
         <div className="w-full flex flex-col md:flex-row relative">
