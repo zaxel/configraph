@@ -48,8 +48,8 @@ const Embed = () => {
 
   const { permissions } = useEntitlements();
 
-  if (loading) return <ConfiguratorLoader />
-  if (!product) return <ConfiguratorNotFound />
+  if (loading) return <ConfiguratorLoader spacingTopVh={15}/>
+  if (!product) return <ConfiguratorNotFound spacingTopVh={15}/>
 
   return (
     <ProductContext.Provider value={product}>
