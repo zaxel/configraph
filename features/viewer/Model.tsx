@@ -71,11 +71,11 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
 
     useDecalSystem({
         registry,
-        enabled: mode === "preview",
+        enabled: mode === "preview" || mode === "embed",
     });
     useVisibility({
         registry,
-        enabled: mode === "preview",
+        enabled: mode === "preview" || mode === "embed",
         selections
     });
 
@@ -83,7 +83,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
         registry,
         product,
         selectedOptions,
-        enabled: mode === "preview",
+        enabled: mode === "preview" || mode === "embed",
     })
 
     return <primitive object={gltf.scene} />

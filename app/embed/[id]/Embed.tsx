@@ -83,13 +83,12 @@ const Embed = () => {
                 <div className="w-full flex flex-col md:flex-row relative">
                     <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2">
                         <Viewer
-                            modelUrl={
-                                product?.model?.url ?? ""
-                            }
+                            modelUrl={product?.model?.url ?? ""}
                             product={product}
                             selectedOptions={selectedOptions}
                             mode="embed"
                             canExportWithoutWatermark={permissions.canExportWithoutWatermark}
+
                         />
                     </div>
 
