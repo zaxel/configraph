@@ -15,6 +15,7 @@ import { MeshLayout } from "@/lib/extractMeshes";
 import { Product } from "@/features/configurator/model";
 import { ProductSchema } from "@/features/builder/validation/draft/product.schema";
 import { validateForPublish } from "@/features/builder/validation/publish/validateForPublish";
+import { PermissionValues } from "@/features/billing/types/billing.types";
 
 export type UpdateConfiguratorInput = Partial<
     Pick<
@@ -27,7 +28,25 @@ export const createConfiguratorRepo = (
     supabase: SupabaseClient
 ) => ({
     async getById(
-        id: string
+        id: string,
+        userId: string
+    ): Promise<ConfiguratorRecord | null> {
+        const { data, error } = await supabase
+            .from("configurators")
+            .select("*")
+            .eq("id", id)
+            .eq("clerk_user_id", userId)
+            .maybeSingle();
+
+        if (error) {
+            console.error(error);
+            return null;
+        }
+
+        return data;
+    },
+    async getByIdNoAuth(
+        id: string,
     ): Promise<ConfiguratorRecord | null> {
         const { data, error } = await supabase
             .from("configurators")
@@ -171,7 +190,7 @@ export const createConfiguratorRepo = (
 
         return data;
     },
-    async publish(id: string) {
+    async publish(id: string, permissions: PermissionValues) {
         // 1. get configurator
         const { data, error } = await supabase
             .from("configurators")
@@ -213,6 +232,7 @@ export const createConfiguratorRepo = (
                 schemaVersion: prevPublished ? prevPublished.schemaVersion + 1 : 1,
                 publishedAt: Date.now(),
                 data: draft,
+                runtime: permissions
             })
         );
 

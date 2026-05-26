@@ -8,6 +8,7 @@ import { ConfiguratorData } from "../types/configurators.types";
 import { createConfiguratorRepo, UpdateConfiguratorInput } from "../repositories/configurator.repo";
 import { storageRepo } from "../repositories/storage.repo";
 import { createServiceSupabaseClient } from "@/lib/supabase/service";
+import { PermissionValues } from "@/features/billing/types/billing.types";
 
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string
@@ -55,7 +56,7 @@ export async function getConfiguratorAction(
     const supabase = await createServerSupabaseClient();
     const repo = createConfiguratorRepo(supabase);
 
-    return repo.getById(id);
+    return repo.getById(id, userId);
 }
 
 export async function updateConfiguratorAction(
@@ -103,7 +104,7 @@ export async function updateConfiguratorMeshesAction(
 } 
 
 export async function publishConfiguratorAction( 
-    id: string, 
+    id: string, permissions: PermissionValues
 ) {
     const { userId } = await auth();
     if (!userId) {
@@ -112,7 +113,7 @@ export async function publishConfiguratorAction(
 
     const supabase = await createServerSupabaseClient();
     const repo = createConfiguratorRepo(supabase); 
-    return repo.publish(id); 
+    return repo.publish(id, permissions); 
 } 
 
 export async function updateConfiguratorMetaAction( 

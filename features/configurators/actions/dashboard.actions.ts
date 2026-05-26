@@ -71,7 +71,7 @@ export async function duplicateConfiguratorAction(
 
   const storage = storageRepo(supabase);
 
-  const configurator = await repo.getById(configuratorId);
+  const configurator = await repo.getById(configuratorId, userId);
   if (!configurator) return new Response("Not found", { status: 404 });
 
   const newModelPath = `${userId}/model-${crypto.randomUUID()}.glb`;

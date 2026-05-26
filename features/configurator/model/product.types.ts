@@ -1,5 +1,6 @@
 ﻿import * as THREE from "three";
 import { Component } from "./components.types";
+import { PermissionValues } from "@/features/billing/types/billing.types";
 export type DefaultParts = {
   type: "parts";
   selectedPart: string;
@@ -110,4 +111,5 @@ export type Published = {
   publishedAt: string,
   schemaVersion: number,
   data: Product,
+  runtime: PermissionValues,
 };

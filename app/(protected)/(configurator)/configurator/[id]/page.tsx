@@ -1,4 +1,6 @@
 ﻿"use client"
+import ConfiguratorLoader from '@/components/common/ConfiguratorLoader';
+import ConfiguratorNotFound from '@/components/common/ConfiguratorNotFound';
 import { useEntitlements } from '@/features/billing/context/entitlements.context';
 import ConfiguratorRuntime from '@/features/configurator/runtime/ConfiguratorRuntime';
 import { useConfiguratorStore } from '@/features/configurator/store/configurator.store';
@@ -10,40 +12,44 @@ import { useProductStudioStore } from '@/features/product-studio/product-studio.
 import Viewer from '@/features/viewer/Viewer';
 import { Watermark } from '@/features/viewer/Watermark';
 import { useParams } from "next/navigation";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Embed = () => {
   const product = useConfiguratorStore(s => s.product);
   const setProduct = useConfiguratorStore(s => s.setProduct);
   const selectedOptions = useConfiguratorStore(s => s.selectedOptions);
   const setMode = useProductStudioStore(s => s.setMode);
+  const [loading, setLoading] = useState(true);
 
   const params = useParams();
   const id = params.id;
 
   useEffect(() => {
+    setLoading(true);
     setMode("preview");
-    // getProductById(id)
-    // getPermissionsById(id)
 
     const configuratorId = Array.isArray(id) ? id[0] : id;
     if (!configuratorId) return;
 
     const initConfigurator = async (configuratorId: string) => {
-      const configurator = await getConfiguratorAction(configuratorId);
-      if (!configurator?.data.draft) return;
-      setProduct(configurator?.data.draft);
+      try {
+        const configurator = await getConfiguratorAction(configuratorId);
+        if (!configurator?.data.draft) return;
+        setProduct(configurator?.data.draft);
+
+      } finally {
+        setLoading(false);
+      }
     }
     initConfigurator(configuratorId);
+
+
   }, [id])
 
   const { permissions } = useEntitlements();
 
-  if (!product) return <div className="w-full h-[80vh] flex items-center justify-center">
-    <div className="text-gray-400 text-xl">
-      Configurator not found
-    </div>
-  </div>
+  if (loading) return <ConfiguratorLoader />
+  if (!product) return <ConfiguratorNotFound />
 
   return (
     <ProductContext.Provider value={product}>
@@ -62,7 +68,7 @@ const Embed = () => {
           {/* RIGHT  */}
           <>
             <ConfiguratorRuntime active={true} />
-            <ConfiguratorPanel permissions={permissions}/>
+            <ConfiguratorPanel permissions={permissions} />
           </>
         </div>
       </div>

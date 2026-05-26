@@ -1,4 +1,5 @@
-﻿import { publishConfiguratorAction } from "@/features/configurators/actions/editor.actions";
+﻿import { getUserEntitlements } from "@/features/billing/lib/entitlements";
+import { publishConfiguratorAction } from "@/features/configurators/actions/editor.actions";
 
 export async function POST(
   req: Request,
@@ -6,7 +7,8 @@ export async function POST(
 ) {
   try {
       const { id } = await params;
-      const updated = await publishConfiguratorAction(id);
+      const { permissions } = await getUserEntitlements();
+      const updated = await publishConfiguratorAction(id, permissions);
   
       return Response.json(updated);
     } catch (err: unknown) {

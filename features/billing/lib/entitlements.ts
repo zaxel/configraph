@@ -4,12 +4,10 @@ import { getLimits } from "./getLimits";
 import { canCreateConfigurator, canExportWithoutWatermark, canUploadFile, canUseApi, canUseCanvasEditor, canUsePrioritySupport, canUseTeamAccess } from "./permissions";
 import { getUsageSnapshot } from "./usage";
 
-export async function getUserEntitlements(
-    clerkUserId: string
-) {
+export async function getUserEntitlements() {
     const subscription = await getSubscriptionByClerkIdAction();
 
-    const plan = subscription?.plan ?? "free";
+    const plan = subscription?.plan ?? "pro";
 
     const usage = await getUsageSnapshot();
     const limits = getLimits(plan);

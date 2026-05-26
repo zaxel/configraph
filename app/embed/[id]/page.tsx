@@ -12,6 +12,6 @@ export default async function Page({
   await searchParams;
 
   return <EmbedLayout>
-            <Embed />;
+            <Embed />
         </EmbedLayout> 
 }
