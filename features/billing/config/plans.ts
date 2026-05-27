@@ -14,7 +14,7 @@ export const PLANS: PlansConfig = {
     },
     featuresDescription: [
       "Up to 5 configurators",
-      "5MB upload limit",
+      "10MB/item upload limit",
       "Watermarked embeds",
       "Basic customization",
     ],
@@ -36,14 +36,13 @@ export const PLANS: PlansConfig = {
     icon: Crown,
     limits: {
       configurators: 25,
-      uploadMb: 50,
+      uploadMb: 30,
     },
     featuresDescription: [
       "Up to 25 configurators",
-      "50MB upload limit",
+      "30MB/item upload limit",
       "Canvas customization",
       "No watermark",
-      "Priority rendering",
     ],
     features: {
       watermark: false,
@@ -67,7 +66,7 @@ export const PLANS: PlansConfig = {
     },
     featuresDescription: [
       "Unlimited configurators",
-      "100MB upload limit",
+      "100MB/item upload limit",
       "Team access",
       "Advanced analytics",
       "API access",

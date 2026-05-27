@@ -16,7 +16,7 @@ export type UsageSnapshot = {
 export type SubscriptionRecord = {
     id: string,
     clerk_user_id: string,
-    stripe_customer_d: string,
+    stripe_customer_id: string,
     stripe_subscription_id: string,
     plan: Plan,
     strip_status: StripeStatus,
@@ -24,6 +24,7 @@ export type SubscriptionRecord = {
     cancel_at_period_end: boolean,
     crater_at: string,
     updated_at: string,
+    profile_id: string,
 }
 
 export type PlanLimits = {
@@ -68,3 +69,11 @@ export interface PlanDetails {
 }
 
 export type PlansConfig = Record<Plan, PlanDetails>;
+
+export type SubscriptionStatus =
+  | "inactive"
+  | "active"
+  | "past_due"
+  | "canceled"
+  | "unpaid"
+  | "trialing";

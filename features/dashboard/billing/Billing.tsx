@@ -7,10 +7,24 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEntitlements } from "@/features/billing/context/entitlements.context";
 import { PLANS } from "@/features/billing/config/plans";
-import { PlansConfig } from "@/features/billing/types/billing.types";
+import { Plan, PlansConfig } from "@/features/billing/types/billing.types";
+import { PLAN_TO_STRIPE_PRICE } from "@/features/billing/lib/stripe-plans";
 
 export default function BillingPage() {
     const { plan, usage, limits } = useEntitlements();
+
+    const upgradeTier = async(plan: Exclude<Plan, "free">) => {
+        const priceId = PLAN_TO_STRIPE_PRICE[plan];
+        try {
+            await fetch(`/api/stripe/checkout`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(priceId),
+            });
+        } catch (e) {
+            console.error("Failed to save draft", e);
+        }
+    }
 
     return (
         <div className="space-y-8">
@@ -107,7 +121,7 @@ export default function BillingPage() {
                                 <div
                                     className="h-full rounded-full bg-primary"
                                     style={{
-                                        width: limits.configurators===null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
+                                        width: limits.configurators === null ? "5%" : `${usage.configuratorsCount / (limits.configurators) * 100}%`,
                                     }}
                                 />
                             </div>
@@ -129,7 +143,7 @@ export default function BillingPage() {
                                 <div
                                     className="h-full rounded-full bg-primary"
                                     style={{
-                                        width: plan === "business" ?  "5%" : `${(usage.storageUsedMb /(limits.uploadMb * (limits.configurators ?? 1)) * 100)}%`
+                                        width: plan === "business" ? "5%" : `${(usage.storageUsedMb / (limits.uploadMb * (limits.configurators ?? 1)) * 100)}%`
                                     }}
                                 />
                             </div>
@@ -151,9 +165,11 @@ export default function BillingPage() {
                 </div>
 
                 <div className="grid gap-6 xl:grid-cols-3">
-                    {Object.entries((PLANS as PlansConfig)). map(([planName, data]) => {
+                    {Object.entries((PLANS as PlansConfig)).map(([planName, data]) => {
                         const Icon = data.icon;
-
+                        const shouldHideButton =
+                            (plan === "pro" && planName === "free") ||
+                            (plan === "business" && (planName === "free" || planName === "pro"));
                         return (
                             <div
                                 key={planName}
@@ -220,19 +236,24 @@ export default function BillingPage() {
                                         disabled
                                         className="w-full rounded-2xl mt-auto cursor-pointer"
                                     >
-                                        Current Plan 
+                                        Current Plan
                                     </Button>
                                 ) : (
-                                    <Button
+                                    !shouldHideButton && <Button
+                                        onClick={()=>{
+                                            if(plan === "free") return;
+                                            upgradeTier(plan);
+                                        }}
                                         variant={
                                             data.popular
                                                 ? "default"
                                                 : "outline"
                                         }
+
                                         className="w-full rounded-2xl mt-auto cursor-pointer"
                                     >
                                         Upgrade
-                                    </Button>
+                                    </Button> 
                                 )}
                             </div>
                         );
