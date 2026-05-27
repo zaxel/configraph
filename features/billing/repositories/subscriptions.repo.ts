@@ -42,9 +42,11 @@ export const createSubscriptionsRepo = (supabase: SupabaseClient) => ({
     async upsertCustomer({
         profileId,
         stripeCustomerId,
+        clerkUserId,
     }: {
         profileId: string;
         stripeCustomerId: string;
+        clerkUserId: string;
     }): Promise<void> {
         const { error } = await supabase
             .from("subscriptions")
@@ -52,6 +54,7 @@ export const createSubscriptionsRepo = (supabase: SupabaseClient) => ({
                 {
                     profile_id: profileId,
                     stripe_customer_id: stripeCustomerId,
+                    clerk_user_id: clerkUserId,
                     updated_at: new Date().toISOString(), 
                 },
                 {

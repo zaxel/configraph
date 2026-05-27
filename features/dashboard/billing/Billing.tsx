@@ -7,20 +7,54 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEntitlements } from "@/features/billing/context/entitlements.context";
 import { PLANS } from "@/features/billing/config/plans";
-import { Plan, PlansConfig } from "@/features/billing/types/billing.types";
+import { Plan, PlanDetails, PlansConfig } from "@/features/billing/types/billing.types";
 import { PLAN_TO_STRIPE_PRICE } from "@/features/billing/lib/stripe-plans";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useEffect, useState } from "react";
 
 export default function BillingPage() {
     const { plan, usage, limits } = useEntitlements();
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
-    const upgradeTier = async(plan: Exclude<Plan, "free">) => {
+    const [paymentStatus, setPaymentStatus] = useState<'success' | 'canceled' | null>(null);
+    
+    useEffect(() => {
+        const success = searchParams?.get('success') === 'true';
+        const canceled = searchParams?.get('canceled') === 'true';
+
+        if (success) setPaymentStatus('success');
+        if (canceled) setPaymentStatus('canceled');
+    }, []); // run once on mount
+
+    useEffect(() => {
+        if (paymentStatus) {
+            router.replace("/dashboard/billing"); // clean URL immediately
+        }
+    }, [paymentStatus, router]);
+
+
+    const upgradeTier = async (plan: Exclude<Plan, "free">) => {
         const priceId = PLAN_TO_STRIPE_PRICE[plan];
+        console.log(priceId);
         try {
-            await fetch(`/api/stripe/checkout`, {
+            const response = await fetch(`/api/stripe/checkout`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(priceId),
+                body: JSON.stringify({ priceId }),
             });
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const data = await response.json();
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error("No checkout URL found in response data", data);
+            }
         } catch (e) {
             console.error("Failed to save draft", e);
         }
@@ -28,6 +62,22 @@ export default function BillingPage() {
 
     return (
         <div className="space-y-8">
+            {/* PAYMENT ALERTS */}
+            {paymentStatus==="success" && (
+                <Alert variant="success">
+                    <AlertDescription>
+                        Your subscription is now active.
+                    </AlertDescription>
+                </Alert>
+            )}
+
+            {paymentStatus==="canceled" && (
+                <Alert variant="warning">
+                    <AlertDescription>
+                        Checkout was canceled. No changes were made.
+                    </AlertDescription>
+                </Alert>
+            )}
             {/* HEADER */}
             <section className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
@@ -165,7 +215,7 @@ export default function BillingPage() {
                 </div>
 
                 <div className="grid gap-6 xl:grid-cols-3">
-                    {Object.entries((PLANS as PlansConfig)).map(([planName, data]) => {
+                    {(Object.entries(PLANS) as [Plan, PlanDetails][]).map(([planName, data]) => {
                         const Icon = data.icon;
                         const shouldHideButton =
                             (plan === "pro" && planName === "free") ||
@@ -240,9 +290,9 @@ export default function BillingPage() {
                                     </Button>
                                 ) : (
                                     !shouldHideButton && <Button
-                                        onClick={()=>{
-                                            if(plan === "free") return;
-                                            upgradeTier(plan);
+                                        onClick={() => {
+                                            if (planName === "free") return;
+                                            upgradeTier(planName);
                                         }}
                                         variant={
                                             data.popular
@@ -253,7 +303,7 @@ export default function BillingPage() {
                                         className="w-full rounded-2xl mt-auto cursor-pointer"
                                     >
                                         Upgrade
-                                    </Button> 
+                                    </Button>
                                 )}
                             </div>
                         );
