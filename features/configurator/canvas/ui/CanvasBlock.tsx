@@ -1,4 +1,5 @@
-﻿import dynamic from "next/dynamic";
+﻿"use client"
+import dynamic from "next/dynamic";
 import CanvasToolbar from "./CanvasToolbar";
 import { useConfiguratorStore } from "../../store/configurator.store";
 import Button from "@/components/common/Button";

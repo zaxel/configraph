@@ -40,12 +40,12 @@ export async function deleteConfiguratorAction(
   if (!userId) {
     throw new Error("Unauthorized");
   }
-
+  
   const supabase = await createServerSupabaseClient();
   const repo = createConfiguratorRepo(supabase);
   const storageRep = storageRepo(supabase);
-
-  const configurator = await repo.getById(id);
+  
+  const configurator = await repo.getById(id, userId);
   if (!configurator) return new Response("Not found", { status: 404 });
 
   // 2. delete storage assets
