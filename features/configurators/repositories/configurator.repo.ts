@@ -101,7 +101,7 @@ export const createConfiguratorRepo = (
         size: number,
         type: string,
         path: string,
-        name?: string 
+        name?: string
     ) {
         const configuratorId = configuratorData.id ?? crypto.randomUUID();
 
@@ -263,6 +263,19 @@ export const createConfiguratorRepo = (
             .eq("clerk_user_id", userId);
 
         if (error) throw error;
+        return data;
+    },
+    async updateRuntime(
+        clerkUserId: string,
+        options: PermissionValues
+    ) {
+        const { data, error } = await supabase.rpc("update_user_runtime", {
+            p_clerk_user_id: clerkUserId,
+            new_runtime: options,
+        });
+
+        if (error) throw error;
+
         return data;
     },
 });

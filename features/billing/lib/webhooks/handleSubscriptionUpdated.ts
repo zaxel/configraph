@@ -3,6 +3,7 @@ import { createSubscriptionsRepo } from "../../repositories/subscriptions.repo";
 import Stripe from "stripe";
 import { mapStripeSubscription } from "../mapStripeSubscription";
 import { createServiceSupabaseClient } from "@/lib/supabase/service";
+import { syncPublishedOption } from "../syncPublishedOption";
 
 export async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     const subscriptionId = subscription.id;
@@ -48,4 +49,5 @@ export async function handleSubscriptionUpdated(subscription: Stripe.Subscriptio
         current_period_end: new Date(subscription.items.data[0].current_period_end * 1000).toISOString(),
         cancel_at_period_end: subscription.cancel_at_period_end,
     });
+    syncPublishedOption(mapped.plan, clerkUserId);
 }

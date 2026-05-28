@@ -1,6 +1,7 @@
 ﻿import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import Stripe from "stripe";
 import { createSubscriptionsRepo } from "../../repositories/subscriptions.repo";
+import { syncPublishedOption } from "../syncPublishedOption";
 
 export async function handleSubscriptionDeleted(
   subscription: Stripe.Subscription
@@ -31,5 +32,5 @@ export async function handleSubscriptionDeleted(
     current_period_end: null,
     cancel_at_period_end: false,
   });
-  
+  syncPublishedOption("free", existingSub.clerk_user_id);
 }
