@@ -31,6 +31,22 @@ export async function createCheckoutSessionAction({
   
   const subscription = await subscriptionsRepo.getByProfileId(profile.id);
   
+  if (subscription?.stripe_subscription_id) {
+    const existingSub = await stripe.subscriptions.retrieve(
+      subscription.stripe_subscription_id
+    );
+
+    await stripe.subscriptions.update(subscription.stripe_subscription_id, {
+      items: [{
+        id: existingSub.items.data[0].id,
+        price: priceId,
+      }],
+      proration_behavior: "create_prorations",
+    });
+
+    return `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`;
+  }
+
   let stripeCustomerId = subscription?.stripe_customer_id;
   
   if (!stripeCustomerId) {
@@ -44,7 +60,6 @@ export async function createCheckoutSessionAction({
     
     stripeCustomerId = customer.id;
 
-
     await subscriptionsRepo.upsertCustomer({
       profileId: profile.id,
       stripeCustomerId,
@@ -54,20 +69,10 @@ export async function createCheckoutSessionAction({
   
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
-    
     customer: stripeCustomerId,
-    
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      },
-    ],
-    
+    line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,
-    
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?canceled=true`,
-    
     metadata: {
       clerkUserId: userId,
       profileId: profile.id,

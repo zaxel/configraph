@@ -4,14 +4,15 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/features/billing/lib/stripe";
 import { handleCheckoutCompleted } from "@/features/billing/lib/webhooks/handleCheckoutCompleted";
 import { handleSubscriptionUpdated } from "@/features/billing/lib/webhooks/handleSubscriptionUpdated";
+import { handleSubscriptionDeleted } from "@/features/billing/lib/webhooks/handleSubscriptionDeleted";
 
 export async function POST(req: Request) {
   const body = await req.text();
 
   const headersList = await headers();
 
-//   const signature = headersList.get("stripe-signature");
-const signature = req.headers.get("stripe-signature");
+  //   const signature = headersList.get("stripe-signature");
+  const signature = req.headers.get("stripe-signature");
 
   if (!signature || !body) {
     return NextResponse.json(
@@ -63,6 +64,12 @@ const signature = req.headers.get("stripe-signature");
 
         break;
       }
+
+      case "customer.subscription.deleted":
+        await handleSubscriptionDeleted(
+          event.data.object as Stripe.Subscription
+        );
+        break;
     }
 
     return NextResponse.json({ received: true }, { status: 200 });

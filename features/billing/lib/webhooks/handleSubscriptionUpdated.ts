@@ -12,6 +12,11 @@ export async function handleSubscriptionUpdated(subscription: Stripe.Subscriptio
         throw new Error("Missing customer id");
     }
 
+    if (subscription.status === "canceled") {
+        console.log("skipping canceled subscription");
+        return;
+    }
+
     // const supabase = await createServerSupabaseClient();
     const supabase = await createServiceSupabaseClient();
     const subscriptionsRepo = createSubscriptionsRepo(supabase);

@@ -93,7 +93,7 @@ export const createSubscriptionsRepo = (supabase: SupabaseClient) => ({
     }: {
         profileId: string;
         stripe_customer_id: string;
-        stripe_subscription_id: string;
+        stripe_subscription_id: string | null;
         clerk_user_id: string;
         [key: string]: any;
     }): Promise<void> {
@@ -108,6 +108,29 @@ export const createSubscriptionsRepo = (supabase: SupabaseClient) => ({
             }, {
                 onConflict: 'clerk_user_id'
             });
+
+        if (error) {
+            console.error("Error upserting stripe customer:", error);
+            throw error;
+        }
+    },
+
+    async deleteSubscription({
+        stripe_customer_id,
+    }: {
+        stripe_customer_id: string;
+    }): Promise<void> {
+        const { error } = await supabase
+            .from("subscriptions")
+            .update({
+                plan: "free",
+                stripe_status: "canceled",
+                stripe_subscription_id: null,
+                current_period_end: null,
+                cancel_at_period_end: false,
+                updated_at: new Date().toISOString(),
+            })
+            .eq("stripe_customer_id", stripe_customer_id);
 
         if (error) {
             console.error("Error upserting stripe customer:", error);

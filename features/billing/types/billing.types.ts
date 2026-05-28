@@ -17,7 +17,7 @@ export type SubscriptionRecord = {
     id: string,
     clerk_user_id: string,
     stripe_customer_id: string,
-    stripe_subscription_id: string,
+    stripe_subscription_id: string | null,
     plan: Plan,
     strip_status: StripeStatus,
     current_period_end: string,
