@@ -31,7 +31,7 @@ export function validatePriceModules(
                 });
             }
 
-            if (pricing.oldPrice < 0) {
+            if ((pricing?.oldPrice ?? 0) < 0) {
                 issues.push({
                     severity: "warning",
                     moduleId: priceModule.instanceId,
@@ -43,8 +43,8 @@ export function validatePriceModules(
             }
 
             if (
-                pricing.oldPrice > 0 &&
-                pricing.oldPrice < pricing.basePrice
+                (pricing?.oldPrice ?? 0) > 0 &&
+                (pricing?.oldPrice ?? 0) < pricing.basePrice
             ) {
                 issues.push({
                     severity: "warning",

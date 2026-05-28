@@ -1,6 +1,6 @@
 ﻿import { StateCreator } from 'zustand';
-import { ViewerSlice } from '../../model/viewer.types';
-import { BoundStore } from '../../model/bound.types';
+import { ViewerSlice } from './viewer.types';
+import { BoundStore } from '../store.types';
 
 
 export const createViewerSlice: StateCreator<

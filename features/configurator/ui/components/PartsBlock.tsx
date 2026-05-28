@@ -18,7 +18,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
     if(!part.optional && !part.enabled)return null;
     const isSelected = part.id === selectedPartOption;
     return <li key={part.id}>
-      <Button variant={isSelected ? "active" : "primary"} onClick={() => !isSelected && setPart(product, part.id)}>
+      <Button variant={isSelected ? "active" : "primary"} onClick={() => product && !isSelected && setPart(product, part.id)}>
         {part.label}
       </Button>
     </li>

@@ -4,13 +4,11 @@ import ConfiguratorNotFound from '@/components/common/ConfiguratorNotFound';
 import { useEntitlements } from '@/features/billing/context/entitlements.context';
 import ConfiguratorRuntime from '@/features/configurator/runtime/ConfiguratorRuntime';
 import { useConfiguratorStore } from '@/features/configurator/store/configurator.store';
-import { product_sample } from '@/features/configurator/store/slices/product.slice';
 import ConfiguratorPanel from '@/features/configurator/ui/components/ConfiguratorPanel';
 import { getConfiguratorAction } from '@/features/configurators/actions/editor.actions';
 import { ProductContext } from '@/features/product-studio/context/ProductContext';
 import { useProductStudioStore } from '@/features/product-studio/product-studio.store';
 import Viewer from '@/features/viewer/Viewer';
-import { Watermark } from '@/features/viewer/Watermark';
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from 'react';
 

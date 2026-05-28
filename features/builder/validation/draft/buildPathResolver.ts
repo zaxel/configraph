@@ -68,7 +68,7 @@ export const buildPathResolver = (draft: Product): PathResolver => {
                 continue;
             }
 
-            if (typeof segment === "symbol") continue; // or throw, or log
+            if (typeof segment === "symbol") continue; 
             resolved.push(segment);
         }
 

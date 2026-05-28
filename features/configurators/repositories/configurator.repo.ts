@@ -1,15 +1,4 @@
-﻿// create()
-// update()
-// delete()
-// getById()
-// getBySlug()
-// getByUser() 
-
-// publish()
-// getPublicConfigurator()
-// getEditableConfigurator()
-
-import { ConfiguratorData, ConfiguratorRecord } from "../types/configurators.types";
+﻿import { ConfiguratorData, ConfiguratorRecord } from "../types/configurators.types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { MeshLayout } from "@/lib/extractMeshes";
 import { Product } from "@/features/configurator/model";

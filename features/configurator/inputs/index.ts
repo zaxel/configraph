@@ -1,7 +1,6 @@
 ﻿import { UpdateAddonOption } from "@/features/builder/store/slices/addon.types";
 import { UpdateContentText } from "@/features/builder/store/slices/content.types";
 import { UpdateSizeOption } from "@/features/builder/store/slices/size.types";
-import { PriceConfig } from "../model";
 import { EditablePriceKeys } from "@/features/builder/store/slices/price.types";
 
 type InputHandlerFunc<TUpdate, TArgs extends object = object> = (args: {
@@ -43,9 +42,6 @@ type InputHandlerMap = {
     productPrice: InputHandlerFunc<UpdatePrice, WithPriceType>;
 };
 
-const isValidHex = (value: string) =>
-    /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(value);
-
 export const inputHandlers: InputHandlerMap = {
     addonOptionValue: ({ raw, update, moduleId, optionId }) => {
         update(moduleId, optionId, { value: raw.trimStart() });
@@ -82,12 +78,10 @@ export const inputHandlers: InputHandlerMap = {
 
     updatePartsColorValue({ raw, moduleId, optionId, groupId, variantId, update }) {
         const value = raw.trim();
-        // moduleId, optionId, groupId, variantId, patch 
         update(moduleId, optionId, groupId, variantId, { value });
     },
     updatePartsColorLabel({ raw, moduleId, optionId, groupId, variantId, update }) {
         const label = raw.trim();
-        // moduleId, optionId, groupId, variantId, patch 
         update(moduleId, optionId, groupId, variantId, { label });
     },
     updatePartsColorPrice({ raw, moduleId, optionId, groupId, variantId, update }) {

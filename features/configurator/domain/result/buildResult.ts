@@ -15,12 +15,22 @@ export function buildResult(
 ): ProductResult {
     const price = calculatePrice(product, state);
 
+    const strictParts = Object.fromEntries(
+        Object.entries(state.selectedOptions.parts.items ?? {}).map(([key, value]) => [
+            key,
+            {
+                ...value,
+                enabled: value.enabled ?? false, 
+            },
+        ])
+    );
+
     return {
-        productId: product.id,
+        productId: product.id ?? "",
         quantity: state.quantity,
         price,
         configuration: {
-            parts: state.selectedOptions.parts.items,
+            parts: strictParts,
             size: state.selectedOptions.size ?? undefined,
             addons: state.selectedOptions.addon || [],
             decals: state.decals,

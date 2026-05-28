@@ -3,7 +3,6 @@ import ConfiguratorNotFound from '@/components/common/ConfiguratorNotFound';
 import ConfiguratorLoader from '@/components/common/ConfiguratorLoader';
 import ConfiguratorRuntime from '@/features/configurator/runtime/ConfiguratorRuntime';
 import { useConfiguratorStore } from '@/features/configurator/store/configurator.store';
-import { product_sample } from '@/features/configurator/store/slices/product.slice';
 import ConfiguratorPanel from '@/features/configurator/ui/components/ConfiguratorPanel';
 import { getPublishedByIdNoAuthAction } from '@/features/configurators/actions/embed.actions';
 import { ProductContext } from '@/features/product-studio/context/ProductContext';

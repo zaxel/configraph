@@ -9,7 +9,6 @@ export const MAX_NAME = 50;
 const TitleUpdate = () => {
     const { name, status } = useBuilderStore(s => s.configurator);
     const setConfiguratorName = useBuilderStore(s => s.setConfiguratorName);
-    // const saving = useBuilderStore(s => s.saving);
     const updateConfiguratorMeta = useBuilderStore(s => s.updateConfiguratorMeta);
 
     const error =

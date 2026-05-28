@@ -1,7 +1,6 @@
 ﻿import Stripe from "stripe";
 
 import { stripe } from "@/features/billing/lib/stripe";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createSubscriptionsRepo } from "@/features/billing/repositories/subscriptions.repo";
 import { mapStripeSubscription } from "../mapStripeSubscription";
 import { createServiceSupabaseClient } from "@/lib/supabase/service";
@@ -36,7 +35,6 @@ export async function handleCheckoutCompleted(
 
   const mapped = mapStripeSubscription(stripeSubscription);
 
-//   const supabase = await createServerSupabaseClient();
   const supabase = await createServiceSupabaseClient();
 
   const subscriptionsRepo = createSubscriptionsRepo(supabase);

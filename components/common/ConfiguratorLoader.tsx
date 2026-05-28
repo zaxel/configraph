@@ -6,7 +6,6 @@ const ConfiguratorLoader = ({spacingTopVh}:{spacingTopVh?: number}) => {
         <div 
             className="w-full flex items-center justify-center"
             style={{ height: `${heightValue}vh` }} 
-            // style={{ height: `${100}vh` }} 
         >
             <div className="text-gray-400 text-xl">
                 Loading...

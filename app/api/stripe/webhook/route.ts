@@ -1,5 +1,4 @@
-﻿import { headers } from "next/headers";
-import Stripe from "stripe";
+﻿import Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { stripe } from "@/features/billing/lib/stripe";
 import { handleCheckoutCompleted } from "@/features/billing/lib/webhooks/handleCheckoutCompleted";
@@ -8,10 +7,6 @@ import { handleSubscriptionDeleted } from "@/features/billing/lib/webhooks/handl
 
 export async function POST(req: Request) {
   const body = await req.text();
-
-  const headersList = await headers();
-
-  //   const signature = headersList.get("stripe-signature");
   const signature = req.headers.get("stripe-signature");
 
   if (!signature || !body) {

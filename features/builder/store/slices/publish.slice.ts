@@ -5,7 +5,6 @@ import { validateForPublish } from "../../validation/publish/validateForPublish"
 import { ProductSchema } from "../../validation/draft/product.schema";
 import { PublishIssue, ZodIssueRaw } from "../../validation/publish/types";
 import { mapPublishZodErrors } from "../../validation/publish/mapPublishZodErrors";
-import { buildPathResolver } from "../../validation/draft/buildPathResolver";
 import { remapZodIssuePaths } from "../../validation/publish/remapZodIssuePaths";
 
 export const createPublishSlice: StateCreator<

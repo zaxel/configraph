@@ -1,8 +1,6 @@
 ﻿import { StateCreator } from 'zustand';
 import { BoundStore, UiSlice } from '../store.types';
 
-
-
 export const createUiSlice: StateCreator<
   BoundStore,
   [["zustand/devtools", never]],

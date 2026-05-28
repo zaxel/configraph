@@ -1,4 +1,4 @@
-﻿import { CanvasItem, UserCanvasData } from "../store/slices/user.types"
+﻿import { UserCanvasData } from "../store/slices/user.types"
 
 
 

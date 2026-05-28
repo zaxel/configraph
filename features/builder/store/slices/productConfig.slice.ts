@@ -1,8 +1,7 @@
 ﻿import { StateCreator } from "zustand";
 import { BoundBuilderStore } from "../builder.types";
-import { BuilderConfig, ProductConfigSlice } from "./productConfig.type";
+import { ProductConfigSlice } from "./productConfig.type";
 import { Product } from "@/features/configurator/model";
-import { isComponentType, isModuleType } from "@/features/configurator/model/component.guards";
 import { canAddModule } from "@/features/configurator/model/module.rules";
 import { createModuleFactory } from "../../lib/factories/createModule";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -124,7 +123,7 @@ export const createProductConfigSlice: StateCreator<
         }
     },
     updateConfiguratorMeta: async () => {
-        const { configurator, setSaving } = get();
+        const { configurator } = get();
         if (!configurator || !configurator.id) return;
 
         set((state) => {

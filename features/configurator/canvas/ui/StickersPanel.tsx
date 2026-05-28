@@ -51,7 +51,6 @@ const StickersPanel = () => {
             return;
         }
 
-        // const url = URL.createObjectURL(file);
         const base64 = await fileToBase64(file);
         addSticker(productId, base64);
         saveUserCanvas(productId);

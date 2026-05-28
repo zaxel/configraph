@@ -62,7 +62,7 @@ export function validatePartsModules(
                 // enabled part without groups
                 if (part && 'enabled' in part && 'groups' in part) {
 
-                    // 2. Run your validation logic safely
+                    // Run validation logic safely
                     if (part.enabled && part.groups.length === 0) {
                         issues.push({
                             severity: "error",
@@ -116,7 +116,7 @@ export function validatePartsModules(
                         const allowCustom = group?.colors?.allowCustom ?? false;
                         const variantsLength = group?.colors?.variants?.length ?? 0;
 
-                        // 2. Run your condition with the safe fallback variables
+                        // Run condition with the safe fallback variables
                         if (!allowCustom && variantsLength === 0) {
                             issues.push({
                                 severity: "warning",
@@ -148,9 +148,6 @@ export function validatePartsModules(
                             if (
                                 assignedMeshes.has(meshName)
                             ) {
-                                const existing =
-                                    assignedMeshes.get(meshName);
-
                                 issues.push({
                                     severity: "warning",
                                     moduleId: partsModule.instanceId,

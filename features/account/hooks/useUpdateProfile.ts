@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-import { updateProfile } from "../actions/profileAction";
+import { updateProfile } from "../actions/profile.action";
 
 export function useUpdateProfile() {
   const queryClient = useQueryClient();

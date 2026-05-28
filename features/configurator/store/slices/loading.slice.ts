@@ -1,6 +1,6 @@
 ﻿import { StateCreator } from 'zustand';
 import { BoundStore } from '../store.types';
-import { LoadingSlice } from '@/types/loading.types';
+import { LoadingSlice } from './loading.types';
 
 
 export const createLoadingSlice: StateCreator<

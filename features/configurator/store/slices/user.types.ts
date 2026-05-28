@@ -1,8 +1,4 @@
-﻿
-/**
- * 🔹 Canvas snapshot item
- */
-export type CanvasItem = {
+﻿export type CanvasItem = {
     id: string;
     type: "text" | "sticker";
     name: string;

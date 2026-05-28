@@ -1,7 +1,7 @@
 ﻿export interface ZodIssueRaw {
   code: string;
   message: string;
-  path: (string | number)[]; // raw from Zod — do NOT pre-join
+  path: (string | number)[]; 
   severity: "error" | "warning";
 }
 

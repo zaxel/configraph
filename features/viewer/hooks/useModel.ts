@@ -1,7 +1,7 @@
 ﻿import { useLoader, useThree } from "@react-three/fiber";
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
-import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 export function useGLTF(url: string) {
     const { gl } = useThree();

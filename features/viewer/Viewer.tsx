@@ -21,7 +21,6 @@ const Viewer = ({ modelUrl, product, selectedOptions, mode, canExportWithoutWate
             <Watermark
                 visible={!canExportWithoutWatermark}
             />
-            {/*<div className='w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] md:sticky'>*/}
             <div className='w-full h-full'>
                 <Canvas
                     camera={{ position: [0, 1, 3] }}

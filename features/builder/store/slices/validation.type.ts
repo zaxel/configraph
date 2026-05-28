@@ -1,5 +1,4 @@
 ﻿type FieldPath = string; 
-// e.g. "modules.price.options[3].value"
 
 export type ValidationError = {
   message: string;

@@ -76,7 +76,7 @@ export async function duplicateConfiguratorAction(
 
   const newModelPath = `${userId}/model-${crypto.randomUUID()}.glb`;
   
-  const {path, url } = await storage.duplicateFiles(configurator.model_path, newModelPath);
+  const {url } = await storage.duplicateFiles(configurator.model_path, newModelPath);
 
   const draftCopy = structuredClone(configurator.data.draft);
   if(draftCopy)

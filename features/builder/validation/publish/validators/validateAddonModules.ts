@@ -28,8 +28,9 @@ export function validateAddonModules(
             }
 
             for (const option of component.options) {
+                const optionValue = "value" in option ? option.value : undefined;
 
-                if (!option.value.trim()) {
+                if (!optionValue || !optionValue.trim()) {
                     issues.push({
                         severity: "error",
                         moduleId: addonModule.instanceId,
@@ -41,7 +42,8 @@ export function validateAddonModules(
                     });
                 }
 
-                if (!option.label.trim()) {
+                const optionLabel = "label" in option ? option.label : undefined;
+                if (!optionLabel || optionLabel.trim()) {
                     issues.push({
                         severity: "warning",
                         moduleId: addonModule.instanceId,
@@ -53,7 +55,8 @@ export function validateAddonModules(
                     });
                 }
 
-                if (option.price < 0) {
+                const optionPrice = "price" in option ? option.price : undefined;
+                if (optionPrice !== undefined && optionPrice < 0) {
                     issues.push({
                         severity: "error",
                         moduleId: addonModule.instanceId,

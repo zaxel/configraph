@@ -90,7 +90,6 @@ export async function POST(req: Request) {
         }
         const optimizedBuffer = await fs.promises.readFile(tmpOpt);
         const optimizedFile = new File([optimizedBuffer], file.name, { type: file.type });
-        // const {path: modelPath, url} = await storageRepo.upload3DModel(optimizedFile, userId);
         const {path: modelPath, url} = await updateModelAction(optimizedFile);
         
         const draftConfigurator = {

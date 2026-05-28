@@ -10,6 +10,7 @@ import { useConfiguratorStore } from '../configurator/store/configurator.store';
 import { useBuilderStore } from '../builder/store/builder.store';
 import { MeshLayout } from '@/lib/extractMeshes';
 import { useMeshDebugger } from '../builder/hooks/useMeshDebugger';
+import { GLTF } from 'three-stdlib';
 
 const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     const { gltf } = useGLTF(modelUrl);
@@ -21,17 +22,14 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
     const meshesRegistered = useBuilderStore(s => (s.builderConfig?.meshes?.length ?? 0) > 0);
     const setBuilderConfig = useBuilderStore(s => s.setBuilderConfig);
 
-    const registry = useMeshRegistry(gltf, product);
+    const registry = useMeshRegistry(gltf as unknown as GLTF, product);
     // const debuggerApi = useMeshDebugger(registry, activeTab === "mesh");
-
-    console.log(registry);
-
 
     useEffect(() => {
         if (!registry || !configuratorId || meshesRegistered) return;
 
         const meshLayout: MeshLayout[] = [];
-        gltf.scene.traverse((child: THREE.Mesh) => {
+        gltf.scene.traverse((child: THREE.Object3D) => {
             if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
                 meshLayout.push({

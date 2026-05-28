@@ -2,7 +2,6 @@
 
 type SizeOption = SizeComponent["options"][number];
 
-
 export type SizeSlice = {
     deleteSizeOption: (moduleId: string, optionId: string) => void,
     addSizeOption: (moduleId: string, option: SizeOption) => void,

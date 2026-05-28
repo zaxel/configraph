@@ -1,9 +1,6 @@
-﻿// Create one reusable sync function.
-
-import { createServiceSupabaseClient } from "@/lib/supabase/service";
+﻿import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { PLANS } from "../config/plans"
 import { PermissionValues, Plan } from "../types/billing.types"
-import { createConfiguratorsRepo } from "../repositories/configurators.repo";
 import { createConfiguratorRepo } from "@/features/configurators/repositories/configurator.repo";
 
 const mapPlanToRuntime = (plan: Plan): PermissionValues => {

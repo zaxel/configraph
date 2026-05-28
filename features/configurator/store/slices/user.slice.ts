@@ -3,8 +3,6 @@ import { canvasRepository } from "../../data/canvas.repository";
 import { BoundStore } from "../store.types";
 import { CanvasItem, Sticker, UserSlice } from "./user.types";
 
-
-
 export const createUserSlice: StateCreator<
   BoundStore,
   [["zustand/devtools", never]],
@@ -13,7 +11,6 @@ export const createUserSlice: StateCreator<
 > = (set, get) => ({
   userCanvas: {},
 
-  // 🔹 LOAD
   loadUserCanvas: async (productId) => {
     try {
       const data = await canvasRepository.load(productId);
@@ -34,7 +31,7 @@ export const createUserSlice: StateCreator<
         "user/load"
       );
 
-      // 🔥 hydrate canvas slice (IMPORTANT)
+      // hydrate canvas slice 
       if (data?.design) {
         get().setDesign(data.design);
       }
@@ -44,7 +41,6 @@ export const createUserSlice: StateCreator<
     }
   },
 
-  // 🔹 SAVE
   saveUserCanvas: async (productId) => {
     const userData = get().userCanvas[productId];
     const design = get().design; // from CanvasSlice
@@ -58,7 +54,6 @@ export const createUserSlice: StateCreator<
     });
   },
 
-  // 🔹 STICKERS
   addSticker: (productId, url) => {
     set((state) => {
       const current = state.userCanvas[productId]?.savedStickers ?? [];
@@ -98,7 +93,6 @@ export const createUserSlice: StateCreator<
     }, false, "user/removeSticker");
   },
 
-  // 🔥 HISTORY
   addHistoryItem: (productId, item) => {
     set((state) => {
       const current = state.userCanvas[productId]?.history ?? [];

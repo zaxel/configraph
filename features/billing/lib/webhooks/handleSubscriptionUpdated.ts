@@ -1,5 +1,4 @@
-﻿import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { createSubscriptionsRepo } from "../../repositories/subscriptions.repo";
+﻿import { createSubscriptionsRepo } from "../../repositories/subscriptions.repo";
 import Stripe from "stripe";
 import { mapStripeSubscription } from "../mapStripeSubscription";
 import { createServiceSupabaseClient } from "@/lib/supabase/service";
@@ -18,7 +17,6 @@ export async function handleSubscriptionUpdated(subscription: Stripe.Subscriptio
         return;
     }
 
-    // const supabase = await createServerSupabaseClient();
     const supabase = await createServiceSupabaseClient();
     const subscriptionsRepo = createSubscriptionsRepo(supabase);
 

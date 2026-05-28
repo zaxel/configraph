@@ -1,18 +1,5 @@
-﻿// canCreateConfigurator()
-// canUploadFile()
-// canExportWithoutWatermark()
-// canUseCanvasEditor()
-// canUsePrioritySupport()
-// canUseApi()
-// canUseTeamAccess()
-
-import { PLANS } from "../config/plans";
+﻿import { PLANS } from "../config/plans";
 import { PlanName, UsageSnapshot } from "../types/billing.types";
-
-
-
-
-
 
 function getPlan(plan: PlanName) {
   return PLANS[plan] ?? PLANS.free;

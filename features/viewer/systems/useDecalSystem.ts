@@ -5,7 +5,6 @@ import { MeshRegistry } from "../types/registry.types";
 import { DecalGeometry } from "three/examples/jsm/Addons.js";
 import { useConfiguratorStore } from "../../configurator/store/configurator.store";
 import { DecalSource } from "../../configurator/store/slices/decals.types";
-import { registryItemFileSchema } from "shadcn/schema";
 
 export const useDecalSystem = ({ registry, enabled }: { registry: MeshRegistry | null, enabled: boolean }) => {
   const { scene, camera } = useThree();

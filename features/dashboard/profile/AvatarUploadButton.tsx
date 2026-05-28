@@ -38,13 +38,11 @@ export function AvatarUploadButton({ userId, onUploadSuccess }: AvatarUploadButt
             setIsUploading(true);
 
             // 2. Upload to storage bucket
-            // const url = await storageRepo.uploadAvatar(file, userId);
             const url = await updateAvatar(file);
             if (!url) throw new Error("Upload failed");
 
             // 3. Sync profile record
             await updateProfile({ avatar_url: url });
-            // await profileRepo.update(userId, { avatar_url: url });
 
              //4. Trigger the local state refresh in your parent component
             if (onUploadSuccess) {

@@ -12,7 +12,6 @@ const Auth = () => {
      const handleSignOut = useSignOut();
         const {
             data: profile,
-            isLoading,
         } = useProfile();
 
         const { user } = useUser();

@@ -33,8 +33,6 @@ export function extractMeshesServer(root: Object3D): MeshInfo[] {
     return meshes;
 }
 
-
-
 export interface MeshLayout {
     name: string;
     parentName: string | null;

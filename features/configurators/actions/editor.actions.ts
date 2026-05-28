@@ -13,13 +13,7 @@ import { PermissionValues } from "@/features/billing/types/billing.types";
 export async function createConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string
 ) {
-    const { userId, getToken } = await auth();
-
-    // const token = await getToken({
-    //     template: "supabase",
-    // });
-
-    // console.log(token);
+    const { userId } = await auth();
 
     if (!userId) {
         throw new Error("Unauthorized");
@@ -30,6 +24,7 @@ export async function createConfiguratorAction(
 
     return repo.create(configurator, userId, size, type, path);
 } 
+
 export async function createServerConfiguratorAction(
     configurator: ConfiguratorData, size: number, type: string, path: string, userId: string
 ) {
@@ -43,7 +38,6 @@ export async function createServerConfiguratorAction(
 
     return repo.create(configurator, userId, size, type, path);
 } 
-
 
 export async function getConfiguratorAction(
     id: string
@@ -88,6 +82,7 @@ export async function updateConfiguratorDraftAction(
 
     return repo.updateDraft(id, draft);
 } 
+
 export async function updateConfiguratorMeshesAction( 
     id: string, 
     meshes: MeshLayout[]

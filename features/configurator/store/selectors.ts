@@ -1,27 +1,22 @@
-﻿/* base selectors */
-
-import { CanvasComponent } from "../model";
+﻿import { CanvasComponent, SelectedOptions } from "../model";
 import { BoundStore } from "./store.types";
 
-export const getProduct = (s) => s.product;
-
-export const selectOptions = (s) => s.selectedOptions;
+/* base selectors */
+export const getProduct = (s: BoundStore) => s.product;
+export const selectOptions = (s: BoundStore) => s.selectedOptions;
 
 /* param selector */
-
 export const selectOption =
-  (componentId: string) => (s) =>
-    s.selectedOptions[componentId];
+  (componentId: string) => (s: BoundStore) =>
+    s.selectedOptions[componentId as keyof SelectedOptions];
 
 /* derived */
-
 export const selectHasOption =
-  (componentId: string, value: string) => (s) =>
-    s.selectedOptions[componentId] === value;
+  (componentId: string, value: string) => (s: BoundStore) =>
+    s.selectedOptions[componentId as keyof SelectedOptions] === value;
 
 /* example computed */
-
-export const selectTotalSelected = (s) =>
+export const selectTotalSelected = (s: BoundStore) =>
   Object.keys(s.selectedOptions).length;
 
 export const selectAvailableStickers = (state: BoundStore) => {

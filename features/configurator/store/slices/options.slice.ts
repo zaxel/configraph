@@ -29,7 +29,12 @@ export const createOptionsSlice: StateCreator<
       ...buildInitialSizeSelections(product),
       ...buildInitialAddonSelections(product),
     };
-    set({ selectedOptions: initialSelections });
+    set({
+      selectedOptions: {
+        ...initialSelections,
+        size: initialSelections.size ?? null 
+      }
+    });
   },
 
   setOption: (module, value) =>
@@ -41,7 +46,6 @@ export const createOptionsSlice: StateCreator<
     })),
   setPart: (product, partId) =>
     set((state) => {
-      // const product = state.product;
       if (!product) return state;
 
       const partsModule = product.modules.find(
@@ -52,7 +56,7 @@ export const createOptionsSlice: StateCreator<
       const partsComponent = partsModule.components.find(
         (c): c is PartsComponent => c.type === "parts"
       );
-      if (!partsComponent) return state; 
+      if (!partsComponent) return state;
 
       const part = partsComponent.options.find(p => p.id === partId);
       if (!part) return state;
@@ -80,10 +84,9 @@ export const createOptionsSlice: StateCreator<
         }
       };
     }),
- 
+
   setGroup: (product, part, groupId) =>
     set((state) => {
-      // const product = state.product;
       if (!product) return state;
 
       const partsModule = product.modules.find((m): m is PartsModule => m.id === "parts");

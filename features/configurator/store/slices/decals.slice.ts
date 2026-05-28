@@ -1,5 +1,4 @@
-﻿// decals.slice.ts
-import { StateCreator } from "zustand";
+﻿import { StateCreator } from "zustand";
 import { BoundStore } from "../store.types";
 import { DecalsSlice } from "./decals.types";
 
