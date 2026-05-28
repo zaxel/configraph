@@ -19,7 +19,7 @@ export default function BillingPage() {
     const router = useRouter();
 
     const [paymentStatus, setPaymentStatus] = useState<'success' | 'canceled' | null>(null);
-    
+
     useEffect(() => {
         const success = searchParams?.get('success') === 'true';
         const canceled = searchParams?.get('canceled') === 'true';
@@ -63,7 +63,7 @@ export default function BillingPage() {
     return (
         <div className="space-y-8">
             {/* PAYMENT ALERTS */}
-            {paymentStatus==="success" && (
+            {paymentStatus === "success" && (
                 <Alert variant="success">
                     <AlertDescription>
                         Your subscription is now active.
@@ -71,7 +71,7 @@ export default function BillingPage() {
                 </Alert>
             )}
 
-            {paymentStatus==="canceled" && (
+            {paymentStatus === "canceled" && (
                 <Alert variant="warning">
                     <AlertDescription>
                         Checkout was canceled. No changes were made.
@@ -93,11 +93,26 @@ export default function BillingPage() {
 
                 <Button
                     variant="outline"
-                    className="rounded-2xl"
+                    className="rounded-2xl cursor-pointer"
+                    onClick={async () => {
+                        const res = await fetch(
+                            "/api/stripe/portal",
+                            {
+                                method: "POST",
+                            }
+                        );
+
+                        const data = await res.json();
+
+                        if (data.url) {
+                            window.location.href = data.url;
+                        }
+                    }}
                 >
-                    <Link href="/dashboard/billing/history">
+                    Manage Billing
+                    {/* <Link href="/dashboard/billing/history"> 
                         Billing History
-                    </Link>
+                    </Link> */}
                 </Button>
             </section>
 
