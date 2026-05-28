@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 
-import { createProfileAction, getProfileByClerkIdAction } from "../actions/profileAction";
+import { createProfile, getProfileByClerkId } from "../actions/profile.action";
 
 export function useProfile() {
   const { user } = useUser();
@@ -16,10 +16,10 @@ export function useProfile() {
     queryFn: async () => {
       if (!user) return null;
 
-      const profile = await getProfileByClerkIdAction();
+      const profile = await getProfileByClerkId();
 
       if (!profile && user.emailAddresses[0]) {
-        await createProfileAction({
+        await createProfile({
           clerk_user_id: user.id,
           email:
             user.emailAddresses[0].emailAddress,

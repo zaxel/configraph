@@ -1,16 +1,16 @@
 ﻿import { currentUser } from "@clerk/nextjs/server";
-import { createProfileAction, getProfileByClerkIdAction } from "../actions/profileAction";
+import { createProfile, getProfileByClerkId } from "../actions/profile.action";
 
 export async function ensureProfile() {
   const user = await currentUser();
 
   if (!user) return null;
 
-  let profile = await getProfileByClerkIdAction();
+  let profile = await getProfileByClerkId();
 
   if (profile) return profile;
 
-  profile = await createProfileAction({
+  profile = await createProfile({
     clerk_user_id: user.id,
     email: user.emailAddresses[0].emailAddress,
     username: user.username ?? "",

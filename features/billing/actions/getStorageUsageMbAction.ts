@@ -1,8 +1,8 @@
 ﻿"use server";
 
+import { createConfiguratorRepo } from "@/features/configurators/repositories/configurator.repo";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
-import { createConfiguratorsRepo } from "../repositories/configurators.repo";
 
 export async function getStorageUsageMbAction() {
     const { userId } = await auth();
@@ -11,7 +11,7 @@ export async function getStorageUsageMbAction() {
         throw new Error("Unauthorized");
 
     const supabase = await createServerSupabaseClient();
-    const repo = createConfiguratorsRepo(supabase);
+    const repo = createConfiguratorRepo(supabase);
 
     const usage = await repo.getStorageUsage(userId);
 

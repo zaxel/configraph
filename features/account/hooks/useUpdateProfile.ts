@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-import { updateProfileAction } from "../actions/profileAction";
+import { updateProfile } from "../actions/profileAction";
 
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
@@ -21,7 +21,7 @@ export function useUpdateProfile() {
         avatar_url: string;
       };
     }) => {
-      return await updateProfileAction(values);
+      return await updateProfile(values);
     },
 
     onSuccess: (_, variables) => {

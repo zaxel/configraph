@@ -6,7 +6,7 @@ import { createStorageRepo } from "../repositories/storage.repo";
 import { createProfileRepo } from "../repositories/profile.repo";
 import { CreateProfileProps, Profile } from "../types/profile.types";
 
-export async function updateAvatarAction( 
+export async function updateAvatar( 
     file: File, 
 ) {
     const { userId } = await auth();
@@ -20,7 +20,7 @@ export async function updateAvatarAction(
     return repo.uploadAvatar(file, userId);
 } 
 
-export async function updateProfileAction( 
+export async function updateProfile( 
     value: Partial<Profile>, 
 ) {
     const { userId } = await auth();
@@ -33,7 +33,7 @@ export async function updateProfileAction(
 
     return repo.update(userId, value);
 } 
-export async function getProfileByClerkIdAction() {
+export async function getProfileByClerkId() {
     const { userId } = await auth();
     if (!userId) {
         throw new Error("Unauthorized");
@@ -44,7 +44,7 @@ export async function getProfileByClerkIdAction() {
 
     return repo.getByClerkId(userId);
 } 
-export async function createProfileAction(profile: CreateProfileProps) {
+export async function createProfile(profile: CreateProfileProps) {
     const { userId } = await auth();
     if (!userId) {
         throw new Error("Unauthorized");

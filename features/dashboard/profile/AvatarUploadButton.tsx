@@ -1,7 +1,5 @@
 ﻿import { useRef, useState } from "react";
-import { storageRepo } from "@/features/account/repositories/storage.repo";
-import { profileRepo } from "@/features/account/repositories/profile.repo";
-import { updateAvatarAction, updateProfileAction } from "@/features/account/actions/profileAction";
+import { updateAvatar, updateProfile } from "@/features/account/actions/profile.action";
 
 interface AvatarUploadButtonProps {
     userId: string | null;
@@ -41,11 +39,11 @@ export function AvatarUploadButton({ userId, onUploadSuccess }: AvatarUploadButt
 
             // 2. Upload to storage bucket
             // const url = await storageRepo.uploadAvatar(file, userId);
-            const url = await updateAvatarAction(file);
+            const url = await updateAvatar(file);
             if (!url) throw new Error("Upload failed");
 
             // 3. Sync profile record
-            await updateProfileAction({ avatar_url: url });
+            await updateProfile({ avatar_url: url });
             // await profileRepo.update(userId, { avatar_url: url });
 
              //4. Trigger the local state refresh in your parent component
