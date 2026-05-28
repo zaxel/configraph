@@ -62,7 +62,7 @@ const Embed = () => {
               product={product}
               selectedOptions={selectedOptions}
               mode={"preview"}
-              canExportWithoutWatermark={false}
+              canExportWithoutWatermark={permissions.canExportWithoutWatermark}
             />
           </div>
           {/* RIGHT  */}
