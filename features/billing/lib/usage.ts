@@ -1,13 +1,13 @@
-﻿import { getConfiguratorUsageAction } from "../actions/getConfiguratorUsageAction";
-import { getPublishedNumberAction } from "../actions/getPublishedNumberAction";
-import { getStorageUsageMbAction } from "../actions/getStorageUsageMbAction";
+﻿import { getStorageUsageMb } from "./getStorageUsageMb";
+import { getConfiguratorUsage } from "./getConfiguratorUsage";
+import { getPublishedNumber } from "./getPublishedNumber";
 
 
 export async function getUsageSnapshot() {
     return {
-        configuratorsCount: await getConfiguratorUsageAction() ?? 0,
-        storageUsedMb: await getStorageUsageMbAction() ?? 0,
-        publishedNumber: await getPublishedNumberAction() ?? 0
+        configuratorsCount: await getConfiguratorUsage() ?? 0,
+        storageUsedMb: await getStorageUsageMb() ?? 0,
+        publishedNumber: await getPublishedNumber() ?? 0
     }
 }
 

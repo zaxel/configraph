@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { ensureProfile } from "@/features/account/services/ensure-profile";
 import { getUserEntitlements } from "@/features/billing/lib/entitlements";
 import { EntitlementsProvider } from "@/features/billing/context/entitlements.context";
-import { refreshEntitlementsAction } from "@/features/billing/actions/getPlanAction";
+import { refreshEntitlements } from "@/features/billing/actions/refreshEntitlements.action";
 
 export default async function ProtectedLayout({
   children,
@@ -17,12 +17,12 @@ export default async function ProtectedLayout({
 
   await ensureProfile();
 
-  const entitlements = await getUserEntitlements(userId);
+  const entitlements = await getUserEntitlements();
 
   return (
     <EntitlementsProvider
       value={entitlements}
-      onRefresh={refreshEntitlementsAction}
+      onRefresh={refreshEntitlements}
     >
       {children}
     </EntitlementsProvider>

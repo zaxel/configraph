@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createProfileRepo } from "@/features/account/repositories/profile.repo";
 import { createSubscriptionsRepo } from "@/features/billing/repositories/subscriptions.repo";
 
-export async function createPortalSessionAction() {
+export async function createPortalSession() {
   const { userId } = await auth();
 
   if (!userId) {

@@ -10,7 +10,7 @@ type CreateCheckoutSessionActionProps = {
     priceId: string
 }
 
-export async function createCheckoutSessionAction({
+export async function createCheckoutSession({
   priceId,
 }: CreateCheckoutSessionActionProps) {
   const { userId } = await auth();

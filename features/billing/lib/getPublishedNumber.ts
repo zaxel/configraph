@@ -4,7 +4,7 @@ import { createConfiguratorRepo } from "@/features/configurators/repositories/co
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 
-export async function getConfiguratorUsageAction(){
+export async function getPublishedNumber(){
     const { userId } = await auth();
     
         if (!userId)
@@ -13,5 +13,5 @@ export async function getConfiguratorUsageAction(){
         const supabase = await createServerSupabaseClient();
         const repo = createConfiguratorRepo(supabase);
 
-        return await repo.getConfiguratorCount(userId);
+        return await repo.getPublishedConfiguratorCount(userId);
 }

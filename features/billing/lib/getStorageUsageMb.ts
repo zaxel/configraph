@@ -4,7 +4,7 @@ import { createConfiguratorRepo } from "@/features/configurators/repositories/co
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 
-export async function getStorageUsageMbAction() {
+export async function getStorageUsageMb() {
     const { userId } = await auth();
 
     if (!userId)

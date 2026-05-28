@@ -7,57 +7,43 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEntitlements } from "@/features/billing/context/entitlements.context";
 import { PLANS } from "@/features/billing/config/plans";
-import { Plan, PlanDetails, PlansConfig } from "@/features/billing/types/billing.types";
+import { Plan, PlanDetails } from "@/features/billing/types/billing.types";
 import { PLAN_TO_STRIPE_PRICE } from "@/features/billing/lib/stripe-plans";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { createCheckoutSession } from "@/features/billing/actions/createCheckoutSession.action";
+import { createPortalSession } from "@/features/billing/actions/createPortalSession.action";
 
 export default function BillingPage() {
     const { plan, usage, limits } = useEntitlements();
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const [paymentStatus, setPaymentStatus] = useState<'success' | 'canceled' | null>(null);
+    const paymentStatus =
+        searchParams?.get('success') === 'true'
+            ? 'success'
+            : searchParams?.get('canceled') === 'true'
+                ? 'canceled'
+                : null;
 
-    useEffect(() => {
-        const success = searchParams?.get('success') === 'true';
-        const canceled = searchParams?.get('canceled') === 'true';
-
-        if (success) setPaymentStatus('success');
-        if (canceled) setPaymentStatus('canceled');
-    }, []); // run once on mount
 
     useEffect(() => {
         if (paymentStatus) {
-            router.replace("/dashboard/billing"); // clean URL immediately
+            router.replace("/dashboard/billing"); 
         }
     }, [paymentStatus, router]);
 
 
     const upgradeTier = async (plan: Exclude<Plan, "free">) => {
         const priceId = PLAN_TO_STRIPE_PRICE[plan];
-        console.log(priceId);
         try {
-            const response = await fetch(`/api/stripe/checkout`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ priceId }),
-            });
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-
-            const data = await response.json();
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                console.error("No checkout URL found in response data", data);
-            }
+            const url = await createCheckoutSession({ priceId });
+            window.location.href = url;
         } catch (e) {
-            console.error("Failed to save draft", e);
+            console.error("Failed to create checkout session", e);
         }
+
     }
 
     return (
@@ -95,18 +81,8 @@ export default function BillingPage() {
                     variant="outline"
                     className="rounded-2xl cursor-pointer"
                     onClick={async () => {
-                        const res = await fetch(
-                            "/api/stripe/portal",
-                            {
-                                method: "POST",
-                            }
-                        );
-
-                        const data = await res.json();
-
-                        if (data.url) {
-                            window.location.href = data.url;
-                        }
+                        const url = await createPortalSession();
+                        window.location.href = url;
                     }}
                 >
                     Manage Billing
