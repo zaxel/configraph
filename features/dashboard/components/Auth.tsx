@@ -7,6 +7,7 @@ import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { sidebarItems } from './DashboardSidebar';
 import { useUser } from '@clerk/nextjs';
+import { useState } from 'react';
 
 const Auth = () => {
      const handleSignOut = useSignOut();
@@ -17,13 +18,14 @@ const Auth = () => {
         const { user } = useUser();
     
         const displayAvatar = profile?.avatar_url || user?.imageUrl;
+        const [open, setOpen] = useState(false);
     
         const formattedUsername = profile?.username
             ? profile.username.trim().split(/\s+/)[0].replace(/^\w/, (c) => c.toUpperCase())
             : null;
 
             return (
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="outline"
@@ -68,7 +70,7 @@ const Auth = () => {
                 className="w-56 rounded-2xl"
             >
                 {sidebarItems.map(item => {
-                    return <DropdownMenuItem key={item.label}>
+                    return <DropdownMenuItem key={item.label} asChild>
                         <Link href={item.href}>
                             {item.label}
                         </Link>

@@ -10,7 +10,6 @@ const ConfiguratorPanel = ({permissions}: {permissions: PermissionValues}) => {
     const product = useProduct();
     const mode = useProductStudioStore(s => s.mode);
     const activeBuilderTab = useBuilderStore(s => s.activeTab);
-    console.log(mode);
     
     if(!product) return null; 
     return (

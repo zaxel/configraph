@@ -8,7 +8,7 @@ const SizeBlock = ({ data }: { data: SizeComponent }) => {
     return (
         <div>
             {data.label && <h3 className='font-medium text-xl mb-4'>{data.label}</h3>}
-            <ul className='flex items-center gap-3'>
+            <ul className='flex items-center gap-3 flex-wrap'>
                 {data.options.map(size => {
                     const isSelected = size.value === selected;
                     return (

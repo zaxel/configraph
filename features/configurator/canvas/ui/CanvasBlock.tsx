@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import CanvasToolbar from "./CanvasToolbar";
 import { useConfiguratorStore } from "../../store/configurator.store";
 import Button from "@/components/common/Button";
-import { ToggleLeft } from "lucide-react";
 import { CanvasComponent } from "../../model";
 
 const FabricCanvas = dynamic(() => import("./FabricCanvas"), {
@@ -21,7 +20,7 @@ const CanvasBlock = ({ data }: { data: CanvasComponent }) => {
         {data.label && (
           <h3 className="font-medium text-xl mb-4">{data.label}</h3>
         )}
-        <Button onClick={() => toggleActiveCanvas()} className='w-max' icon={<ToggleLeft width={14} height={14} />}>
+        <Button onClick={() => toggleActiveCanvas()} className='w-max'>
           Open Editor
         </Button>
       </>
