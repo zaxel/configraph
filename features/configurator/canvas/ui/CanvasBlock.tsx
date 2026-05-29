@@ -20,7 +20,7 @@ const CanvasBlock = ({ data }: { data: CanvasComponent }) => {
         {data.label && (
           <h3 className="font-medium text-xl mb-4">{data.label}</h3>
         )}
-        <Button onClick={() => toggleActiveCanvas()} className='w-max'>
+        <Button variant="accent" onClick={() => toggleActiveCanvas()} className='w-max'>
           Open Editor
         </Button>
       </>

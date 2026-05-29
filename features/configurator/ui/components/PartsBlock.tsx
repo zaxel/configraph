@@ -18,7 +18,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
     if(!part.optional && !part.enabled)return null;
     const isSelected = part.id === selectedPartOption;
     return <li key={part.id}>
-      <Button variant={isSelected ? "active" : "primary"} onClick={() => product && !isSelected && setPart(product, part.id)}>
+      <Button variant={isSelected ? "active-accent" : "accent"} onClick={() => product && !isSelected && setPart(product, part.id)}>
         {part.label}
       </Button>
     </li>
@@ -39,7 +39,7 @@ export const PartsBlock = ({ data }: { data: PartsComponent }) => {
 
     return <li key={group.id}>
       <Button
-        variant={isSelected ? "active" : "primary"}
+        variant={isSelected ? "active-accent" : "accent"}
         onClick={() => !isSelected && selectedPartOption && product && setGroup(product, selectedPartOption, group.id)
         }>
         {group.label}

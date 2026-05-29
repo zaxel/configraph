@@ -13,7 +13,7 @@ const SizeBlock = ({ data }: { data: SizeComponent }) => {
                     const isSelected = size.value === selected;
                     return (
                         <li key={size.value}>
-                            <Button variant={isSelected ? "active" : "primary"} onClick={() =>
+                            <Button variant={isSelected ? "active-accent" : "accent"} onClick={() =>
                                 !isSelected &&
                                 setOption("size", size.value,)
                             }>

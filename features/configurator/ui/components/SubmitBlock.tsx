@@ -25,6 +25,7 @@ const SubmitBlock = ({ data }: { data: SubmitComponent }) => {
         <div>
             {data.label && <h3 className='font-medium text-xl mb-4'>{data.label}</h3>}
             <Button
+                variant="accent"
                 onClick={() => {
                     console.log(result);
                     if (!result) return;

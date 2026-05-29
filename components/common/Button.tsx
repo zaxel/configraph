@@ -1,8 +1,7 @@
-﻿import Image from "next/image";
-import { cn } from "@/lib/cn";
+﻿import { cn } from "@/lib/cn";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "active" | "active-outline";
+  variant?: "primary" | "outline" | "active" | "active-outline" | "accent" | "active-accent";
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   ref?: React.Ref<HTMLButtonElement>;
@@ -26,6 +25,8 @@ const Button = ({
         variant === "active-outline" && "bg-foreground text-white ring-foreground",
         variant === "primary" && "text-primary ring-primary",
         variant === "active" && "bg-primary text-white ring-primary",
+        variant === "accent" && "bg-background text-foreground ring-accent",
+        variant === "active-accent" && "bg-accent text-background ring-accent",
         className
       )}
       {...props}

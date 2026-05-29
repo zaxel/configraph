@@ -13,16 +13,16 @@ const CanvasToolbar = () => {
     return (
         <div className='flex flex-col gap-6'>
             <div className='flex gap-4 flex-wrap'>
-                <Button variant={editorTab === "sticker" ? "active" : "primary"} onClick={() => setEditorTab("sticker")}>
+                <Button variant={editorTab === "sticker" ? "active-accent" : "accent"} onClick={() => setEditorTab("sticker")}>
                     Stickers
                 </Button>
-                <Button variant={editorTab === "text" ? "active" : "primary"} onClick={() => setEditorTab("text")}>
+                <Button variant={editorTab === "text" ? "active-accent" : "accent"} onClick={() => setEditorTab("text")}>
                     Text
                 </Button>
-                {decals.length >0 && <Button variant={editorTab === "applied" ? "active" : "primary"} onClick={() => setEditorTab("applied")}>
+                {decals.length >0 && <Button variant={editorTab === "applied" ? "active-accent" : "accent"} onClick={() => setEditorTab("applied")}>
                     Applied
                 </Button>}
-                <Button onClick={() => toggleActiveCanvas()} className='w-max ml-auto' >
+                <Button variant='accent' onClick={() => toggleActiveCanvas()} className='w-max ml-auto' >
                       Close
                 </Button>
             </div>
