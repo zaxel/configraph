@@ -5,7 +5,7 @@ import { useProfile } from '@/features/account/hooks/useProfile';
 import { useSignOut } from '@/lib/clerk/useSignOut';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { sidebarItems } from './DashboardSidebar';
+import { sidebarItems } from '../../features/dashboard/components/DashboardSidebar';
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
 

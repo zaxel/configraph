@@ -1,32 +1,15 @@
 ﻿"use client"
 import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
-import Link from "next/link";
-import Auth from "@/features/dashboard/components/Auth";
-import Image from "next/image";
+import Auth from "@/components/common/Auth";
+import DashboardLogo from "./DashboardLogo";
 
 export function BuilderHeader() {
 
     return (
         <header className="sticky h-16 top-0 z-30 border-b bg-background/80 backdrop-blur-xl">
             <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
-                <div className="border-b px-6 py-2 h-16">
-                    <Link
-                        href="/dashboard"
-                        className="flex items-center gap-3"
-                    >
-                        <Image src="/imgs/logo.png" width={40} height={40} alt="logo"/>
-
-                        <div>
-                            <p className="text-sm text-muted-foreground">
-                                Configraph
-                            </p>
-                            <h2 className="font-semibold tracking-tight">
-                                Dashboard
-                            </h2>
-                        </div>
-                    </Link>
-                </div>
+                <DashboardLogo />
 
                 <div className="ml-auto flex items-center gap-3">
                     <Button

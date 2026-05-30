@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Bell, Search } from "lucide-react";
-import Auth from "./Auth";
+import Auth from "../../../components/common/Auth";
 
 export function DashboardHeader() {
     return (
