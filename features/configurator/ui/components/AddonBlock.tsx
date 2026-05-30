@@ -21,7 +21,7 @@ const AddonBlock = ({ data }: { data: AddonComponent }) => {
             <li key={option.value}>
               <label className="flex gap-4 cursor-pointer">
                 <Checkbox
-                  className="h-5 w-5 cursor-pointer data-checked:border-accent border-accent data-checked:bg-accent"
+                  className="h-5 w-5 cursor-pointer data-checked:border-accent-confi border-accent-confi data-checked:bg-accent-confi"
                   checked={isSelected}
                   onCheckedChange={() => toggleAddon(option.value)}
                 />

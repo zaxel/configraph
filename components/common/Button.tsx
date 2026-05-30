@@ -25,8 +25,8 @@ const Button = ({
         variant === "active-outline" && "bg-foreground text-white ring-foreground",
         variant === "primary" && "text-primary ring-primary",
         variant === "active" && "bg-primary text-white ring-primary",
-        variant === "accent" && "bg-background text-foreground ring-accent",
-        variant === "active-accent" && "bg-accent text-background ring-accent",
+        variant === "accent" && "bg-background text-foreground ring-accent-confi",
+        variant === "active-accent" && "bg-accent-confi text-background ring-accent-confi",
         className
       )}
       {...props}
