@@ -31,6 +31,7 @@ export type Configurator = {
   status: "draft" | "published";
   created_at: string;
   updated_at: string;
+  updated_at_unix: string;
 };
 
 export type ConfiguratorTableProps = {
@@ -96,7 +97,9 @@ export default function ConfiguratorTable({
           </thead>
 
           <tbody>
-            {configurators.map((configurator) => (
+            {configurators
+              .sort((ca, cb) => Date.parse(cb.updated_at_unix) - Date.parse(ca.updated_at_unix))
+              .map((configurator) => (
               <tr
                 key={configurator.id}
                 className="border-b transition-colors hover:bg-muted/10"
