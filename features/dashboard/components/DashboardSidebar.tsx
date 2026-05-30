@@ -6,6 +6,7 @@ import { CreditCard, LayoutDashboard, Plus, Shapes, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import AddConfigurator from "../AddConfigurator";
+import Image from "next/image";
 
 export const sidebarItems = [
     {
@@ -43,9 +44,7 @@ export function DashboardSidebar() {
                         href="/dashboard"
                         className="flex items-center gap-3"
                     >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border bg-muted font-semibold">
-                            C
-                        </div>
+                        <Image src="/imgs/logo.png" width={40} height={40} alt="logo"/>
 
                         <div>
                             <p className="text-sm text-muted-foreground">
