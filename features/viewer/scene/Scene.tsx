@@ -14,11 +14,11 @@ const Scene = ({ modelUrl, product, selectedOptions, mode, rotation}: ViewerProp
             <Environment preset="city" />
 
             <Suspense fallback={<Loader />}>
-                {/* <Float > */}
+                <Float >
                     <Model 
                     rotation={rotation} 
                     modelUrl={modelUrl} product={product} selectedOptions={selectedOptions} mode={mode}/>
-                {/* </Float> */}
+                </Float>
                 <ContactShadows position-y={-1.5} opacity={0.4} blur={2} />
             </Suspense>
         </>

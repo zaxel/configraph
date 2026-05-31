@@ -6,8 +6,8 @@ import React from 'react';
 
 const LiveExample = () => {
     return (
-        <section className="bg-secondary/40">
-            <div className="max-w-7xl mx-auto px-6 py-20 lg:py-24 flex flex-col lg:flex-row gap-12 lg:items-stretch">
+        <section id="live-example" className="bg-secondary/40">
+            <div className="max-w-7xl mx-auto px-6 py-2 xs:py-10 lg:py-16 flex flex-col lg:flex-row gap-12 lg:items-stretch">
                 <div className="w-full lg:w-1/3 flex flex-col justify-start gap-6">
                     <div className="inline-flex w-fit rounded-full border px-3 py-1 text-sm text-orange-500">
                         Live Example
@@ -50,7 +50,7 @@ const LiveExample = () => {
                     <Image
                         height={1435}
                         width={2375}
-                        src="/imgs/configurator-preview-v2.jpg"
+                        src="/imgs/configurator-preview.webp"
                         alt="embed configurator preview"
                         className="w-full h-auto"
                     />

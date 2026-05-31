@@ -5,13 +5,11 @@ import Pricing from "@/components/marketing/pricing/Pricing";
 
 export default function Home() {
   return (
-    <main className="grow relative">
-
+    <main className="grow relative bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,.12),transparent_45%)]">
       <Hero />
       <HowItWorks />
       <LiveExample />
       <Pricing />
-      {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,.12),transparent_45%)]" /> */}
     </main>
   );
 }

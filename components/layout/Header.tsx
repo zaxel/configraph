@@ -14,9 +14,9 @@ const Header = () => {
         <Logo />
 
         <nav className="hidden md:flex items-center gap-8">
-          <Link href="#features">Features</Link>
-          <Link href="#examples">How It Works</Link>
-          <Link href="/docs">Leave Demo</Link>
+          <Link href="#hero">Features</Link>
+          <Link href="#how-works">How It Works</Link>
+          <Link href="#live-example">Leave Demo</Link>
           <Link href="#pricing">Pricing</Link>
         </nav>
 
@@ -28,7 +28,10 @@ const Header = () => {
               </Button>
             </Link>
 
-            <Link className="hidden xs:block" href="/sign-up">
+            <Link
+              className="hidden xs:block"
+              href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/`}
+            >
               <Button size="lg" className="rounded-xl cursor-pointer">
                 Start Free
               </Button>

@@ -1,5 +1,6 @@
 ﻿import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronsLeftRightEllipsis, Gift, FileBracesCorner } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 const HeroVisual = () => {
@@ -25,14 +26,17 @@ const HeroVisual = () => {
             </p>
 
             <div className="mt-10 flex gap-4">
-                <Button size="lg" className="rounded-xl bg-foreground font-medium text-white flex gap-2 text-sm items-center cursor-pointer">
-                    Start Free
-                    <ArrowRight size={16} />
-                </Button>
-
-                <Button size="lg" variant="outline" className="rounded-xl border font-medium text-sm cursor-pointer">
-                    View Demo
-                </Button>
+                <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/`}>
+                    <Button size="lg" className="rounded-xl bg-foreground font-medium text-white flex gap-2 text-sm items-center cursor-pointer">
+                        Start Free
+                        <ArrowRight size={16} />
+                    </Button>
+                </Link>
+                <Link href="#live-example">
+                    <Button size="lg" variant="outline" className="rounded-xl border font-medium text-sm cursor-pointer">
+                        View Demo
+                    </Button>
+                </Link>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4 text-sm text-zinc-500">

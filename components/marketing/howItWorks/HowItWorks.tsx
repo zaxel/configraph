@@ -8,8 +8,8 @@ import {
 
 const HowItWorks = () => {
     return (
-        <section className="bg-secondary/40">
-            <div className="max-w-7xl mx-auto px-6 py-20">
+        <section id="how-works" className="bg-secondary/40">
+            <div className="max-w-7xl mx-auto px-6 py-2 xs:py-10 lg:py-16">
                 <h2 className="text-center text-4xl font-bold tracking-tight">How It Works</h2>
                 <div className="mt-12 grid md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-6 items-center max-w-5xl mx-auto">
                     {[
