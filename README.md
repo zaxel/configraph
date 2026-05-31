@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 3D Configurator Builder
 
-## Getting Started
+Build interactive 3D product configurators without writing code.
 
-First, run the development server:
+3D Configurator Builder is a SaaS platform that enables businesses to create, manage, and publish customizable 3D product experiences. Upload 3D models, define product options and pricing, customize the customer experience, and embed configurators directly into existing websites.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Traditional product pages often struggle to communicate customization options and product variations. 3D Configurator Builder helps businesses present products interactively, allowing customers to visualize changes in real time before making a purchase.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The platform is designed for both technical and non-technical users, providing a visual builder for creating product configurators without requiring custom development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Core Capabilities
 
-## Learn More
+* Upload and manage 3D product models
+* Create configurable product options and variants
+* Configure dynamic pricing rules
+* Customize materials, colors, and product appearance
+* Canvas-based design and texture editing
+* Publish configurators with a single embed
+* Manage products through a centralized dashboard
+* User authentication and account management
+* Subscription and billing management
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Typical Workflow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Upload a 3D model
+2. Create configurable options
+3. Define pricing rules
+4. Customize the configurator experience
+5. Publish the configurator
+6. Embed it into a website
+7. Let customers configure products in real time
 
-## Deploy on Vercel
+## Use Cases
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Apparel, footwear, and accessories
+* Furniture and interior products
+* Custom manufacturing
+* Industrial equipment
+* Jewelry and accessories
+* Electronics
+* Promotional products
+* Made-to-order products
+* B2B product configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Technology Stack
+
+### Frontend
+
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+* Radix UI
+
+### 3D & Visualization
+
+* Three.js
+* React Three Fiber
+* Drei
+* GLTF Transform
+* Draco Compression
+
+### State & Data Management
+
+* Zustand
+* Immer
+* TanStack Query
+* Zod
+
+### Backend & Infrastructure
+
+* Supabase
+* Clerk Authentication
+* Stripe Billing
+* Render (file upload and processing services)
+
+### Builder & Editor Tools
+
+* dnd-kit
+* Fabric.js
+
+## Project Status
+
+This project is actively developed and continuously improved with new features, performance optimizations, and platform enhancements.
+
+## License
+
+Private project. All rights reserved.
