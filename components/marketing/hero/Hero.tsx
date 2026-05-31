@@ -5,8 +5,7 @@ import HeroVisual from './HeroVisual';
 
 const Hero = () => {
     return (
-        <section className="relative mb-[500px] md:mb-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,.12),transparent_45%)]" />
+        <section className="relative mb-[500px] md:mb-0 bg-secondary/40">
             <div className="h-full mx-auto flex flex-col max-w-7xl gap-16 px-6 py-2 xs:py-10 lg:flex-row items-center ">
                 <div className="flex flex-col justify-center w-full lg:w-1/3">
                     <HeroVisual />

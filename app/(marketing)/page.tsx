@@ -1,9 +1,13 @@
 import Hero from "@/components/marketing/hero/Hero";
+import HowItWorks from "@/components/marketing/howItWorks/HowItWorks";
 
 export default function Home() {
   return (
-    <main className="grow">
+    <main className="grow relative">
+
       <Hero />
+      <HowItWorks />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,.12),transparent_45%)]" />
     </main>
   );
 }
