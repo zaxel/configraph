@@ -1,12 +1,12 @@
 ﻿import React, { Suspense } from 'react';
-import { Environment, OrbitControls } from "@react-three/drei";
+import { ContactShadows, Environment, Float, OrbitControls } from "@react-three/drei";
 import Model from '../Model';
 import Loader from './Loader';
 import { ViewerProps } from '../Viewer';
 import { GlCaptureBridge } from './GlCaptureBridge';
 
 
-const Scene = ({ modelUrl, product, selectedOptions, mode}: ViewerProps) => {
+const Scene = ({ modelUrl, product, selectedOptions, mode, rotation}: ViewerProps) => {
     return (
         <>
             <GlCaptureBridge />
@@ -14,10 +14,12 @@ const Scene = ({ modelUrl, product, selectedOptions, mode}: ViewerProps) => {
             <Environment preset="city" />
 
             <Suspense fallback={<Loader />}>
-                {/* <Float > */}
-                <Model  modelUrl={modelUrl} product={product} selectedOptions={selectedOptions} mode={mode}/>
-                {/* </Float> */}
-                {/* <ContactShadows position-y={-2.2} opacity={0.4} blur={2} /> */}
+                <Float >
+                    <Model 
+                    rotation={rotation} 
+                    modelUrl={modelUrl} product={product} selectedOptions={selectedOptions} mode={mode}/>
+                </Float>
+                <ContactShadows position-y={-1.5} opacity={0.4} blur={2} />
             </Suspense>
         </>
     );

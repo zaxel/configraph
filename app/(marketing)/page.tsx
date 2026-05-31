@@ -1,8 +1,9 @@
+import Hero from "@/components/marketing/hero/Hero";
 
 export default function Home() {
   return (
-    <div className="grow p-4 md:p-8">
-      main page content
-    </div>
+    <main className="grow">
+      <Hero />
+    </main>
   );
 }

@@ -9,6 +9,7 @@
   --color-secondary: #FEF2F2;
   --color-background: #ffffff;
   --color-foreground: #171717;
+  --breakpoint-xs: 480px;
 }
 
 @media (prefers-color-scheme: dark) {

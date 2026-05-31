@@ -79,7 +79,7 @@ const Embed = () => {
     return (
         <ProductContext.Provider value={product}>
             <div className="grow p-4 md:p-8">
-                <div className="w-full flex flex-col md:flex-row relative">
+                <div className="w-full flex flex-col md:flex-row relative gap-2">
                     <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-100 -mx-3 md:mx-2">
                         <Viewer
                             modelUrl={product?.model?.url ?? ""}
@@ -87,7 +87,7 @@ const Embed = () => {
                             selectedOptions={selectedOptions}
                             mode="embed"
                             canExportWithoutWatermark={permissions.canExportWithoutWatermark}
-
+                            rotation={[0, 75 * (Math.PI / 180), 0]}
                         />
                     </div>
 

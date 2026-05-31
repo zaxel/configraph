@@ -12,7 +12,7 @@ import { MeshLayout } from '@/lib/extractMeshes';
 import { useMeshDebugger } from '../builder/hooks/useMeshDebugger';
 import { GLTF } from 'three-stdlib';
 
-const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
+const Model = ({ modelUrl, product, selectedOptions, mode, rotation }: ViewerProps) => {
     const { gltf } = useGLTF(modelUrl);
     const selections = useConfiguratorStore(s => s.selectedOptions.parts.items);
     const activeTab = useBuilderStore(s => s.activeTab);
@@ -84,7 +84,7 @@ const Model = ({ modelUrl, product, selectedOptions, mode }: ViewerProps) => {
         enabled: mode === "preview" || mode === "embed",
     })
 
-    return <primitive object={gltf.scene} />
+    return <primitive rotation={rotation} object={gltf.scene} />
 };
 
 export default Model;

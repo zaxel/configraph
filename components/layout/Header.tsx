@@ -8,7 +8,7 @@ import Auth from '../common/Auth';
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/50 bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6">
 
         <Logo />
@@ -28,7 +28,7 @@ const Header = () => {
               </Button>
             </Link>
 
-            <Link href="/sign-up">
+            <Link className="hidden xs:block" href="/sign-up">
               <Button size="lg" className="rounded-xl cursor-pointer">
                 Start Free
               </Button>

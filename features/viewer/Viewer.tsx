@@ -13,9 +13,11 @@ export type ViewerProps = {
     product?: Product | null | undefined;
     selectedOptions?: SelectedOptions;
     canExportWithoutWatermark?: boolean;
+
+    rotation?: [number, number, number];
 }
 
-const Viewer = ({ modelUrl, product, selectedOptions, mode, canExportWithoutWatermark }: ViewerProps) => {
+const Viewer = ({ modelUrl, product, selectedOptions, mode, canExportWithoutWatermark, rotation }: ViewerProps) => {
     return (
         <>
             <Watermark
@@ -28,7 +30,7 @@ const Viewer = ({ modelUrl, product, selectedOptions, mode, canExportWithoutWate
                         outputColorSpace: THREE.SRGBColorSpace,
                     }}
                 >
-                    <Scene modelUrl={modelUrl} product={product} selectedOptions={selectedOptions} mode={mode} />
+                    <Scene rotation={rotation} modelUrl={modelUrl} product={product} selectedOptions={selectedOptions} mode={mode} />
                 </Canvas>
             </div>
         </>
