@@ -44,7 +44,7 @@ export function DashboardSidebar() {
                         href="/dashboard"
                         className="flex items-center gap-3"
                     >
-                        <Image src="/imgs/logo.png" width={40} height={40} alt="logo"/>
+                        <Image src="/imgs/logo.webp" width={40} height={40} alt="logo"/>
 
                         <div>
                             <p className="text-sm text-muted-foreground">
