@@ -3,7 +3,7 @@ import { ModelSlice } from "./model.type";
 import { BoundBuilderStore } from "../builder.types";
 import { getToken } from "@clerk/nextjs";
 
-export const MAX_FILE_SIZE = 300 * 1024 * 1024;
+export const MAX_FILE_SIZE = 80 * 1024 * 1024;
 export const MAX_UNOPTIMIZED_SIZE = 2 * 1024 * 1024;
 
 export const createModelSlice: StateCreator<
