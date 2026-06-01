@@ -21,7 +21,6 @@ const ConfiguratorRuntime = ({ active }: ConfiguratorRuntime) => {
 
 
   useEffect(() => {
-    console.log("init", product)
     if (!active) return;
     if (!product?.id) return;
 

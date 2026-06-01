@@ -28,7 +28,6 @@ const BuilderPanel = ({permissions}: {permissions: PermissionValues}) => {
         <div className="flex flex-col gap-6 w-full mt-4 md:w-2/3 md:mt-0">
             <div className="flex gap-4">
                 <Button variant={isMeshSelected ? "active-outline" : "outline"} onClick={() => {
-                    console.log("mesh")
                     if (!isMeshSelected) setActiveTab("mesh")
                 }
                 }>

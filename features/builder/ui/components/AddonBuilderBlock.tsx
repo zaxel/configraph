@@ -109,7 +109,6 @@ const AddonBuilderBlock = ({ data, moduleId, defaultOpt }: AddonBuilderBlock) =>
                                     }}
                                     onBlur={() => {
                                         const path = `modules.${moduleId}.components.${data.id}.options.${opt.id}.value`;
-                                        console.log("blur", path)
                                         setFieldTouched(path);
                                         validateField(path);
                                     }}

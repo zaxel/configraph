@@ -28,9 +28,6 @@ export type DashboardOverviewProps = {
 
 export default function DashboardOverview({ configurators }: DashboardOverviewProps) {
   const { plan, permissions, usage, limits, refresh, isPending } = useEntitlements();
-  console.log(permissions);
-  console.log(plan);
-  console.log(usage);
 
   return (
     <div className="space-y-8">

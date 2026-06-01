@@ -3,8 +3,10 @@ import { Component, Module } from "../model";
 import { componentRegistry } from "./registry";
 import { PermissionValues } from "@/features/billing/types/billing.types";
 import UpgradeFeaturePlaceholder from "./components/UpgradeFeaturePlaceholder";
+import { useRouter } from "next/navigation";
 
 export const ModuleRenderer = ({ module, permissions, mode }: { module: Module, permissions: PermissionValues, mode: Mode }) => {
+    const router = useRouter();
     return (
         <div className="flex flex-col gap-4">
             {module.components.map((comp: Component) => {
@@ -25,7 +27,7 @@ export const ModuleRenderer = ({ module, permissions, mode }: { module: Module, 
                                 key={comp.id}
                                 title="Canvas Editor"
                                 description="Upgrade plan to unlock interactive canvas modules."
-                                onUpgrade={() => console.log("updating plan")}
+                                onUpgrade={() => router.push("/dashboard/billing#plans")}
                             />
                         );
                     }

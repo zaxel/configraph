@@ -5,7 +5,6 @@ import { PathResolver } from "./mapZodErrors";
 
 export const buildPathResolver = (draft: Product): PathResolver => {
     return (zodPath) => {
-        console.log(zodPath)
         const resolved: (string | number)[] = [];
 
         for (let i = 0; i < zodPath.length; i++) {

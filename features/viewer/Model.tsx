@@ -56,7 +56,6 @@ const Model = ({ modelUrl, product, selectedOptions, mode, rotation }: ViewerPro
 
     useEffect(() => {
         if (!registry) return;
-        console.log(registry);
         setRegistry(registry);
         return () => setRegistry(null);
     }, [registry, setRegistry]);

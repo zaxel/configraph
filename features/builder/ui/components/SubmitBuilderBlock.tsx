@@ -9,8 +9,6 @@ import { ValidatedInput } from './ValidatedInput';
 type SubmitBuilderBlock = { data: BuilderSubmitComponent, moduleId: string };
 
 const SubmitBuilderBlock = ({ data, moduleId }: SubmitBuilderBlock) => {
-    console.log(data);
-
     const deleteModule = useBuilderStore(s => s.deleteModule);
     const setFieldDirty = useBuilderStore(s => s.setFieldDirty);
     const setFieldTouched = useBuilderStore(s => s.setFieldTouched);
