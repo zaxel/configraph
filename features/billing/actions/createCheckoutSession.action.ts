@@ -7,7 +7,7 @@ import { createSubscriptionsRepo } from "../repositories/subscriptions.repo";
 import { stripe } from "../lib/stripe";
 
 type CreateCheckoutSessionActionProps = {
-    priceId: string
+  priceId: string
 }
 
 export async function createCheckoutSession({
@@ -17,20 +17,20 @@ export async function createCheckoutSession({
   if (!userId) {
     throw new Error("Unauthorized");
   }
-  
+
   const supabase = await createServerSupabaseClient();
-  
+
   const profileRepo = createProfileRepo(supabase);
   const subscriptionsRepo = createSubscriptionsRepo(supabase);
-  
+
   const profile = await profileRepo.getByClerkId(userId);
-  
+
   if (!profile) {
     throw new Error("Profile not found");
   }
-  
+
   const subscription = await subscriptionsRepo.getByProfileId(profile.id);
-  
+
   if (subscription?.stripe_subscription_id) {
     const existingSub = await stripe.subscriptions.retrieve(
       subscription.stripe_subscription_id
@@ -48,17 +48,28 @@ export async function createCheckoutSession({
   }
 
   let stripeCustomerId = subscription?.stripe_customer_id;
-  
+
   if (!stripeCustomerId) {
-    const customer = await stripe.customers.create({
-      email: profile.email,
-      metadata: {
-        clerkUserId: userId,
-        profileId: profile.id,
-      },
-    });
-    
-    stripeCustomerId = customer.id;
+    const existing = await stripe.customers.list({ email: profile.email, limit: 1 });
+
+    if (existing.data.length > 0) {
+      stripeCustomerId = existing.data[0].id;
+    } else {
+      const customer = await stripe.customers.create({
+        email: profile.email,
+        metadata: { clerkUserId: userId, profileId: profile.id },
+      });
+      stripeCustomerId = customer.id;
+    }
+    // const customer = await stripe.customers.create({
+    //   email: profile.email,
+    //   metadata: {
+    //     clerkUserId: userId,
+    //     profileId: profile.id,
+    //   },
+    // });
+
+    // stripeCustomerId = customer.id;
 
     await subscriptionsRepo.upsertCustomer({
       profileId: profile.id,
@@ -66,7 +77,7 @@ export async function createCheckoutSession({
       clerkUserId: userId,
     });
   }
-  
+
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer: stripeCustomerId,

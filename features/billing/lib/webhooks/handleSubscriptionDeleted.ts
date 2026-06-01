@@ -22,15 +22,6 @@ export async function handleSubscriptionDeleted(
     throw new Error(`Subscription not found for customer ${customerId}`);
   }
 
-  await subscriptionsRepo.upsertSubscription({
-    profileId: existingSub.profile_id,
-    clerk_user_id: existingSub.clerk_user_id,
-    stripe_customer_id: customerId,
-    stripe_subscription_id: null,
-    plan: "free",
-    stripe_status: "canceled",
-    current_period_end: null,
-    cancel_at_period_end: false,
-  });
-  syncPublishedOption("free", existingSub.clerk_user_id);
+  await subscriptionsRepo.deleteSubscription({stripe_customer_id: customerId});
+  syncPublishedOption("free", existingSub.clerk_user_id); 
 }
