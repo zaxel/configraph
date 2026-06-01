@@ -8,8 +8,9 @@ import Link from 'next/link';
 import { sidebarItems } from '../../features/dashboard/components/DashboardSidebar';
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
+import { Plan } from '@/features/billing/types/billing.types';
 
-const Auth = () => {
+const Auth = ({plan}: {plan?: Plan}) => {
      const handleSignOut = useSignOut();
         const {
             data: profile,
@@ -56,9 +57,9 @@ const Auth = () => {
                                 : <span className="text-muted-foreground/60">User</span>
                             }
                         </p>
-                        <p className="text-xs text-muted-foreground">
-                            Free Plan
-                        </p>
+                        {plan && <p className="text-xs text-muted-foreground">
+                            {plan[0].toUpperCase() + plan.slice(1)} Plan
+                        </p>}
                     </div>
 
                     <ChevronDown className="h-4 w-4 text-muted-foreground" />

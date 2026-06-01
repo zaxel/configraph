@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Bell } from "lucide-react";
 import Auth from "@/components/common/Auth";
 import DashboardLogo from "./DashboardLogo";
+import { useEntitlements } from "@/features/billing/context/entitlements.context";
 
 export function BuilderHeader() {
-
+const { plan } = useEntitlements();
     return (
         <header className="sticky h-16 top-0 z-30 border-b bg-background/80 backdrop-blur-xl">
             <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
@@ -22,7 +23,7 @@ export function BuilderHeader() {
                         <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
                     </Button>
 
-                    <Auth />
+                    <Auth plan={plan}/>
                 </div>
             </div>
         </header>
