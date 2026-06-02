@@ -47,6 +47,8 @@ const Embed = () => {
             return;
         }
 
+
+
         const initConfigurator = async (
             configuratorId: string
         ) => {
@@ -88,6 +90,7 @@ const Embed = () => {
                             mode="embed"
                             canExportWithoutWatermark={permissions.canExportWithoutWatermark}
                             rotation={[0, 75 * (Math.PI / 180), 0]}
+                            floatingSpeed={id==="b4555bde-67f9-47f8-9531-f97ec5c81ef0" ? 1 : 0}
                         />
                     </div>
 
