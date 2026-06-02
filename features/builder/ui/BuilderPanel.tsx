@@ -26,7 +26,7 @@ const BuilderPanel = ({permissions}: {permissions: PermissionValues}) => {
 
     return (
         <div className="flex flex-col gap-6 w-full mt-4 md:w-2/3 md:mt-0">
-            <div className="flex justify-start gap-3 md:gap-4">
+            <div className="flex justify-start gap-3 md:gap-4 ml-2">
                 <Button
                     className='px-2 h-6 md:px-4 md:h-8'
                     variant={isMeshSelected ? "active-outline" : "outline"} onClick={() => {

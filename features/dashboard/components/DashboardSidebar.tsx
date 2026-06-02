@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import AddConfigurator from "../AddConfigurator";
 import Image from "next/image";
+import DashboardLogo from "./DashboardLogo";
 
 export const sidebarItems = [
     {
@@ -38,24 +39,8 @@ export function DashboardSidebar() {
 
     return (
         <aside className="hidden md:flex w-72 shrink-0 border-r bg-background/80 backdrop-blur-xl">
-            <div className="flex h-screen w-full flex-col">
-                <div className="border-b px-6 py-2 h-16">
-                    <Link
-                        href="/dashboard"
-                        className="flex items-center gap-3"
-                    >
-                        <Image src="/imgs/logo.webp" width={40} height={40} alt="logo"/>
-
-                        <div>
-                            <p className="text-sm text-muted-foreground">
-                                Configraph
-                            </p>
-                            <h2 className="font-semibold tracking-tight">
-                                Dashboard
-                            </h2>
-                        </div>
-                    </Link>
-                </div>
+            <div className="border-b flex h-screen w-full flex-col">
+                <DashboardLogo />
 
                 <div className="flex-1 overflow-y-auto px-3 py-5">
                     <AddConfigurator>
