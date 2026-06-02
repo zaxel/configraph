@@ -13,7 +13,7 @@ const ConfiguratorPanel = ({permissions}: {permissions: PermissionValues}) => {
     
     if(!product) return null; 
     return (
-       <div className={`w-full shrink-0 flex flex-col gap-6 ${(mode === "builder" && activeBuilderTab==="builder") ? "md:w-2/3" : "md:w-1/3"}`}>
+       <div className={`w-full shrink-0 flex flex-col gap-6 px-2 ${(mode === "builder" && activeBuilderTab==="builder") ? "md:w-2/3" : "md:w-1/3"}`}>
             {product.modules
                 .slice()
                 .sort((a, b)=> a.order - b.order) 

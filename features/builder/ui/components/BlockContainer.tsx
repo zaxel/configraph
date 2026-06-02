@@ -24,7 +24,7 @@ const BlockContainer = ({ children, id, instanceId }: { children: React.ReactNod
     return (
         <div className="border rounded-xl p-4 w-full relative group" ref={setNodeRef} style={style}>
             <Collapsible className="group">
-                <div className="flex items-center gap-6" >
+                <div className="flex items-center" >
 
                     <Button
                         {...attributes}
@@ -32,7 +32,7 @@ const BlockContainer = ({ children, id, instanceId }: { children: React.ReactNod
                         variant="ghost"
                         className="cursor-grab"
                     >
-                        <GripVertical className="w-4 h-4 mr-2 text-muted-foreground shrink-0 cursor-grab" />
+                        <GripVertical className="w-4 h-4 text-muted-foreground shrink-0 cursor-grab" />
 
                     </Button>
 

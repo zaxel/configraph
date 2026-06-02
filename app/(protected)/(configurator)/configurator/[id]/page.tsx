@@ -51,10 +51,10 @@ const Embed = () => {
 
   return (
     <ProductContext.Provider value={product}>
-      <div className="grow p-4 md:p-8">
-        <div className="w-full flex flex-col md:flex-row relative gap-2">
+      <div className="grow">
+        <div className="w-full flex flex-col md:flex-row relative gap-4">
           {/* LEFT  */}
-          <div className="w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-10 -mx-3 md:mx-2">
+          <div className="className={`w-full md:w-2/3 shrink-0 h-[50vh] md:h-[75vh] sticky top-0 left-0 bg-background overflow-hidden z-10">
             <Viewer
               modelUrl={product?.model?.url ?? ""}
               product={product}

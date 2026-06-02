@@ -43,11 +43,11 @@ const ProductStudio = () => {
     if(loading) return <ConfiguratorLoader spacingTopVh={15}/>
 
     return (
-        <div className="w-full flex flex-col md:flex-row relative">
+        <div className="w-full flex flex-col md:flex-row relative gap-4">
             {/* TOGGLE MODE BTN */}
             {status === "ready" && <Toggle />}
             {/* LEFT — always visible */}
-            <div className={`w-full ${(mode === "builder" && activeBuilderTab === "builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab === "builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-10 -mx-3 md:mx-2`}>
+            <div className={`w-full ${(mode === "builder" && activeBuilderTab === "builder") ? "md:w-1/3" : "md:w-2/3"} shrink-0 h-[50vh] ${(mode === "builder" && activeBuilderTab === "builder") ? "md:h-[45vh]" : "md:h-[75vh]"} sticky top-0 left-0 bg-background overflow-hidden z-10`}>
                 <ViewerBridge canExportWithoutWatermark={permissions.canExportWithoutWatermark}/>
                 {mode === "builder" && <BuilderOverlay />}
             </div>

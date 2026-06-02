@@ -12,7 +12,7 @@ const Builder = () => {
 
     return (
         <>
-            <div className="grow p-4 md:p-8">
+            <div className="grow">
                 <ProductStudio />
             </div>
 

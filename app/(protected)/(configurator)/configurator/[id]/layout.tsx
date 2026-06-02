@@ -11,7 +11,7 @@ export default function ConfiguratorLayout({
 
       {/* <main className="flex-1 overflow-y-auto"> */}
       <main className="flex-1">
-        <div className="p-4 md:p-8">
+        <div className="p-2 md:p-8">
           {children}
         </div>
       </main>

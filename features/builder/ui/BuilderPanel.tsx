@@ -26,25 +26,33 @@ const BuilderPanel = ({permissions}: {permissions: PermissionValues}) => {
 
     return (
         <div className="flex flex-col gap-6 w-full mt-4 md:w-2/3 md:mt-0">
-            <div className="flex gap-4">
-                <Button variant={isMeshSelected ? "active-outline" : "outline"} onClick={() => {
+            <div className="flex justify-start gap-3 md:gap-4">
+                <Button
+                    className='px-2 h-6 md:px-4 md:h-8'
+                    variant={isMeshSelected ? "active-outline" : "outline"} onClick={() => {
                     if (!isMeshSelected) setActiveTab("mesh")
                 }
                 }>
                     Meshes
                 </Button>
-                <Button variant={isBuilderSelected ? "active-outline" : "outline"} onClick={() => {
-                    if (!isBuilderSelected) setActiveTab("builder");
-                }}>
+                <Button 
+                        className='px-2 h-6 md:px-4 md:h-8'
+                        variant={isBuilderSelected ? "active-outline" : "outline"} onClick={() => {
+                            if (!isBuilderSelected) setActiveTab("builder");
+                        }}>
                     Builder
                 </Button>
-                <Button variant={isSettingsSelected ? "active-outline" : "outline"} onClick={() =>
+                <Button 
+                    className='px-2 h-6 md:px-4 md:h-8'
+                    variant={isSettingsSelected ? "active-outline" : "outline"} onClick={() =>
                     !isSettingsSelected &&
                     setActiveTab("settings")
                 }>
                     Settings
                 </Button>
-                <Button variant={"outline"} onClick={() =>
+                <Button 
+                    className='px-1 h-6 md:px-4 md:h-8'
+                    variant={"outline"} onClick={() =>
                     setActiveTab("mesh")
                 }>
                     <Link href={"/dashboard/"}>
